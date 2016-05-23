@@ -5,4 +5,5 @@ struct SearchStack {
     Move Killers[2];
     bool skipNullMove;
     Ply ply;
+    Depth depth;
 };
