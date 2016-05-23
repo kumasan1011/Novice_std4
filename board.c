@@ -29,3 +29,6 @@
   捕獲した駒の種類
   xxx11111 xxxxxxxx xxxxxxxx  captured piece(bit16~20)
 */
+
+#include "define.h"
+
