@@ -13,4 +13,19 @@
 */
 
 
-a
+/*
+  移動先
+  xxxxxxxx xxxxxxxx x1111111  destination(bit0~6)
+
+  移動元 (駒を打つ場合は駒種)
+  xxxxxxxx xx111111 1xxxxxxx  starting square(bit7~13)
+
+  成りフラグ
+  xxxxxxxx x1xxxxxx xxxxxxxx  flag for promotion(bit14)
+
+  駒打ちフラグ
+  xxxxxxxx 1xxxxxxx xxxxxxxx  flag for drop(bit15) //hashに格納する際にはここまでを使う
+
+  捕獲した駒の種類
+  xxx11111 xxxxxxxx xxxxxxxx  captured piece(bit16~20)
+*/
