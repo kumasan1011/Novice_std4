@@ -32,3 +32,12 @@
 
 #include "define.h"
 
+void InitBoard(struct Position& pos)
+{
+    int x,y;
+    
+    for( x=0; x<256; x++ )
+    {
+        
+    }
+}

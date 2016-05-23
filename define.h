@@ -1,3 +1,5 @@
+#include <stdbool.h>
+
 //macro
 typedef unsigned long long uint64;
 typedef unsigned long long Hash;
@@ -18,4 +20,8 @@ struct Position {
   Board pieceStock[8][32]; //使われてない（盤上にない駒）
   Board pieceCol[64]; //駒番号とその色
   Hash hashkey; 
+};
+
+struct SearchStack {
+  bool   
 };
