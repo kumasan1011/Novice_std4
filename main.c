@@ -56,14 +56,6 @@ int main()
 			printf("usiok\n");
 		}
         
-        // testcode
-        struct Position pos;
-        
-        InitBoard(&pos);
-        
-        PrintBoard(pos);
-        
-        
         /*
         else if(strncmp(buf, "setoption", strlen("setoption")) == 0) 
         {
@@ -132,12 +124,19 @@ int main()
             {
                 bench(turn);
             }
-		}
+		}*/
         else if( strncmp(buf,"quit",strlen("quit"))==0 )
         {
 			break;
 		}
-		*/
+		
+        // testcode
+        struct Position pos;
+        
+        InitBoard(&pos);
+        
+        PrintBoard(pos);
+        
 	}
 	
 	return 0;
