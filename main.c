@@ -59,7 +59,7 @@ int main()
         // testcode
         struct Position pos;
         
-        InitBoard(pos);
+        InitBoard(&pos);
         
         
         

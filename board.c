@@ -38,13 +38,13 @@
 #include "define.h"
 #include "board.h"
 
-void InitBoard(struct Position pos)
+void InitBoard(struct Position* pos)
 {
     int x,y;
     
     for( x=0; x<256; x++ )
     {
-        pos.board[x] = WAL;
+        pos->board[x] = WAL;
     }
     
     Board StartPos[10][10]={
@@ -57,17 +57,22 @@ void InitBoard(struct Position pos)
 		{ WAL,EMP,EMP,EMP,EMP,EMP,EMP,EMP,EMP,EMP },
 		{ WAL,SFU,SFU,SFU,SFU,SFU,SFU,SFU,SFU,SFU },
 		{ WAL,EMP,SKA,EMP,EMP,EMP,EMP,EMP,SHI,EMP },
-		{ WAL,SKY,SKE,SGI,SKI,SOU,SKI,SGI,SKE,SKY },
+		{ WAL,SKY,SKE,SGI,SKI,SOU,SKI,SGI,SKE,SKY }
 	};
     
-    for( x=1; x<=9; x++ )
+    for( y=1; y<=9; y++ )
     {
-        for( y=1; y<=9; y++ )
+        for( x=1; x<=9; x++ )
         {
             Board sq = SQ( x, y );
-            pos.board[sq] = StartPos[x][y];
+            pos->board[sq] = StartPos[y][x];
         }
     }
     
+    for( x=0; x<8; x++ )
+    {
+        pos->b_hand[x] = pos->w_hand = 0;
+    }
     
+    pos->color = Black; 
 }
