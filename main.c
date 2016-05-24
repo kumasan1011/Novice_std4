@@ -6,6 +6,7 @@
 
 #include "define.h"
 
+/*
 bool IsStopReceived=false;
 bool IsGoInfinite=false;
 
@@ -31,7 +32,7 @@ void *ReceiveThread(void *a)
 			exit(1);
 		}
     }
-}
+}*/
 
 int main()
 {

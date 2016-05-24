@@ -38,13 +38,13 @@
 #include "define.h"
 #include "board.h"
 
-void InitBoard(struct Position& pos)
+void InitBoard(struct Position pos)
 {
     int x,y;
     
     for( x=0; x<256; x++ )
     {
-        pos.[x] = WAL;
+        pos.board[x] = WAL;
     }
     
     Board StartPos[10][10]={
@@ -65,7 +65,7 @@ void InitBoard(struct Position& pos)
         for( y=1; y<=9; y++ )
         {
             Board sq = SQ( x, y );
-            pos.[sq] = SrartPos[x][y];
+            pos.board[sq] = StartPos[x][y];
         }
     }
     
