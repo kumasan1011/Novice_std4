@@ -1,4 +1,7 @@
 #include <stdbool.h>
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 
 //macro
 typedef unsigned long long uint64;
