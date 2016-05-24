@@ -4,8 +4,9 @@
 #include <time.h>
 
 #include "define.h"
+#include "io.h"
 
-void PrintBoard( struct Position pos ){
+void PrintBoard( const struct Position pos ){
 	
 	int i;
 	int x,y;

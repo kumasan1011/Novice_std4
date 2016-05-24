@@ -61,7 +61,7 @@ int main()
         
         InitBoard(&pos);
         
-        PrintBoard(&pos);
+        PrintBoard(pos);
         
         
         /*
