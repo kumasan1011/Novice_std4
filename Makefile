@@ -1,2 +1,3 @@
 #Makefile
-    gcc -Ofast -o Novice main.c board.c io.c -lm 
+Normal:
+	gcc -Ofast -o Novice main.c board.c io.c -lm 
