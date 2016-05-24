@@ -71,7 +71,7 @@ void InitBoard(struct Position* pos)
     
     for( x=0; x<8; x++ )
     {
-        pos->b_hand[x] = pos->w_hand = 0;
+        pos->b_hand[x] = pos->w_hand[x] = 0;
     }
     
     pos->color = Black; 

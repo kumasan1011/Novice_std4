@@ -5,7 +5,7 @@
 
 #include "define.h"
 
-void PrintBoard( struct Position* pos ){
+void PrintBoard( struct Position pos ){
 	
 	int i;
 	int x,y;
@@ -18,11 +18,11 @@ void PrintBoard( struct Position* pos ){
 		printf("\n |");
 		for( x=1; x<=9; x++ )
         {
-			if( pos->board[SQ(x,y)]>=EFU )
+			if( pos.board[SQ(x,y)]>=EFU )
             {
-				printf(" %s ",PieceName2[pos->board[SQ(x,y)]-15]);
+				printf(" %s ",PieceName2[pos.board[SQ(x,y)]-15]);
 			}else{
-				printf(" %s ",PieceName[pos->board[SQ(x,y)]]);
+				printf(" %s ",PieceName[pos.board[SQ(x,y)]]);
 			}
 		}
 		printf("| %d",y);
@@ -33,34 +33,34 @@ void PrintBoard( struct Position* pos ){
 	printf("  Black_Hand: ");
 	for( i=1; i<8; i++ )
     {
-		if( pos->b_hand[i]>0 )
+		if( pos.b_hand[i]>0 )
         {
-			if( pos->b_hand[i]==1 )
+			if( pos.b_hand[i]==1 )
             {
 				printf("%s ",PieceName[i]);
 			}
             else
             {
-				printf("%s-%d ",PieceName[i],pos->b_hand[i]);
+				printf("%s-%d ",PieceName[i],pos.b_hand[i]);
 			}
 		}
 	}
 	printf("\n  White_Hand: ");
 	for( i=1; i<8; i++ )
     {
-		if(pos->w_hand[i]>0)
+		if(pos.w_hand[i]>0)
         {
-			if(pos->w_hand[i]==1)
+			if(pos.w_hand[i]==1)
             {
 				printf("%s ",PieceName[i]);
 			}
             else
             {
-				printf("%s-%d ",PieceName[i],pos->w_hand[i]);
+				printf("%s-%d ",PieceName[i],pos.w_hand[i]);
 			}
 		}
 	}
-	printf( "\n  Color:%s\n", pos->color ? "White":"Black" );
-	printf( "Hash:%llx\n", pos->hashkey );
+	printf( "\n  Color:%s\n", pos.color ? "White":"Black" );
+	printf( "Hash:%llx\n", pos.hashkey );
 	printf("\n");
 }
