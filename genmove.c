@@ -13,7 +13,7 @@ int GenPawnMove_b( struct Position* pos, Board sq , Move* move )
     if( !pos->boardCol_b[To] )
     {
         move[0] = AddTo(To) | AddFrom(sq);
-        if( To<0x40 ) //成り
+        if( To<0x40 || sq<0x40 ) //成り
         {
             move[0] |= AddPro(1);
         }
@@ -28,7 +28,7 @@ int GenPawnMove_w( struct Position* pos, Board sq , Move* move )
     if( !pos->boardCol_w[To] )
     {
         move[0] = AddTo(To) | AddFrom(sq);
-        if( To>0x70 ) //成り
+        if( To>0x70 || sq>0x70 ) //成り
         {
             move[0] |= AddPro(1);
         }
@@ -36,67 +36,539 @@ int GenPawnMove_w( struct Position* pos, Board sq , Move* move )
     }
 }
 
-int GenLanceMove_b()
+int GenLanceMove_b( struct Position* pos, Board sq , Move* move )
 {
     
 }
 
-int GenLanceMove_w()
+int GenLanceMove_w( struct Position* pos, Board sq , Move* move )
 {
     
 }
 
-int GenKnightMove_b()
+int GenKnightMove_b( struct Position* pos, Board sq , Move* move )
+{
+    int num=0;
+    
+    Board To = sq - 31;
+    
+    if( !pos->board[To] || pos->boardCol_w[To] )
+    {
+        move[num] = AddTo(To) | AddFrom(sq);
+        num++;
+        if( To<0x40 || sq<0x40 ) //成り
+        {
+            if( To<0x30 )
+            {
+                move[num-1] |= AddPro(1);
+            }
+            else
+            {
+                move[num] = AddTo(To) | AddFrom(sq);
+                move[num] |= AddPro(1);
+                num++;
+            }
+        }
+    }
+    
+    To = sq - 33;
+    
+    if( !pos->board[To] || pos->boardCol_w[To] )
+    {
+        move[num] = AddTo(To) | AddFrom(sq);
+        num++;
+        if( To<0x40 || sq<0x40 ) //成り
+        {
+            if( To<0x30 )
+            {
+                move[num-1] |= AddPro(1);
+            }
+            else
+            {
+                move[num] = AddTo(To) | AddFrom(sq);
+                move[num] |= AddPro(1);
+                num++;
+            }
+        }
+    }
+    
+    return num;
+}
+
+int GenKnightMove_w( struct Position* pos, Board sq , Move* move )
+{
+    int num=0;
+    
+    Board To = sq + 31;
+    
+    if( !pos->board[To] || pos->boardCol_b[To] )
+    {
+        move[num] = AddTo(To) | AddFrom(sq);
+        num++;
+        if( To>0x70 || sq>0x70 ) //成り
+        {
+            if( To>0x80 )
+            {
+                move[num-1] |= AddPro(1);
+            }
+            else
+            {
+                move[num] = AddTo(To) | AddFrom(sq);
+                move[num] |= AddPro(1);
+                num++;
+            }
+        }
+    }
+    
+    To = sq + 33;
+    
+    if( !pos->board[To] || pos->boardCol_b[To] )
+    {
+        move[num] = AddTo(To) | AddFrom(sq);
+        num++;
+        if( To>0x70 || sq>0x70 ) //成り
+        {
+            if( To>0x80 )
+            {
+                move[num-1] |= AddPro(1);
+            }
+            else
+            {
+                move[num] = AddTo(To) | AddFrom(sq);
+                move[num] |= AddPro(1);
+                num++;
+            }
+        }
+    }
+    
+    return num;
+}
+
+int GenSilverMove_b( struct Position* pos, Board sq , Move* move )
+{
+    int num=0;
+    
+    Board To = sq - 15;
+    
+    if( !pos->board[To] || pos->boardCol_w[To] )
+    {
+        move[num] = AddTo(To) | AddFrom(sq);
+        num++;
+        if( To<0x40 || sq<0x40 ) //成り
+        {
+             move[num] = AddTo(To) | AddFrom(sq);
+             move[num] |= AddPro(1);
+             num++;
+        }
+    }
+    
+    To = sq - 16;
+    
+    if( !pos->board[To] || pos->boardCol_w[To] )
+    {
+        move[num] = AddTo(To) | AddFrom(sq);
+        num++;
+        if( To<0x40 || sq<0x40 ) //成り
+        {
+             move[num] = AddTo(To) | AddFrom(sq);
+             move[num] |= AddPro(1);
+             num++;
+        }
+    }
+    
+    To = sq - 17;
+    
+    if( !pos->board[To] || pos->boardCol_w[To] )
+    {
+        move[num] = AddTo(To) | AddFrom(sq);
+        num++;
+        if( To<0x40 || sq<0x40 ) //成り
+        {
+             move[num] = AddTo(To) | AddFrom(sq);
+             move[num] |= AddPro(1);
+             num++;
+        }
+    }
+    
+    To = sq + 15;
+    
+    if( !pos->board[To] || pos->boardCol_w[To] )
+    {
+        move[num] = AddTo(To) | AddFrom(sq);
+        num++;
+        if( To<0x40 || sq<0x40 ) //成り
+        {
+             move[num] = AddTo(To) | AddFrom(sq);
+             move[num] |= AddPro(1);
+             num++;
+        }
+    }
+    
+    To = sq + 17;
+    
+    if( !pos->board[To] || pos->boardCol_w[To] )
+    {
+        move[num] = AddTo(To) | AddFrom(sq);
+        num++;
+        if( To<0x40 || sq<0x40 ) //成り
+        {
+             move[num] = AddTo(To) | AddFrom(sq);
+             move[num] |= AddPro(1);
+             num++;
+        }
+    }
+    
+    return num;
+}
+
+int GenSilverMove_w( struct Position* pos, Board sq , Move* move )
+{
+    int num=0;
+    
+    Board To = sq + 15;
+    
+    if( !pos->board[To] || pos->boardCol_b[To] )
+    {
+        move[num] = AddTo(To) | AddFrom(sq);
+        num++;
+        if( To>0x70 || sq>0x70 ) //成り
+        {
+            move[num] = AddTo(To) | AddFrom(sq);
+            move[num] |= AddPro(1);
+            num++;
+        }
+    }
+    
+    To = sq + 16;
+    
+    if( !pos->board[To] || pos->boardCol_b[To] )
+    {
+        move[num] = AddTo(To) | AddFrom(sq);
+        num++;
+        if( To>0x70 || sq>0x70 ) //成り
+        {
+            move[num] = AddTo(To) | AddFrom(sq);
+            move[num] |= AddPro(1);
+            num++;
+        }
+    }
+    
+    To = sq + 17;
+    
+    if( !pos->board[To] || pos->boardCol_b[To] )
+    {
+        move[num] = AddTo(To) | AddFrom(sq);
+        num++;
+        if( To>0x70 || sq>0x70 ) //成り
+        {
+            move[num] = AddTo(To) | AddFrom(sq);
+            move[num] |= AddPro(1);
+            num++;
+        }
+    }
+    
+    To = sq - 15;
+    
+    if( !pos->board[To] || pos->boardCol_b[To] )
+    {
+        move[num] = AddTo(To) | AddFrom(sq);
+        num++;
+        if( To>0x70 || sq>0x70 ) //成り
+        {
+            move[num] = AddTo(To) | AddFrom(sq);
+            move[num] |= AddPro(1);
+            num++;
+        }
+    }
+    
+    To = sq - 17;
+    
+    if( !pos->board[To] || pos->boardCol_b[To] )
+    {
+        move[num] = AddTo(To) | AddFrom(sq);
+        num++;
+        if( To>0x70 || sq>0x70 ) //成り
+        {
+            move[num] = AddTo(To) | AddFrom(sq);
+            move[num] |= AddPro(1);
+            num++;
+        }
+    }
+    
+    return num;
+}
+
+int GenGoldMove_b( struct Position* pos, Board sq , Move* move )
+{
+    int num=0;
+    
+    Board To = sq - 15;
+    
+    if( !pos->board[To] || pos->boardCol_w[To] )
+    {
+        move[num] = AddTo(To) | AddFrom(sq);
+        num++;
+    }
+    
+    To = sq - 16;
+    
+    if( !pos->board[To] || pos->boardCol_w[To] )
+    {
+        move[num] = AddTo(To) | AddFrom(sq);
+        num++;
+    }
+    
+    To = sq - 17;
+    
+    if( !pos->board[To] || pos->boardCol_w[To] )
+    {
+        move[num] = AddTo(To) | AddFrom(sq);
+        num++;
+    }
+    
+    To = sq - 1;
+    
+    if( !pos->board[To] || pos->boardCol_w[To] )
+    {
+        move[num] = AddTo(To) | AddFrom(sq);
+        num++;
+    }
+    
+    To = sq + 1;
+    
+    if( !pos->board[To] || pos->boardCol_w[To] )
+    {
+        move[num] = AddTo(To) | AddFrom(sq);
+        num++;
+    }
+   
+    To = sq + 16;
+    
+    if( !pos->board[To] || pos->boardCol_w[To] )
+    {
+        move[num] = AddTo(To) | AddFrom(sq);
+        num++;
+    }
+    
+    return num;
+}
+
+int GenGoldMove_w( struct Position* pos, Board sq , Move* move )
+{
+     int num=0;
+    
+    Board To = sq + 15;
+    
+    if( !pos->board[To] || pos->boardCol_b[To] )
+    {
+        move[num] = AddTo(To) | AddFrom(sq);
+        num++;
+    }
+    
+    To = sq + 16;
+    
+    if( !pos->board[To] || pos->boardCol_b[To] )
+    {
+        move[num] = AddTo(To) | AddFrom(sq);
+        num++;
+    }
+    
+    To = sq + 17;
+    
+    if( !pos->board[To] || pos->boardCol_b[To] )
+    {
+        move[num] = AddTo(To) | AddFrom(sq);
+        num++;
+    }
+    
+    To = sq + 1;
+    
+    if( !pos->board[To] || pos->boardCol_b[To] )
+    {
+        move[num] = AddTo(To) | AddFrom(sq);
+        num++;
+    }
+    
+    To = sq - 1;
+    
+    if( !pos->board[To] || pos->boardCol_b[To] )
+    {
+        move[num] = AddTo(To) | AddFrom(sq);
+        num++;
+    }
+    
+    To = sq - 16;
+    
+    if( !pos->board[To] || pos->boardCol_b[To] )
+    {
+        move[num] = AddTo(To) | AddFrom(sq);
+        num++;
+    }
+    
+    return num;
+}
+
+int GenBishopMove_b( struct Position* pos, Board sq , Move* move )
 {
     
 }
 
-int GenKnightMove_w()
+int GenBishopMove_w( struct Position* pos, Board sq , Move* move )
 {
     
 }
 
-int GenSilverMove_b()
+int GenRookMove_b( struct Position* pos, Board sq , Move* move )
 {
     
 }
 
-int GenSilverMove_w()
+int GenRookMove_w( struct Position* pos, Board sq , Move* move )
 {
     
 }
 
-int GenGoldMove_b()
+int GenKingMove_b( struct Position* pos, Board sq , Move* move )
 {
+    int num=0;
     
+    Board To = sq - 15;
+    
+    if( !pos->board[To] || pos->boardCol_w[To] )
+    {
+        move[num] = AddTo(To) | AddFrom(sq);
+        num++;
+    }
+    
+    To = sq - 16;
+    
+    if( !pos->board[To] || pos->boardCol_w[To] )
+    {
+        move[num] = AddTo(To) | AddFrom(sq);
+        num++;
+    }
+    
+    To = sq - 17;
+    
+    if( !pos->board[To] || pos->boardCol_w[To] )
+    {
+        move[num] = AddTo(To) | AddFrom(sq);
+        num++;
+    }
+    
+    To = sq - 1;
+    
+    if( !pos->board[To] || pos->boardCol_w[To] )
+    {
+        move[num] = AddTo(To) | AddFrom(sq);
+        num++;
+    }
+    
+    To = sq + 1;
+    
+    if( !pos->board[To] || pos->boardCol_w[To] )
+    {
+        move[num] = AddTo(To) | AddFrom(sq);
+        num++;
+    }
+    
+    To = sq + 15;
+    
+    if( !pos->board[To] || pos->boardCol_w[To] )
+    {
+        move[num] = AddTo(To) | AddFrom(sq);
+        num++;
+    }
+    
+    To = sq + 16;
+    
+    if( !pos->board[To] || pos->boardCol_w[To] )
+    {
+        move[num] = AddTo(To) | AddFrom(sq);
+        num++;
+    }
+    
+    To = sq + 17;
+    
+    if( !pos->board[To] || pos->boardCol_w[To] )
+    {
+        move[num] = AddTo(To) | AddFrom(sq);
+        num++;
+    }
+    
+    return num;
 }
 
-int GenGoldMove_w()
+int GenKingMove_w( struct Position* pos, Board sq , Move* move )
 {
+    int num=0;
     
-}
-
-int GenBishopMove_b()
-{
+    Board To = sq - 15;
     
-}
-
-int GenBishopMove_w()
-{
+    if( !pos->board[To] || pos->boardCol_b[To] )
+    {
+        move[num] = AddTo(To) | AddFrom(sq);
+        num++;
+    }
     
-}
-
-int GenRookMove_b()
-{
+    To = sq - 16;
     
-}
-
-int GenRookMove_w()
-{
+    if( !pos->board[To] || pos->boardCol_b[To] )
+    {
+        move[num] = AddTo(To) | AddFrom(sq);
+        num++;
+    }
     
+    To = sq - 17;
+    
+    if( !pos->board[To] || pos->boardCol_b[To] )
+    {
+        move[num] = AddTo(To) | AddFrom(sq);
+        num++;
+    }
+    
+    To = sq - 1;
+    
+    if( !pos->board[To] || pos->boardCol_b[To] )
+    {
+        move[num] = AddTo(To) | AddFrom(sq);
+        num++;
+    }
+    
+    To = sq + 1;
+    
+    if( !pos->board[To] || pos->boardCol_b[To] )
+    {
+        move[num] = AddTo(To) | AddFrom(sq);
+        num++;
+    }
+    
+    To = sq + 15;
+    
+    if( !pos->board[To] || pos->boardCol_b[To] )
+    {
+        move[num] = AddTo(To) | AddFrom(sq);
+        num++;
+    }
+    
+    To = sq + 16;
+    
+    if( !pos->board[To] || pos->boardCol_b[To] )
+    {
+        move[num] = AddTo(To) | AddFrom(sq);
+        num++;
+    }
+    
+    To = sq + 17;
+    
+    if( !pos->board[To] || pos->boardCol_b[To] )
+    {
+        move[num] = AddTo(To) | AddFrom(sq);
+        num++;
+    }
+    
+    return num;
 }
-
-
 
 int GenMove( struct Position* pos, Move* move)
 {
@@ -118,12 +590,16 @@ int GenMove( struct Position* pos, Move* move)
                     case SKY:
                     break;
                     case SKE:
+                    moveNum += GenKnightMove_b( pos, pos->piecePos[i] ,&move[moveNum] );
                     break;
                     case SGI:
+                    moveNum += GenSilverMove_b( pos, pos->piecePos[i] ,&move[moveNum] );
                     break;
                     case SKI: case STO: case SNY: case SNE: case SNG:
+                    moveNum += GenGoldMove_b( pos, pos->piecePos[i] ,&move[moveNum] );
                     break;
                     case SOU:
+                    moveNum += GenKingMove_b( pos, pos->piecePos[i] ,&move[moveNum] );
                     break;
                     case SKA:
                     break;
@@ -146,16 +622,21 @@ int GenMove( struct Position* pos, Move* move)
                 switch( pos->board[ pos->piecePos[i] ] )
                 {
                     case EFU:
+                    moveNum += GenPawnMove_w( pos, pos->piecePos[i] ,&move[moveNum] );
                     break;
                     case EKY:
                     break;
                     case EKE:
+                    moveNum += GenKnightMove_w( pos, pos->piecePos[i] ,&move[moveNum] );
                     break;
                     case EGI:
+                    moveNum += GenSilverMove_w( pos, pos->piecePos[i] ,&move[moveNum] );
                     break;
                     case EKI: case ETO: case ENY: case ENE: case ENG:
+                    moveNum += GenGoldMove_w( pos, pos->piecePos[i] ,&move[moveNum] );
                     break;
                     case EOU:
+                    moveNum += GenKingMove_w( pos, pos->piecePos[i] ,&move[moveNum] );
                     break;
                     case EKA:
                     break;
