@@ -13,23 +13,6 @@
 */
 
 
-/*
-  移動先
-  xxxxxxxx xxxxxxxx x1111111  destination(bit0~6)
-
-  移動元 (駒を打つ場合は駒種)
-  xxxxxxxx xx111111 1xxxxxxx  starting square(bit7~13)
-
-  成りフラグ
-  xxxxxxxx x1xxxxxx xxxxxxxx  flag for promotion(bit14)
-
-  駒打ちフラグ
-  xxxxxxxx 1xxxxxxx xxxxxxxx  flag for drop(bit15) //hashに格納する際にはここまでを使う
-
-  捕獲した駒の種類
-  xxx11111 xxxxxxxx xxxxxxxx  captured piece(bit16~20)
-*/
-
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -45,6 +28,7 @@ void InitBoard(struct Position* pos)
     for( x=0; x<256; x++ )
     {
         pos->board[x] = WAL;
+        pos->boardCol_b[x] = pos->boardCol_w[x] = 0 ;
     }
     
     Board StartPos[10][10]={
@@ -66,12 +50,73 @@ void InitBoard(struct Position* pos)
         {
             Board sq = SQ( x, y );
             pos->board[sq] = StartPos[y][x];
+            if(  SFU <= pos->board[sq] && pos->board[sq] <= SRY ){ pos->boardCol_b[sq]=1; }
+            if(  EFU <= pos->board[sq] && pos->board[sq] <= ERY ){ pos->boardCol_w[sq]=1; }
         }
     }
     
     for( x=0; x<8; x++ )
     {
         pos->b_hand[x] = pos->w_hand[x] = 0;
+    }
+    
+    
+    //駒番号を設定
+    for( x=0; x<256; x++ ){ 
+        if( pos->board[x]==SOU ){ pos->piecePos[1] = x; }
+        if( pos->board[x]==EOU ){ pos->piecePos[2] = x; }
+    }
+    int n=3;
+    for( x=0; x<256; x++ ){ 
+        if( pos->board[x]==SHI || pos->board[x]==EHI || pos->board[x]==SRY || pos->board[x]==ERY )
+        { pos->piecePos[n] = x; n++; }
+    }
+    while( n<5 ){ pos->piecePos[n] = 0; n++; }
+    
+    for( x=0; x<256; x++ ){
+        if( pos->board[x]==SKA || pos->board[x]==EKA || pos->board[x]==SUM || pos->board[x]==EUM )
+        { pos->piecePos[n] = x; n++; }
+    }
+    while( n<7 ){ pos->piecePos[n] = 0; n++; }
+    
+    for( x=0; x<256; x++ ){ 
+        if( pos->board[x]==SKI || pos->board[x]==EKI )
+        { pos->piecePos[n] = x; n++; }
+    }
+    while( n<11 ){ pos->piecePos[n] = 0; n++; }
+    
+    for( x=0; x<256; x++ ){ 
+        if( pos->board[x]==SGI || pos->board[x]==EGI || pos->board[x]==SNG || pos->board[x]==ENG )
+        { pos->piecePos[n] = x; n++; }
+    }
+    while( n<15 ){ pos->piecePos[n] = 0; n++; }
+    
+    for( x=0; x<256; x++ ){ 
+        if( pos->board[x]==SKE || pos->board[x]==EKE || pos->board[x]==SNE || pos->board[x]==ENE )
+        { pos->piecePos[n] = x; n++; }
+    }
+    while( n<19 ){ pos->piecePos[n] = 0; n++; }
+    
+    for( x=0; x<256; x++ ){ 
+        if( pos->board[x]==SKY || pos->board[x]==EKY || pos->board[x]==SNY || pos->board[x]==ENY )
+        { pos->piecePos[n] = x; n++; }
+    }
+    while( n<23 ){ pos->piecePos[n] = 0; n++; }
+    
+    for( x=0; x<256; x++ ){ 
+        if( pos->board[x]==SFU || pos->board[x]==EFU || pos->board[x]==STO || pos->board[x]==ETO )
+        { pos->piecePos[n] = x; n++; }
+    }
+    while( n<=40 ){ pos->piecePos[n] = 0; n++; }
+    
+    //駒番号と色
+    for( x=1; x<=40; x++ )
+    {
+        pos->pieceCol_b[x] = pos->pieceCol_w[x] = 0;
+        if( SFU <= pos->board[ pos->piecePos[x] ] && pos->board[ pos->piecePos[x] ] <= SRY )
+        { pos->pieceCol_b[x] = 1; }
+        if( EFU <= pos->board[ pos->piecePos[x] ] && pos->board[ pos->piecePos[x] ] <= ERY )
+        { pos->pieceCol_w[x] = 1; }
     }
     
     pos->color = Black; 

@@ -64,4 +64,11 @@ void PrintBoard( const struct Position pos ){
 	printf( "\n  Color:%s\n", pos.color ? "White":"Black" );
 	printf( "Hash:%llx\n", pos.hashkey );
 	printf("\n");
+    /*
+    //debug 
+    for( i=1; i<=40; i++ )
+    {
+        printf("pieceNum:%d sq:%d black?:%d white?:%d \n",i,pos.piecePos[i],pos.pieceCol_b[i],pos.pieceCol_w[i]);
+        
+    }*/
 }

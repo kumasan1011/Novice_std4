@@ -136,7 +136,12 @@ int main()
         InitBoard(&pos);
         
         PrintBoard(pos);
+		
+		Move move[600];
+		
+		int n = GenMove( &pos, &move[0] );
         
+		printf("MoveNum : %d\n", n );
 	}
 	
 	return 0;
