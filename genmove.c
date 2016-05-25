@@ -6,7 +6,7 @@
 #include "define.h"
 #include "genmove.h"
 
-int GenPawnMove_b( struct Position* pos, Board sq , Move* move )
+inline int GenPawnMove_b( struct Position* pos, Board sq , Move* move )
 {
     Board To = sq - 16;
     
@@ -21,7 +21,7 @@ int GenPawnMove_b( struct Position* pos, Board sq , Move* move )
     }
 }
 
-int GenPawnMove_w( struct Position* pos, Board sq , Move* move )
+inline int GenPawnMove_w( struct Position* pos, Board sq , Move* move )
 {
     Board To = sq + 16;
     
@@ -36,7 +36,7 @@ int GenPawnMove_w( struct Position* pos, Board sq , Move* move )
     }
 }
 
-int GenLanceMove_b( struct Position* pos, Board sq , Move* move )
+inline int GenLanceMove_b( struct Position* pos, Board sq , Move* move )
 {
     Board To;
     int i,num=0;
@@ -91,7 +91,7 @@ int GenLanceMove_b( struct Position* pos, Board sq , Move* move )
     return num;
 }
 
-int GenLanceMove_w( struct Position* pos, Board sq , Move* move )
+inline int GenLanceMove_w( struct Position* pos, Board sq , Move* move )
 {
     Board To;
     int i,num=0;
@@ -143,7 +143,7 @@ int GenLanceMove_w( struct Position* pos, Board sq , Move* move )
     }
 }
 
-int GenKnightMove_b( struct Position* pos, Board sq , Move* move )
+inline int GenKnightMove_b( struct Position* pos, Board sq , Move* move )
 {
     int num=0;
     
@@ -192,7 +192,7 @@ int GenKnightMove_b( struct Position* pos, Board sq , Move* move )
     return num;
 }
 
-int GenKnightMove_w( struct Position* pos, Board sq , Move* move )
+inline int GenKnightMove_w( struct Position* pos, Board sq , Move* move )
 {
     int num=0;
     
@@ -241,7 +241,7 @@ int GenKnightMove_w( struct Position* pos, Board sq , Move* move )
     return num;
 }
 
-int GenSilverMove_b( struct Position* pos, Board sq , Move* move )
+inline int GenSilverMove_b( struct Position* pos, Board sq , Move* move )
 {
     int num=0;
     
@@ -318,7 +318,7 @@ int GenSilverMove_b( struct Position* pos, Board sq , Move* move )
     return num;
 }
 
-int GenSilverMove_w( struct Position* pos, Board sq , Move* move )
+inline int GenSilverMove_w( struct Position* pos, Board sq , Move* move )
 {
     int num=0;
     
@@ -395,7 +395,7 @@ int GenSilverMove_w( struct Position* pos, Board sq , Move* move )
     return num;
 }
 
-int GenGoldMove_b( struct Position* pos, Board sq , Move* move )
+inline int GenGoldMove_b( struct Position* pos, Board sq , Move* move )
 {
     int num=0;
     
@@ -450,7 +450,7 @@ int GenGoldMove_b( struct Position* pos, Board sq , Move* move )
     return num;
 }
 
-int GenGoldMove_w( struct Position* pos, Board sq , Move* move )
+inline int GenGoldMove_w( struct Position* pos, Board sq , Move* move )
 {
      int num=0;
     
@@ -505,17 +505,17 @@ int GenGoldMove_w( struct Position* pos, Board sq , Move* move )
     return num;
 }
 
-int GenBishopMove_b( struct Position* pos, Board sq , Move* move )
+inline int GenBishopMove_b( struct Position* pos, Board sq , Move* move )
 {
     
 }
 
-int GenBishopMove_w( struct Position* pos, Board sq , Move* move )
+inline int GenBishopMove_w( struct Position* pos, Board sq , Move* move )
 {
     
 }
 
-int GenRookMove_b( struct Position* pos, Board sq , Move* move )
+inline int GenRookMove_b( struct Position* pos, Board sq , Move* move )
 {
     Board To;
     int i,num=0;
@@ -711,12 +711,12 @@ int GenRookMove_b( struct Position* pos, Board sq , Move* move )
     return num;
 }
 
-int GenRookMove_w( struct Position* pos, Board sq , Move* move )
+inline int GenRookMove_w( struct Position* pos, Board sq , Move* move )
 {
     
 }
 
-int GenKingMove_b( struct Position* pos, Board sq , Move* move )
+inline int GenKingMove_b( struct Position* pos, Board sq , Move* move )
 {
     int num=0;
     
@@ -787,7 +787,7 @@ int GenKingMove_b( struct Position* pos, Board sq , Move* move )
     return num;
 }
 
-int GenKingMove_w( struct Position* pos, Board sq , Move* move )
+inline int GenKingMove_w( struct Position* pos, Board sq , Move* move )
 {
     int num=0;
     
