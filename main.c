@@ -132,16 +132,9 @@ int main()
 		
         // testcode
         struct Position pos;
-        
         InitBoard(&pos);
-        
         PrintBoard(pos);
-		
-		Move move[600];
-		
-		int n = GenMove( &pos, &move[0] );
-        
-		printf("MoveNum : %d\n", n );
+		BenchGenMove(pos);
 	}
 	
 	return 0;
