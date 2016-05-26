@@ -141,6 +141,8 @@ inline int GenLanceMove_w( struct Position* pos, Board sq , Move* move )
             break;
         }
     }
+    
+    return num;
 }
 
 inline int GenKnightMove_b( struct Position* pos, Board sq , Move* move )
@@ -507,12 +509,246 @@ inline int GenGoldMove_w( struct Position* pos, Board sq , Move* move )
 
 inline int GenBishopMove_b( struct Position* pos, Board sq , Move* move )
 {
+    Board To;
+    int i,num=0;
     
+    for( i=1; i<10; i++ )
+    {
+        To = sq - 17*i;
+        if( !pos->board[To] )
+        {
+            move[num] = AddTo(To) | AddFrom(sq);
+            num++;
+            if( To<0x40 || sq<0x40 ) //成り
+            {
+                move[num-1] |= AddPro(1);
+            }
+        }
+        else if( pos->boardCol_w[To] )
+        {
+            
+            move[num] = AddTo(To) | AddFrom(sq);
+            num++;
+            if( To<0x40 || sq<0x40 ) //成り
+            {
+                move[num-1] |= AddPro(1);
+            }
+            break;
+        }
+        else 
+        {
+            break;
+        }
+    }
+    
+    for( i=1; i<10; i++ )
+    {
+        To = sq + 17*i;
+        if( !pos->board[To] )
+        {
+            move[num] = AddTo(To) | AddFrom(sq);
+            num++;
+            if( To<0x40 || sq<0x40 ) //成り
+            {
+                move[num-1] |= AddPro(1);
+            }
+        }
+        else if( pos->boardCol_w[To] )
+        {
+            
+            move[num] = AddTo(To) | AddFrom(sq);
+            num++;
+            if( To<0x40 || sq<0x40 ) //成り
+            {
+                move[num-1] |= AddPro(1);
+            }
+            break;
+        }
+        else 
+        {
+            break;
+        }
+    }
+    
+    for( i=1; i<10; i++ )
+    {
+        To = sq - 15*i;
+        if( !pos->board[To] )
+        {
+            move[num] = AddTo(To) | AddFrom(sq);
+            num++;
+            if( To<0x40 || sq<0x40 ) //成り
+            {
+                move[num-1] |= AddPro(1);
+            }
+        }
+        else if( pos->boardCol_w[To] )
+        {
+            
+            move[num] = AddTo(To) | AddFrom(sq);
+            num++;
+            if( To<0x40 || sq<0x40 ) //成り
+            {
+                move[num-1] |= AddPro(1);
+            }
+            break;
+        }
+        else 
+        {
+            break;
+        }
+    }
+    
+    for( i=1; i<10; i++ )
+    {
+        To = sq + 15*i;
+        if( !pos->board[To] )
+        {
+            move[num] = AddTo(To) | AddFrom(sq);
+            num++;
+            if( To<0x40 || sq<0x40 ) //成り
+            {
+                move[num-1] |= AddPro(1);
+            }
+        }
+        else if( pos->boardCol_w[To] )
+        {
+            
+            move[num] = AddTo(To) | AddFrom(sq);
+            num++;
+            if( To<0x40 || sq<0x40 ) //成り
+            {
+                move[num-1] |= AddPro(1);
+            }
+            break;
+        }
+        else 
+        {
+            break;
+        }
+    }
+    
+    return num;
 }
 
 inline int GenBishopMove_w( struct Position* pos, Board sq , Move* move )
 {
+    Board To;
+    int i,num=0;
     
+    for( i=1; i<10; i++ )
+    {
+        To = sq + 17*i;
+        if( !pos->board[To] )
+        {
+            move[num] = AddTo(To) | AddFrom(sq);
+            num++;
+            if( To>0x70 || sq>0x70 ) //成り
+            {
+                move[num-1] |= AddPro(1);
+            }
+        }
+        else if( pos->boardCol_b[To] )
+        {
+            move[num] = AddTo(To) | AddFrom(sq);
+            num++;
+            if( To>0x70 || sq>0x70 ) //成り
+            {
+                move[num-1] |= AddPro(1);
+            }
+            break;
+        }
+        else
+        {
+            break;
+        }
+    }
+    
+    for( i=1; i<10; i++ )
+    {
+        To = sq - 17*i;
+        if( !pos->board[To] )
+        {
+            move[num] = AddTo(To) | AddFrom(sq);
+            num++;
+            if( To>0x70 || sq>0x70 ) //成り
+            {
+                move[num-1] |= AddPro(1);
+            }
+        }
+        else if( pos->boardCol_b[To] )
+        {
+            move[num] = AddTo(To) | AddFrom(sq);
+            num++;
+            if( To>0x70 || sq>0x70 ) //成り
+            {
+                move[num-1] |= AddPro(1);
+            }
+            break;
+        }
+        else
+        {
+            break;
+        }
+    }
+    
+    for( i=1; i<10; i++ )
+    {
+        To = sq + 15*i;
+        if( !pos->board[To] )
+        {
+            move[num] = AddTo(To) | AddFrom(sq);
+            num++;
+            if( To>0x70 || sq>0x70 ) //成り
+            {
+                move[num-1] |= AddPro(1);
+            }
+        }
+        else if( pos->boardCol_b[To] )
+        {
+            move[num] = AddTo(To) | AddFrom(sq);
+            num++;
+            if( To>0x70 || sq>0x70 ) //成り
+            {
+                move[num-1] |= AddPro(1);
+            }
+            break;
+        }
+        else
+        {
+            break;
+        }
+    }
+    
+    for( i=1; i<10; i++ )
+    {
+        To = sq - 15*i;
+        if( !pos->board[To] )
+        {
+            move[num] = AddTo(To) | AddFrom(sq);
+            num++;
+            if( To>0x70 || sq>0x70 ) //成り
+            {
+                move[num-1] |= AddPro(1);
+            }
+        }
+        else if( pos->boardCol_b[To] )
+        {
+            move[num] = AddTo(To) | AddFrom(sq);
+            num++;
+            if( To>0x70 || sq>0x70 ) //成り
+            {
+                move[num-1] |= AddPro(1);
+            }
+            break;
+        }
+        else
+        {
+            break;
+        }
+    }
+    
+    return num;
 }
 
 inline int GenRookMove_b( struct Position* pos, Board sq , Move* move )
@@ -529,16 +765,7 @@ inline int GenRookMove_b( struct Position* pos, Board sq , Move* move )
             num++;
             if( To<0x40 || sq<0x40 ) //成り
             {
-                if( To<0x30 )
-                {
-                    move[num-1] |= AddPro(1);
-                }
-                else
-                {
-                    move[num] = AddTo(To) | AddFrom(sq);
-                    move[num] |= AddPro(1);
-                    num++;
-                }
+                move[num-1] |= AddPro(1);
             }
         }
         else if( pos->boardCol_w[To] )
@@ -548,16 +775,7 @@ inline int GenRookMove_b( struct Position* pos, Board sq , Move* move )
             num++;
             if( To<0x40 || sq<0x40 ) //成り
             {
-                if( To<0x30 )
-                {
-                    move[num-1] |= AddPro(1);
-                }
-                else
-                {
-                    move[num] = AddTo(To) | AddFrom(sq);
-                    move[num] |= AddPro(1);
-                    num++;
-                }
+                move[num-1] |= AddPro(1);
             }
             break;
         }
@@ -576,16 +794,7 @@ inline int GenRookMove_b( struct Position* pos, Board sq , Move* move )
             num++;
             if( To<0x40 || sq<0x40 ) //成り
             {
-                if( To<0x30 )
-                {
-                    move[num-1] |= AddPro(1);
-                }
-                else
-                {
-                    move[num] = AddTo(To) | AddFrom(sq);
-                    move[num] |= AddPro(1);
-                    num++;
-                }
+                move[num-1] |= AddPro(1);
             }
         }
         else if( pos->boardCol_w[To] )
@@ -595,16 +804,7 @@ inline int GenRookMove_b( struct Position* pos, Board sq , Move* move )
             num++;
             if( To<0x40 || sq<0x40 ) //成り
             {
-                if( To<0x30 )
-                {
-                    move[num-1] |= AddPro(1);
-                }
-                else
-                {
-                    move[num] = AddTo(To) | AddFrom(sq);
-                    move[num] |= AddPro(1);
-                    num++;
-                }
+                move[num-1] |= AddPro(1);
             }
             break;
         }
@@ -623,16 +823,7 @@ inline int GenRookMove_b( struct Position* pos, Board sq , Move* move )
             num++;
             if( To<0x40 || sq<0x40 ) //成り
             {
-                if( To<0x30 )
-                {
-                    move[num-1] |= AddPro(1);
-                }
-                else
-                {
-                    move[num] = AddTo(To) | AddFrom(sq);
-                    move[num] |= AddPro(1);
-                    num++;
-                }
+                move[num-1] |= AddPro(1);
             }
         }
         else if( pos->boardCol_w[To] )
@@ -642,16 +833,7 @@ inline int GenRookMove_b( struct Position* pos, Board sq , Move* move )
             num++;
             if( To<0x40 || sq<0x40 ) //成り
             {
-                if( To<0x30 )
-                {
-                    move[num-1] |= AddPro(1);
-                }
-                else
-                {
-                    move[num] = AddTo(To) | AddFrom(sq);
-                    move[num] |= AddPro(1);
-                    num++;
-                }
+                move[num-1] |= AddPro(1);
             }
             break;
         }
@@ -670,16 +852,7 @@ inline int GenRookMove_b( struct Position* pos, Board sq , Move* move )
             num++;
             if( To<0x40 || sq<0x40 ) //成り
             {
-                if( To<0x30 )
-                {
-                    move[num-1] |= AddPro(1);
-                }
-                else
-                {
-                    move[num] = AddTo(To) | AddFrom(sq);
-                    move[num] |= AddPro(1);
-                    num++;
-                }
+                move[num-1] |= AddPro(1);
             }
         }
         else if( pos->boardCol_w[To] )
@@ -689,16 +862,7 @@ inline int GenRookMove_b( struct Position* pos, Board sq , Move* move )
             num++;
             if( To<0x40 || sq<0x40 ) //成り
             {
-                if( To<0x30 )
-                {
-                    move[num-1] |= AddPro(1);
-                }
-                else
-                {
-                    move[num] = AddTo(To) | AddFrom(sq);
-                    move[num] |= AddPro(1);
-                    num++;
-                }
+                move[num-1] |= AddPro(1);
             }
             break;
         }
@@ -713,7 +877,364 @@ inline int GenRookMove_b( struct Position* pos, Board sq , Move* move )
 
 inline int GenRookMove_w( struct Position* pos, Board sq , Move* move )
 {
+    Board To;
+    int i,num=0;
     
+    for( i=1; i<10; i++ )
+    {
+        To = sq + (i<<4);
+        if( !pos->board[To] )
+        {
+            move[num] = AddTo(To) | AddFrom(sq);
+            num++;
+            if( To>0x70 || sq>0x70 ) //成り
+            {
+                move[num-1] |= AddPro(1);
+            }
+        }
+        else if( pos->boardCol_b[To] )
+        {
+            move[num] = AddTo(To) | AddFrom(sq);
+            num++;
+            if( To>0x70 || sq>0x70 ) //成り
+            {
+                move[num-1] |= AddPro(1);
+            }
+            break;
+        }
+        else
+        {
+            break;
+        }
+    }
+    
+    for( i=1; i<10; i++ )
+    {
+        To = sq - (i<<4);
+        if( !pos->board[To] )
+        {
+            move[num] = AddTo(To) | AddFrom(sq);
+            num++;
+            if( To>0x70 || sq>0x70 ) //成り
+            {
+                move[num-1] |= AddPro(1);
+            }
+        }
+        else if( pos->boardCol_b[To] )
+        {
+            move[num] = AddTo(To) | AddFrom(sq);
+            num++;
+            if( To>0x70 || sq>0x70 ) //成り
+            {
+                move[num-1] |= AddPro(1);
+            }
+            break;
+        }
+        else
+        {
+            break;
+        }
+    }
+    
+    for( i=1; i<10; i++ )
+    {
+        To = sq + i;
+        if( !pos->board[To] )
+        {
+            move[num] = AddTo(To) | AddFrom(sq);
+            num++;
+            if( To>0x70 || sq>0x70 ) //成り
+            {
+                move[num-1] |= AddPro(1);
+            }
+        }
+        else if( pos->boardCol_b[To] )
+        {
+            move[num] = AddTo(To) | AddFrom(sq);
+            num++;
+            if( To>0x70 || sq>0x70 ) //成り
+            {
+                move[num-1] |= AddPro(1);
+            }
+            break;
+        }
+        else
+        {
+            break;
+        }
+    }
+    
+    for( i=1; i<10; i++ )
+    {
+        To = sq - i;
+        if( !pos->board[To] )
+        {
+            move[num] = AddTo(To) | AddFrom(sq);
+            num++;
+            if( To>0x70 || sq>0x70 ) //成り
+            {
+                move[num-1] |= AddPro(1);
+            }
+        }
+        else if( pos->boardCol_b[To] )
+        {
+            move[num] = AddTo(To) | AddFrom(sq);
+            num++;
+            if( To>0x70 || sq>0x70 ) //成り
+            {
+                move[num-1] |= AddPro(1);
+            }
+            break;
+        }
+        else
+        {
+            break;
+        }
+    }
+    
+    return num;
+}
+
+inline int GenHorseMove_b( struct Position* pos, Board sq , Move* move )
+{
+    int i,num=0;
+    
+    Board To = sq - 16;
+    
+    if( !pos->board[To] || pos->boardCol_w[To] )
+    {
+        move[num] = AddTo(To) | AddFrom(sq);
+        num++;
+    }
+    
+    To = sq + 16;
+    
+    if( !pos->board[To] || pos->boardCol_w[To] )
+    {
+        move[num] = AddTo(To) | AddFrom(sq);
+        num++;
+    }
+    
+    To = sq - 1;
+    
+    if( !pos->board[To] || pos->boardCol_w[To] )
+    {
+        move[num] = AddTo(To) | AddFrom(sq);
+        num++;
+    }
+    
+    To = sq + 1;
+    
+    if( !pos->board[To] || pos->boardCol_w[To] )
+    {
+        move[num] = AddTo(To) | AddFrom(sq);
+        num++;
+    }
+    
+    for( i=1; i<10; i++ )
+    {
+        To = sq - 17*i;
+        if( !pos->board[To] )
+        {
+            move[num] = AddTo(To) | AddFrom(sq);
+            num++;
+        }
+        else if( pos->boardCol_w[To] )
+        {
+            
+            move[num] = AddTo(To) | AddFrom(sq);
+            num++;
+            break;
+        }
+        else 
+        {
+            break;
+        }
+    }
+    
+    for( i=1; i<10; i++ )
+    {
+        To = sq + 17*i;
+        if( !pos->board[To] )
+        {
+            move[num] = AddTo(To) | AddFrom(sq);
+            num++;
+        }
+        else if( pos->boardCol_w[To] )
+        {
+            
+            move[num] = AddTo(To) | AddFrom(sq);
+            num++;
+            break;
+        }
+        else 
+        {
+            break;
+        }
+    }
+    
+    for( i=1; i<10; i++ )
+    {
+        To = sq - 15*i;
+        if( !pos->board[To] )
+        {
+            move[num] = AddTo(To) | AddFrom(sq);
+            num++;
+        }
+        else if( pos->boardCol_w[To] )
+        {
+            
+            move[num] = AddTo(To) | AddFrom(sq);
+            num++;
+            break;
+        }
+        else 
+        {
+            break;
+        }
+    }
+    
+    for( i=1; i<10; i++ )
+    {
+        To = sq + 15*i;
+        if( !pos->board[To] )
+        {
+            move[num] = AddTo(To) | AddFrom(sq);
+            num++;
+        }
+        else if( pos->boardCol_w[To] )
+        {
+            
+            move[num] = AddTo(To) | AddFrom(sq);
+            num++;
+            break;
+        }
+        else 
+        {
+            break;
+        }
+    }
+    
+    return num;
+}
+
+inline int GenHorseMove_w( struct Position* pos, Board sq , Move* move )
+{
+    int i,num=0;
+    
+    Board To = sq + 16;
+    
+    if( !pos->board[To] || pos->boardCol_b[To] )
+    {
+        move[num] = AddTo(To) | AddFrom(sq);
+        num++;
+    }
+    
+    To = sq - 16;
+    
+    if( !pos->board[To] || pos->boardCol_b[To] )
+    {
+        move[num] = AddTo(To) | AddFrom(sq);
+        num++;
+    }
+    
+    To = sq + 1;
+    
+    if( !pos->board[To] || pos->boardCol_b[To] )
+    {
+        move[num] = AddTo(To) | AddFrom(sq);
+        num++;
+    }
+    
+    To = sq - 1;
+    
+    if( !pos->board[To] || pos->boardCol_b[To] )
+    {
+        move[num] = AddTo(To) | AddFrom(sq);
+        num++;
+    }
+    
+    for( i=1; i<10; i++ )
+    {
+        To = sq + 17*i;
+        if( !pos->board[To] )
+        {
+            move[num] = AddTo(To) | AddFrom(sq);
+            num++;
+        }
+        else if( pos->boardCol_b[To] )
+        {
+            move[num] = AddTo(To) | AddFrom(sq);
+            num++;
+            break;
+        }
+        else
+        {
+            break;
+        }
+    }
+    
+    for( i=1; i<10; i++ )
+    {
+        To = sq - 17*i;
+        if( !pos->board[To] )
+        {
+            move[num] = AddTo(To) | AddFrom(sq);
+            num++;
+        }
+        else if( pos->boardCol_b[To] )
+        {
+            move[num] = AddTo(To) | AddFrom(sq);
+            num++;
+            break;
+        }
+        else
+        {
+            break;
+        }
+    }
+    
+    for( i=1; i<10; i++ )
+    {
+        To = sq + 15*i;
+        if( !pos->board[To] )
+        {
+            move[num] = AddTo(To) | AddFrom(sq);
+            num++;
+        }
+        else if( pos->boardCol_b[To] )
+        {
+            move[num] = AddTo(To) | AddFrom(sq);
+            num++;
+            break;
+        }
+        else
+        {
+            break;
+        }
+    }
+    
+    for( i=1; i<10; i++ )
+    {
+        To = sq - 15*i;
+        if( !pos->board[To] )
+        {
+            move[num] = AddTo(To) | AddFrom(sq);
+            num++;
+        }
+        else if( pos->boardCol_b[To] )
+        {
+            move[num] = AddTo(To) | AddFrom(sq);
+            num++;
+            break;
+        }
+        else
+        {
+            break;
+        }
+    }
+    
+    return num;
 }
 
 inline int GenKingMove_b( struct Position* pos, Board sq , Move* move )
@@ -891,11 +1412,13 @@ int GenMoves( struct Position* pos, Move* move)
                     moveNum += GenKingMove_b( pos, pos->piecePos[i] ,&move[moveNum] );
                     break;
                     case SKA:
+                    moveNum += GenBishopMove_b( pos, pos->piecePos[i] ,&move[moveNum] );
                     break;
                     case SHI:
                     moveNum += GenRookMove_b( pos, pos->piecePos[i] ,&move[moveNum] );
                     break;
                     case SUM:
+                    moveNum += GenHorseMove_b( pos, pos->piecePos[i] ,&move[moveNum] );
                     break;
                     case SRY:
                     break;
@@ -930,11 +1453,13 @@ int GenMoves( struct Position* pos, Move* move)
                     moveNum += GenKingMove_w( pos, pos->piecePos[i] ,&move[moveNum] );
                     break;
                     case EKA:
+                    moveNum += GenBishopMove_w( pos, pos->piecePos[i] ,&move[moveNum] );
                     break;
                     case EHI:
                     moveNum += GenRookMove_w( pos, pos->piecePos[i] ,&move[moveNum] );
                     break;
                     case EUM:
+                    moveNum += GenHorseMove_w( pos, pos->piecePos[i] ,&move[moveNum] );
                     break;
                     case ERY:
                     break;

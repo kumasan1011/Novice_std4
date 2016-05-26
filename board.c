@@ -120,4 +120,6 @@ void InitBoard(struct Position* pos)
     }
     
     pos->color = Black; 
+    // for debug
+    //pos->color = White; 
 }

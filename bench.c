@@ -10,6 +10,8 @@ void BenchGenMove(struct Position pos)
     
     int i;
     Move move[600];
+	
+	printf("MoveNum: %d \n",GenMoves(  &pos, &move[0] ));
     
 	printf("Bench The Start position\n");
 	int start=timeGetTime();
