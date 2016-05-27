@@ -19,6 +19,8 @@ inline int GenPawnMove_b( struct Position* pos, Board sq , Move* move )
         }
         return 1;
     }
+    
+    return 0;
 }
 
 inline int GenPawnMove_w( struct Position* pos, Board sq , Move* move )
@@ -34,6 +36,8 @@ inline int GenPawnMove_w( struct Position* pos, Board sq , Move* move )
         }
         return 1;
     }
+    
+    return 0;
 }
 
 inline int GenLanceMove_b( struct Position* pos, Board sq , Move* move )
@@ -1237,6 +1241,248 @@ inline int GenHorseMove_w( struct Position* pos, Board sq , Move* move )
     return num;
 }
 
+inline int GenDragonMove_b( struct Position* pos, Board sq , Move* move )
+{
+    int i,num=0;
+    
+    Board To = sq - 15;
+    
+    if( !pos->board[To] || pos->boardCol_w[To] )
+    {
+        move[num] = AddTo(To) | AddFrom(sq);
+        num++;
+    }
+    
+    To = sq + 15;
+    
+    if( !pos->board[To] || pos->boardCol_w[To] )
+    {
+        move[num] = AddTo(To) | AddFrom(sq);
+        num++;
+    }
+    
+    To = sq - 17;
+    
+    if( !pos->board[To] || pos->boardCol_w[To] )
+    {
+        move[num] = AddTo(To) | AddFrom(sq);
+        num++;
+    }
+    
+    To = sq + 17;
+    
+    if( !pos->board[To] || pos->boardCol_w[To] )
+    {
+        move[num] = AddTo(To) | AddFrom(sq);
+        num++;
+    }
+    
+    for( i=1; i<10; i++ )
+    {
+        To = sq - (i<<4);
+        if( !pos->board[To] )
+        {
+            move[num] = AddTo(To) | AddFrom(sq);
+            num++;
+        }
+        else if( pos->boardCol_w[To] )
+        {
+            
+            move[num] = AddTo(To) | AddFrom(sq);
+            num++;
+            break;
+        }
+        else 
+        {
+            break;
+        }
+    }
+    
+    for( i=1; i<10; i++ )
+    {
+        To = sq + (i<<4);
+        if( !pos->board[To] )
+        {
+            move[num] = AddTo(To) | AddFrom(sq);
+            num++;
+        }
+        else if( pos->boardCol_w[To] )
+        {
+            
+            move[num] = AddTo(To) | AddFrom(sq);
+            num++;
+            break;
+        }
+        else 
+        {
+            break;
+        }
+    }
+    
+    for( i=1; i<10; i++ )
+    {
+        To = sq - i;
+        if( !pos->board[To] )
+        {
+            move[num] = AddTo(To) | AddFrom(sq);
+            num++;
+        }
+        else if( pos->boardCol_w[To] )
+        {
+            
+            move[num] = AddTo(To) | AddFrom(sq);
+            num++;
+            break;
+        }
+        else 
+        {
+            break;
+        }
+    }
+    
+    for( i=1; i<10; i++ )
+    {
+        To = sq + i;
+        if( !pos->board[To] )
+        {
+            move[num] = AddTo(To) | AddFrom(sq);
+            num++;
+        }
+        else if( pos->boardCol_w[To] )
+        {
+            
+            move[num] = AddTo(To) | AddFrom(sq);
+            num++;
+            break;
+        }
+        else 
+        {
+            break;
+        }
+    }
+    
+    return num;
+}
+
+inline int GenDragonMove_w( struct Position* pos, Board sq , Move* move )
+{
+    int i,num=0;
+    
+    Board To = sq + 15;
+    
+    if( !pos->board[To] || pos->boardCol_b[To] )
+    {
+        move[num] = AddTo(To) | AddFrom(sq);
+        num++;
+    }
+    
+    To = sq - 15;
+    
+    if( !pos->board[To] || pos->boardCol_b[To] )
+    {
+        move[num] = AddTo(To) | AddFrom(sq);
+        num++;
+    }
+    
+    To = sq + 17;
+    
+    if( !pos->board[To] || pos->boardCol_b[To] )
+    {
+        move[num] = AddTo(To) | AddFrom(sq);
+        num++;
+    }
+    
+    To = sq - 17;
+    
+    if( !pos->board[To] || pos->boardCol_b[To] )
+    {
+        move[num] = AddTo(To) | AddFrom(sq);
+        num++;
+    }
+    
+    for( i=1; i<10; i++ )
+    {
+        To = sq + (i<<4);
+        if( !pos->board[To] )
+        {
+            move[num] = AddTo(To) | AddFrom(sq);
+            num++;
+        }
+        else if( pos->boardCol_b[To] )
+        {
+            move[num] = AddTo(To) | AddFrom(sq);
+            num++;
+            break;
+        }
+        else
+        {
+            break;
+        }
+    }
+    
+    for( i=1; i<10; i++ )
+    {
+        To = sq - (i<<4);
+        if( !pos->board[To] )
+        {
+            move[num] = AddTo(To) | AddFrom(sq);
+            num++;
+        }
+        else if( pos->boardCol_b[To] )
+        {
+            move[num] = AddTo(To) | AddFrom(sq);
+            num++;
+            break;
+        }
+        else
+        {
+            break;
+        }
+    }
+    
+    for( i=1; i<10; i++ )
+    {
+        To = sq + i;
+        if( !pos->board[To] )
+        {
+            move[num] = AddTo(To) | AddFrom(sq);
+            num++;
+        }
+        else if( pos->boardCol_b[To] )
+        {
+            move[num] = AddTo(To) | AddFrom(sq);
+            num++;
+            break;
+        }
+        else
+        {
+            break;
+        }
+    }
+    
+    for( i=1; i<10; i++ )
+    {
+        To = sq - i;
+        if( !pos->board[To] )
+        {
+            move[num] = AddTo(To) | AddFrom(sq);
+            num++;
+        }
+        else if( pos->boardCol_b[To] )
+        {
+            move[num] = AddTo(To) | AddFrom(sq);
+            num++;
+            break;
+        }
+        else
+        {
+            break;
+        }
+    }
+    
+    return num;
+} 
+
 inline int GenKingMove_b( struct Position* pos, Board sq , Move* move )
 {
     int num=0;
@@ -1421,6 +1667,7 @@ int GenMoves( struct Position* pos, Move* move)
                     moveNum += GenHorseMove_b( pos, pos->piecePos[i] ,&move[moveNum] );
                     break;
                     case SRY:
+                    moveNum += GenDragonMove_b( pos, pos->piecePos[i] ,&move[moveNum] );
                     break;
                 }
             }
@@ -1462,6 +1709,7 @@ int GenMoves( struct Position* pos, Move* move)
                     moveNum += GenHorseMove_w( pos, pos->piecePos[i] ,&move[moveNum] );
                     break;
                     case ERY:
+                    moveNum += GenDragonMove_w( pos, pos->piecePos[i] ,&move[moveNum] );
                     break;
                 }
             }
