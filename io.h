@@ -11,5 +11,6 @@ static char UsiPieceName2[]={ ' ','p', 'l', 'n', 's', 'g', 'b', 'r', 'k' };
 static char UsiRankName[]={ 'a','b','c','d','e','f','g','h','i' };
 
 void PrintBoard( struct Position );
+void make_sfen_position( const char *buf, struct Position* pos);
 
 #endif //_IO_H_

@@ -6,7 +6,7 @@
 //macro
 
 #define SQ(x,y) (((y)<<4)+(x))
-
+#define NSQ(x) (x/16+(10-x%16)*10)
 
 /*
   移動先
@@ -59,6 +59,8 @@ struct Position {
   Board pieceCol_w[64]; //駒番号とその色
   Board boardCol_b[256];
   Board boardCol_w[256];
+  Board Is2FU_b;
+  Board Is2FU_w;
   Color color;
   Hash hashkey; 
 };

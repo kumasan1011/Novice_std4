@@ -60,50 +60,67 @@ void InitBoard(struct Position* pos)
         pos->b_hand[x] = pos->w_hand[x] = 0;
     }
     
+    pos->Is2FU_b = pos->Is2FU_w = 0;
+	for( x=1; x<=9; x++ )
+	{
+		for( y=1; y<=9; y++ )
+		{
+			if( pos->board[SQ(x,y)]==SFU ) pos->Is2FU_b|=(1<<(10-x));
+			if( pos->board[SQ(x,y)]==EFU ) pos->Is2FU_w|=(1<<(10-x));
+		}
+	}
     
     //駒番号を設定
-    for( x=0; x<256; x++ ){ 
+    for( x=0; x<256; x++ )
+    { 
         if( pos->board[x]==SOU ){ pos->piecePos[1] = x; }
         if( pos->board[x]==EOU ){ pos->piecePos[2] = x; }
     }
     int n=3;
-    for( x=0; x<256; x++ ){ 
+    for( x=0; x<256; x++ )
+    { 
         if( pos->board[x]==SHI || pos->board[x]==EHI || pos->board[x]==SRY || pos->board[x]==ERY )
         { pos->piecePos[n] = x; n++; }
     }
     while( n<5 ){ pos->piecePos[n] = 0; n++; }
     
-    for( x=0; x<256; x++ ){
+    for( x=0; x<256; x++ )
+    {
         if( pos->board[x]==SKA || pos->board[x]==EKA || pos->board[x]==SUM || pos->board[x]==EUM )
         { pos->piecePos[n] = x; n++; }
     }
     while( n<7 ){ pos->piecePos[n] = 0; n++; }
     
-    for( x=0; x<256; x++ ){ 
+    for( x=0; x<256; x++ )
+    { 
         if( pos->board[x]==SKI || pos->board[x]==EKI )
         { pos->piecePos[n] = x; n++; }
     }
     while( n<11 ){ pos->piecePos[n] = 0; n++; }
     
-    for( x=0; x<256; x++ ){ 
+    for( x=0; x<256; x++ )
+    { 
         if( pos->board[x]==SGI || pos->board[x]==EGI || pos->board[x]==SNG || pos->board[x]==ENG )
         { pos->piecePos[n] = x; n++; }
     }
     while( n<15 ){ pos->piecePos[n] = 0; n++; }
     
-    for( x=0; x<256; x++ ){ 
+    for( x=0; x<256; x++ )
+    { 
         if( pos->board[x]==SKE || pos->board[x]==EKE || pos->board[x]==SNE || pos->board[x]==ENE )
         { pos->piecePos[n] = x; n++; }
     }
     while( n<19 ){ pos->piecePos[n] = 0; n++; }
     
-    for( x=0; x<256; x++ ){ 
+    for( x=0; x<256; x++ )
+    { 
         if( pos->board[x]==SKY || pos->board[x]==EKY || pos->board[x]==SNY || pos->board[x]==ENY )
         { pos->piecePos[n] = x; n++; }
     }
     while( n<23 ){ pos->piecePos[n] = 0; n++; }
     
-    for( x=0; x<256; x++ ){ 
+    for( x=0; x<256; x++ )
+    { 
         if( pos->board[x]==SFU || pos->board[x]==EFU || pos->board[x]==STO || pos->board[x]==ETO )
         { pos->piecePos[n] = x; n++; }
     }

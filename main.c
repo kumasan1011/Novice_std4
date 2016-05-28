@@ -133,7 +133,14 @@ int main()
         // testcode
         struct Position pos;
         InitBoard(&pos);
+		make_sfen_position( &buf, &pos );
         PrintBoard(pos);
+		//PrintColor(pos);
+		/*
+		Move move[600];
+		int num = GenMoves(  &pos, &move[0] );
+		PrintAllMoves( &move[0], num );
+		*/
 		BenchGenMove(pos);
 	}
 	
