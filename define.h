@@ -53,6 +53,7 @@ struct Position {
   Board board[256]; //実体
   Board b_hand[8]; //先手持ち駒
   Board w_hand[8]; //後手持ち駒
+  Board boardNum[256]; //盤とその駒番号
   Board piecePos[64]; //駒番号（使用するのは40個）とその位置
   Board pieceStock[8][32]; //使われてない（盤上にない駒）
   Board pieceCol_b[64]; //駒番号とその色
