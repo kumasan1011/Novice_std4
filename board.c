@@ -29,6 +29,7 @@ void InitBoard(struct Position* pos)
     {
         pos->board[x] = WAL;
         pos->boardCol_b[x] = pos->boardCol_w[x] = 0 ;
+        pos->boardNum = 0;
     }
     
     Board StartPos[10][10]={
@@ -67,6 +68,14 @@ void InitBoard(struct Position* pos)
 		{
 			if( pos->board[SQ(x,y)]==SFU ) pos->Is2FU_b|=(1<<(10-x));
 			if( pos->board[SQ(x,y)]==EFU ) pos->Is2FU_w|=(1<<(10-x));
+		}
+	}
+    
+    for( x=0; x<8; x++ )
+	{
+		for( y=0; y<32; y++ )
+		{
+			pos->pieceStock[x][y]=0;
 		}
 	}
     
@@ -127,13 +136,21 @@ void InitBoard(struct Position* pos)
     while( n<=40 ){ pos->piecePos[n] = 0; n++; }
     
     //駒番号と色
-    for( x=1; x<=40; x++ )
+    /*for( x=1; x<=40; x++ )
     {
         pos->pieceCol_b[x] = pos->pieceCol_w[x] = 0;
         if( SFU <= pos->board[ pos->piecePos[x] ] && pos->board[ pos->piecePos[x] ] <= SRY )
         { pos->pieceCol_b[x] = 1; }
         if( EFU <= pos->board[ pos->piecePos[x] ] && pos->board[ pos->piecePos[x] ] <= ERY )
         { pos->pieceCol_w[x] = 1; }
+    }*/
+    
+    for( x=1; x<=40; x++)
+    {
+        if( piecePos[x] )
+        {
+            boardNum[ piecePos[x] ] = x;
+        }
     }
     
     pos->color = Black; 

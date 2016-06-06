@@ -22,11 +22,16 @@
   
   //Todo : Hashに格納するときのことを考える
 */
+
+
 #define AddTo(move)  (move)
 #define AddFrom(move) ((move)<<0x08)
 #define AddPro(move)   ((move)<<0x10)
 #define AddDrop(move)  ((move)<<0x11)
 #define AddCap(move)   ((move)<<0x12)
+
+#define Is2FU(color,File) (color? (((Is2FU_w)>>File) & 0x01):(((Is2FU_b)>>File) & 0x01))
+#define Add2FU(File) (1<<(10-File))
 
 #define GetTo(move)  (((move)>>0x00)& 0xff)
 #define GetFrom(move) (((move)>>0x08)& 0xff) 
@@ -40,6 +45,7 @@ typedef unsigned int  Move;
 typedef int Board;
 typedef int Score;
 typedef int Ply;
+typedef int Piece;
 typedef int Color;
 
 enum Color { Black, White, Color_NB };
@@ -53,10 +59,11 @@ struct Position {
   Board board[256]; //実体
   Board b_hand[8]; //先手持ち駒
   Board w_hand[8]; //後手持ち駒
+  Board boardNum[256];
   Board piecePos[64]; //駒番号（使用するのは40個）とその位置
   Board pieceStock[8][32]; //使われてない（盤上にない駒）
-  Board pieceCol_b[64]; //駒番号とその色
-  Board pieceCol_w[64]; //駒番号とその色
+  //Board pieceCol_b[64]; //駒番号とその色
+  //Board pieceCol_w[64]; //駒番号とその色
   Board boardCol_b[256];
   Board boardCol_w[256];
   Board Is2FU_b;

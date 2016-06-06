@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <time.h>
 
 #include "define.h"
 #include "genmove.h"
@@ -1759,7 +1758,7 @@ int GenMoves( struct Position* pos, Move* move )
             {
                 moveNum += GenDropMoves_b_rank1( pos, sq, &move[moveNum] );
             }
-            else if( pos->boardCol_b[sq] )
+            else 
             {
                 switch( pos->board[ sq ] )
                 {
@@ -1793,6 +1792,8 @@ int GenMoves( struct Position* pos, Move* move )
                     case SRY:
                     moveNum += GenDragonMove_b( pos, sq, &move[moveNum] );
                     break;
+                    default:
+                    continue;
                 }
             }
         }
@@ -1803,7 +1804,7 @@ int GenMoves( struct Position* pos, Move* move )
             {
                 moveNum += GenDropMoves_b_rank2( pos, sq, &move[moveNum] );
             }
-            else if( pos->boardCol_b[sq] )
+            else
             {
                 switch( pos->board[ sq ] )
                 {
@@ -1837,6 +1838,8 @@ int GenMoves( struct Position* pos, Move* move )
                     case SRY:
                     moveNum += GenDragonMove_b( pos, sq, &move[moveNum] );
                     break;
+                    default:
+                    continue;
                 }
             }
         }
@@ -1850,7 +1853,7 @@ int GenMoves( struct Position* pos, Move* move )
                 {
                     moveNum += GenDropMoves_b( pos, sq, &move[moveNum] );
                 }
-                else if( pos->boardCol_b[sq] )
+                else
                 {
                     switch( pos->board[ sq ] )
                     {
@@ -1884,6 +1887,8 @@ int GenMoves( struct Position* pos, Move* move )
                         case SRY:
                         moveNum += GenDragonMove_b( pos, sq, &move[moveNum] );
                         break;
+                        default:
+                        continue;
                     }
                 }
             }
@@ -2032,7 +2037,7 @@ int GenMoves( struct Position* pos, Move* move )
     return moveNum;
 }
 
-
+/*
 int GenOnlyMoves( struct Position* pos, Move* move )
 {
     int i;
@@ -2126,3 +2131,4 @@ int GenOnlyMoves( struct Position* pos, Move* move )
     }
     return moveNum; 
 }
+*/
