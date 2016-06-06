@@ -72,22 +72,12 @@ void InitBoard(struct Position* pos)
 	}
     
     for( x=0; x<8; x++ )
-<<<<<<< HEAD
 	{
 		for( y=0; y<32; y++ )
 		{
 			pos->pieceStock[x][y]=0;
 		}
 	}
-=======
-    {
-        for( y=0; y<32; y++ )
-        {
-            pos->pieceStock[x][y] = 0;
-        }
-    }
-    
->>>>>>> 500d04fd0d7db8b57a106481dd591a62fd6d4364
     
     //駒番号を設定
     for( x=0; x<256; x++ )
@@ -161,15 +151,6 @@ void InitBoard(struct Position* pos)
         {
             boardNum[ piecePos[x] ] = x;
         }
-    }
-    
-    for( x=0; x<256; x++ )
-    {
-        pos->boardNum[x] = 0;
-    }
-    for( x=1; x<=40; x++ )
-    {
-        pos->boardNum[ pos->piecePos[i] ] = i;
     }
     
     pos->color = Black; 

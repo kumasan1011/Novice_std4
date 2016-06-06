@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-<<<<<<< HEAD
 #include <time.h>
 
 #include "define.h"
@@ -85,6 +84,7 @@ void doMove( struct Position* pos, Move* move )
     }
 }
 
-void undoMove(){
+void undoMove()
+{
     
 }

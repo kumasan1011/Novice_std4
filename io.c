@@ -204,84 +204,49 @@ void make_sfen_position( const char *buf, struct Position* pos)
         if( pos->board[x]==SHI || pos->board[x]==EHI || pos->board[x]==SRY || pos->board[x]==ERY )
         { pos->piecePos[n] = x; n++; }
     }
-<<<<<<< HEAD
     while( n<5 ){ pos->piecePos[n] = 0;  pos->pieceStock[HI][0]++; pos->pieceStock[HI][pos->pieceStock[HI][0]]=n; n++; }
-=======
-    while( n<5 )
-	{  pos->pieceStock[HI][0]++; pos->pieceStock[HI][ pos->pieceStock[HI][0] ] = n; pos->piecePos[n] = 0; n++; }
->>>>>>> 500d04fd0d7db8b57a106481dd591a62fd6d4364
     
     for( x=0; x<256; x++ )
     {
         if( pos->board[x]==SKA || pos->board[x]==EKA || pos->board[x]==SUM || pos->board[x]==EUM )
         { pos->piecePos[n] = x; n++; }
     }
-<<<<<<< HEAD
     while( n<7 ){ pos->piecePos[n] = 0; pos->pieceStock[KA][0]++; pos->pieceStock[KA][pos->pieceStock[KA][0]]=n; n++; }
-=======
-    while( n<7 )
-	{ pos->pieceStock[KA][0]++; pos->pieceStock[KA][ pos->pieceStock[KA][0] ] = n; pos->piecePos[n] = 0; n++; }
->>>>>>> 500d04fd0d7db8b57a106481dd591a62fd6d4364
     
     for( x=0; x<256; x++ )
     { 
         if( pos->board[x]==SKI || pos->board[x]==EKI )
         { pos->piecePos[n] = x; n++; }
     }
-<<<<<<< HEAD
     while( n<11 ){ pos->piecePos[n] = 0; pos->pieceStock[KI][0]++; pos->pieceStock[KI][pos->pieceStock[KI][0]]=n; n++; }
-=======
-    while( n<11 )
-	{ pos->pieceStock[KI][0]++; pos->pieceStock[KI][ pos->pieceStock[KI][0] ] = n; pos->piecePos[n] = 0; n++; }
->>>>>>> 500d04fd0d7db8b57a106481dd591a62fd6d4364
     
     for( x=0; x<256; x++ )
     { 
         if( pos->board[x]==SGI || pos->board[x]==EGI || pos->board[x]==SNG || pos->board[x]==ENG )
         { pos->piecePos[n] = x; n++; }
     }
-<<<<<<< HEAD
     while( n<15 ){ pos->piecePos[n] = 0; pos->pieceStock[GI][0]++; pos->pieceStock[GI][pos->pieceStock[GI][0]]=n; n++; }
-=======
-    while( n<15 )
-	{ pos->pieceStock[GI][0]++; pos->pieceStock[GI][ pos->pieceStock[GI][0] ] = n; pos->piecePos[n] = 0; n++; }
->>>>>>> 500d04fd0d7db8b57a106481dd591a62fd6d4364
     
     for( x=0; x<256; x++ )
     { 
         if( pos->board[x]==SKE || pos->board[x]==EKE || pos->board[x]==SNE || pos->board[x]==ENE )
         { pos->piecePos[n] = x; n++; }
     }
-<<<<<<< HEAD
     while( n<19 ){ pos->piecePos[n] = 0; pos->pieceStock[KE][0]++; pos->pieceStock[KE][pos->pieceStock[KE][0]]=n; n++; }
-=======
-    while( n<19 )
-	{ pos->pieceStock[KE][0]++; pos->pieceStock[KE][ pos->pieceStock[KE][0] ] = n; pos->piecePos[n] = 0; n++; }
->>>>>>> 500d04fd0d7db8b57a106481dd591a62fd6d4364
     
     for( x=0; x<256; x++ )
     { 
         if( pos->board[x]==SKY || pos->board[x]==EKY || pos->board[x]==SNY || pos->board[x]==ENY )
         { pos->piecePos[n] = x; n++; }
     }
-<<<<<<< HEAD
     while( n<23 ){ pos->piecePos[n] = 0; pos->pieceStock[KY][0]++; pos->pieceStock[KY][pos->pieceStock[KY][0]]=n; n++; }
-=======
-    while( n<23 )
-	{ pos->pieceStock[KY][0]++; pos->pieceStock[KY][ pos->pieceStock[KY][0] ] = n; pos->piecePos[n] = 0; n++; }
->>>>>>> 500d04fd0d7db8b57a106481dd591a62fd6d4364
     
     for( x=0; x<256; x++ )
     { 
         if( pos->board[x]==SFU || pos->board[x]==EFU || pos->board[x]==STO || pos->board[x]==ETO )
         { pos->piecePos[n] = x; n++; }
     }
-<<<<<<< HEAD
     while( n<=40 ){ pos->piecePos[n] = 0; pos->pieceStock[FU][0]++; pos->pieceStock[FU][pos->pieceStock[FU][0]]=n; n++; }
-=======
-    while( n<=40 )
-	{ pos->pieceStock[FU][0]++; pos->pieceStock[FU][ pos->pieceStock[FU][0] ] = n; pos->piecePos[n] = 0; n++; }
->>>>>>> 500d04fd0d7db8b57a106481dd591a62fd6d4364
     
     //駒番号と色
 	/*
@@ -306,22 +271,12 @@ void make_sfen_position( const char *buf, struct Position* pos)
         }
     }
 	
-<<<<<<< HEAD
 	for( x=1; x<=40; x++)
     {
         if( piecePos[x] )
         {
             boardNum[ piecePos[x] ] = x;
         }
-=======
-	for( x=0; x<256; x++ )
-    {
-        pos->boardNum[x] = 0;
-    }
-    for( x=1; x<=40; x++ )
-    {
-        pos->boardNum[ pos->piecePos[i] ] = i;
->>>>>>> 500d04fd0d7db8b57a106481dd591a62fd6d4364
     }
 	
 }
