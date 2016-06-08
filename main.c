@@ -135,13 +135,14 @@ int main()
         InitBoard(&pos);
 		make_sfen_position( &buf, &pos );
         PrintBoard(pos);
-		//PrintColor(pos);
+		d_move(&pos);
+		PrintBoard(pos);
 		/*
 		Move move[600];
 		int num = GenMoves(  &pos, &move[0] );
 		PrintAllMoves( &move[0], num );
 		*/
-		BenchGenMove(pos);
+		//BenchGenMove(pos);
 	}
 	
 	return 0;

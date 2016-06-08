@@ -64,8 +64,8 @@ void PrintBoard( const struct Position pos ){
 	}
 	printf( "\n  Color:%s\n", pos.color ? "White":"Black" );
 	printf( "Hash:%llx\n", pos.hashkey );
-	printf( "Is2FU_b : %x\n",pos.Is2FU_b);
-	printf( "Is2FU_w : %x\n",pos.Is2FU_w);
+	//printf( "Is2FU_b : %x\n",pos.Is2FU_b);
+	//printf( "Is2FU_w : %x\n",pos.Is2FU_w);
 	printf("\n");
     /*
     //debug 
@@ -273,9 +273,9 @@ void make_sfen_position( const char *buf, struct Position* pos)
 	
 	for( x=1; x<=40; x++)
     {
-        if( piecePos[x] )
+        if( pos->piecePos[x] )
         {
-            boardNum[ piecePos[x] ] = x;
+            pos->boardNum[ pos->piecePos[x] ] = x;
         }
     }
 	

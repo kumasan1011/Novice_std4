@@ -29,7 +29,7 @@ void InitBoard(struct Position* pos)
     {
         pos->board[x] = WAL;
         pos->boardCol_b[x] = pos->boardCol_w[x] = 0 ;
-        pos->boardNum = 0;
+        pos->boardNum[x] = 0;
     }
     
     Board StartPos[10][10]={
@@ -147,9 +147,9 @@ void InitBoard(struct Position* pos)
     
     for( x=1; x<=40; x++)
     {
-        if( piecePos[x] )
+        if( pos->piecePos[x] )
         {
-            boardNum[ piecePos[x] ] = x;
+            pos->boardNum[ pos->piecePos[x] ] = x;
         }
     }
     
