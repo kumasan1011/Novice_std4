@@ -42,13 +42,13 @@ void d_move( struct Position* pos )
     int x,y,from,to;
     //入力をもらう
     printf("From\n");
-    if( scanf( "%d", &from ) == 0 ) printf("OK\n");
+    if( scanf( "%d", &from ) == 1 ) printf("OK\n");
     else printf("Error\n");
     Board From = SQ( (10-from/10), from%10 );
     printf("pos:%d\n",NSQ(From));
    
     printf("To\n");
-    if( scanf( "%d", &to ) == 0 ) printf("OK\n");
+    if( scanf( "%d", &to ) == 1 ) printf("OK\n");
     else printf("Error\n");
     Board To = SQ( (10-to/10), to%10 );
     printf("pos:%d\n",NSQ(To));
