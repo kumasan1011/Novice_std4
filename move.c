@@ -84,7 +84,43 @@ void doMove( struct Position* pos, Move* move )
     }
 }
 
-void undoMove()
+void undoMove( struct Position* pos, Move move )
 {
+    Board From = GetFrom( move );
+    Board To = GetTo( move );
+    Board Pro = GetPro( move );
+    Piece Cap = GetCap( move );
     
+    if( GetDrop( move ) )
+    {
+        pos->board[ To ] = EMP;
+        
+        switch( pos->color )
+        {
+            case Black:
+            pos->boardCol_b[To] = 0;
+            pos->pieceStock[From][0] += 1;
+            pos->b_hand[From] += 1;
+            pos->pieceStock[From][ pos->pieceStock[From][0] ] = pos->boardNum[To];
+            pos->boardNum[To] = 0;
+            pos->piecePos[ pos->pieceStock[ From ][ pos->pieceStock[From][0] ] ] = 0;
+            if( From == SFU ) pos->Is2FU_b^=Add2FU(To%16);
+            break;
+            
+            case White:
+            From -= 15;
+            pos->boardCol_w[To] = 0;
+            pos->pieceStock[From][0] += 1;
+            pos->w_hand[From] += 1;
+            pos->pieceStock[From][ pos->pieceStock[From][0] ] = pos->boardNum[To];
+            pos->boardNum[To] = 0;
+            pos->piecePos[ pos->pieceStock[ From ][ pos->pieceStock[From][0] ] ] = 0;
+            if( From == EFU ) pos->Is2FU_w^=Add2FU(To%16);
+            break;
+        }
+    }
+    else
+    {
+        
+    }
 }

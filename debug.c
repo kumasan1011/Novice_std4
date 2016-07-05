@@ -6,6 +6,77 @@
 
 #include "define.h"
 
+void copyPosStruct( struct Position pos, struct Position* pos0 )
+{
+    int i,x,y;
+    
+    for( i=0; i<256; i++ )
+    {
+        pos0->board[i]     = pos.board[i];
+        pos0->boardNum[i]  = pos.boardNum[i];
+        pos0->boardCol_b[i]= pos.boardCol_b[i];
+        pos0->boardCol_w[i]= pos.boardCol_w[i];
+    }
+    
+    for( i=0; i<8; i++ )
+    {
+        pos0->w_hand[i] = pos.w_hand[i];
+        pos0->b_hand[i] = pos.b_hand[i];
+    }
+    
+    for( i=0; i<64; i++ )
+    {
+        pos0->piecePos[i] = pos.piecePos[i];
+    }
+    
+    for( x=0; x<8; x++ )
+    {
+        for( y=0; y<32; y++ )
+        {
+            pos0->pieceStock[x][y] = pos.pieceStock[x][y];
+        }
+    }
+    
+    pos0->Is2FU_b = pos.Is2FU_b;
+    pos0->Is2FU_w = pos.Is2FU_w;
+    pos0->color   = pos.color;
+    
+}
+
+void confPosStruct( struct Position pos, struct Position pos0 )
+{
+     for( i=0; i<256; i++ )
+    {
+        if( pos0.board[i] == pos.board[i] ) printf("Error\n");
+        if( pos0.boardNum[i] == pos.boardNum[i] ) printf("Error\n");
+        if( pos0.boardCol_b[i] == pos.boardCol_b[i] ) printf("Error\n");
+        if( pos0.boardCol_w[i] == pos.boardCol_w[i] ) printf("Error\n");
+    }
+    
+    for( i=0; i<8; i++ )
+    {
+        if( pos0.w_hand[i] == pos.w_hand[i] ) printf("Error\n");
+        if( pos0.b_hand[i] == pos.b_hand[i] ) printf("Error\n");
+    }
+    
+    for( i=0; i<64; i++ )
+    {
+        if( pos0.piecePos[i] == pos.piecePos[i] ) printf("Error\n");
+    }
+    
+    for( x=0; x<8; x++ )
+    {
+        for( y=0; y<32; y++ )
+        {
+            if( pos0.pieceStock[x][y] == pos.pieceStock[x][y] ) printf("Error\n");
+        }
+    }
+    
+    if( pos0->Is2FU_b == pos.Is2FU_b ) printf("Error\n");
+    if( pos0->Is2FU_w == pos.Is2FU_w ) printf("Error\n");
+    if( pos0->color   == pos.color   ) printf("Error\n");
+}
+
 void d_setPos( struct Position pos )
 {
     int x,y,i;
@@ -36,16 +107,28 @@ void d_setPos( struct Position pos )
         }
     }
 }
-
-void d_move( struct Position* pos )
+Move d_move( struct Position* pos )
 {
-    int x,y,from,to;
+    int x,y,from,to,drop;
     //入力をもらう
+    printf("drop?? (Yes=1:No=0)\n");
+    if( scanf( "%d", &drop ) == 1 ) printf("OK\n");
+    else printf("Error\n");
+    
     printf("From\n");
     if( scanf( "%d", &from ) == 1 ) printf("OK\n");
     else printf("Error\n");
-    Board From = SQ( (10-from/10), from%10 );
-    printf("pos:%d\n",NSQ(From));
+    Board From;
+    if( drop == 0 )
+    {
+        From = SQ( (10-from/10), from%10 );
+        printf("pos:%d\n",NSQ(From));
+    }
+    else
+    {
+        From = from;
+    }
+   
    
     printf("To\n");
     if( scanf( "%d", &to ) == 1 ) printf("OK\n");
@@ -55,7 +138,12 @@ void d_move( struct Position* pos )
     
     Move move[600]; 
     move[0] = AddFrom(From) | AddTo(To);
+    if( drop==1 )
+    {
+        move[0]|=AddDrop(1);
+    }
     printf( "move:%d\n", move[0] );
     doMove( pos, &move[0] );
-   
+    
+    return move[0];
 }

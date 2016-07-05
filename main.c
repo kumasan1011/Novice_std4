@@ -48,6 +48,8 @@ int main()
 		
 		int len=strlen(buf);
 		
+		struct Position pos;
+		
 		if( strncmp( buf,"usi",len )==0 ) 
         {
 			printf("id name Novice_beta\n");
@@ -129,14 +131,21 @@ int main()
         {
 			break;
 		}
-		
-        // testcode
-        struct Position pos;
-        InitBoard(&pos);
-		make_sfen_position( &buf, &pos );
-        PrintBoard(pos);
-		d_move(&pos);
-		PrintBoard(pos);
+		else if( strncmp(buf,"position",strlen("position"))==0 )
+		{
+			InitBoard(&pos);
+			make_sfen_position( &buf, &pos );
+			PrintBoard(pos);
+		}
+		else if( strncmp(buf,"debug",strlen("debug"))==0 )
+		{
+			// testcode
+			Move move = d_move(&pos);
+			PrintBoard(pos);
+			undoMove( &pos, move );
+			d_setPos(pos);
+			PrintBoard(pos);
+		}
 		/*
 		Move move[600];
 		int num = GenMoves(  &pos, &move[0] );
