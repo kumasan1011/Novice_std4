@@ -140,11 +140,13 @@ int main()
 		else if( strncmp(buf,"debug",strlen("debug"))==0 )
 		{
 			// testcode
+			struct Position pos0;
+			copyPosStruct( pos, &pos0 );
 			Move move = d_move(&pos);
-			PrintBoard(pos);
+			//PrintBoard(pos);
 			undoMove( &pos, move );
-			d_setPos(pos);
-			PrintBoard(pos);
+			confPosStruct( pos, pos0 );
+			//PrintBoard(pos);
 		}
 		/*
 		Move move[600];

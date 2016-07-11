@@ -45,36 +45,38 @@ void copyPosStruct( struct Position pos, struct Position* pos0 )
 
 void confPosStruct( struct Position pos, struct Position pos0 )
 {
+    int i,x,y;
+    
      for( i=0; i<256; i++ )
     {
-        if( pos0.board[i] == pos.board[i] ) printf("Error\n");
-        if( pos0.boardNum[i] == pos.boardNum[i] ) printf("Error\n");
-        if( pos0.boardCol_b[i] == pos.boardCol_b[i] ) printf("Error\n");
-        if( pos0.boardCol_w[i] == pos.boardCol_w[i] ) printf("Error\n");
+        if( pos0.board[i] != pos.board[i] ) printf("Error\n");
+        if( pos0.boardNum[i] != pos.boardNum[i] ) printf("Error\n");
+        if( pos0.boardCol_b[i] != pos.boardCol_b[i] ) printf("Error\n");
+        if( pos0.boardCol_w[i] != pos.boardCol_w[i] ) printf("Error\n");
     }
     
     for( i=0; i<8; i++ )
     {
-        if( pos0.w_hand[i] == pos.w_hand[i] ) printf("Error\n");
-        if( pos0.b_hand[i] == pos.b_hand[i] ) printf("Error\n");
+        if( pos0.w_hand[i] != pos.w_hand[i] ) printf("Error\n");
+        if( pos0.b_hand[i] != pos.b_hand[i] ) printf("Error\n");
     }
     
     for( i=0; i<64; i++ )
     {
-        if( pos0.piecePos[i] == pos.piecePos[i] ) printf("Error\n");
+        if( pos0.piecePos[i] != pos.piecePos[i] ) printf("Error\n");
     }
     
     for( x=0; x<8; x++ )
     {
         for( y=0; y<32; y++ )
         {
-            if( pos0.pieceStock[x][y] == pos.pieceStock[x][y] ) printf("Error\n");
+            if( pos0.pieceStock[x][y] != pos.pieceStock[x][y] ) printf("Error\n");
         }
     }
     
-    if( pos0->Is2FU_b == pos.Is2FU_b ) printf("Error\n");
-    if( pos0->Is2FU_w == pos.Is2FU_w ) printf("Error\n");
-    if( pos0->color   == pos.color   ) printf("Error\n");
+    if( pos0.Is2FU_b != pos.Is2FU_b ) printf("Error\n");
+    if( pos0.Is2FU_w != pos.Is2FU_w ) printf("Error\n");
+    if( pos0.color   != pos.color   ) printf("Error\n");
 }
 
 void d_setPos( struct Position pos )
@@ -107,6 +109,7 @@ void d_setPos( struct Position pos )
         }
     }
 }
+
 Move d_move( struct Position* pos )
 {
     int x,y,from,to,drop;
