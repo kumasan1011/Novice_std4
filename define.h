@@ -43,8 +43,6 @@ typedef unsigned long long uint64;
 typedef unsigned long long Hash;
 typedef unsigned int  Move; 
 typedef int Board;
-typedef int Score;
-typedef int Ply;
 typedef int Piece;
 typedef int Color;
 
