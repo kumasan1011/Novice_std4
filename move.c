@@ -121,6 +121,24 @@ void undoMove( struct Position* pos, Move move )
     }
     else
     {
+        if( Pro )
+        {
+            pos->board[From] = pos->board[ To ] - 8;
+        }
+        else
+        {
+            pos->board[From] = pos->board[ To ];
+        }
         
+        pos->board[ To ] = Cap;
+        if( Cap ){ pos->pieceStock[From][0]--; }
+        
+        switch( pos->color )
+        {
+            case Black:
+            break;
+            case White:
+            break;
+        }
     }
 }
