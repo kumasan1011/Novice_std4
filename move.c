@@ -76,6 +76,7 @@ void doMove( struct Position* pos, Move* move )
         }
         
         pos->board[ To ] = pos->board[From];
+        if( Pro ) { pos->board[To] += 8; }
         pos->piecePos[ pos->boardNum[From] ] = To;
         pos->boardNum[ To ] = pos->boardNum[From];
         pos->boardNum[From] = 0;
@@ -130,14 +131,42 @@ void undoMove( struct Position* pos, Move move )
             pos->board[From] = pos->board[ To ];
         }
         
+        pos->boardNum[From] = pos->boardNum[ To ];
+        pos->boardNum[ To ] = 0;
+        pos->piecePos[ pos->boardNum[From] ] = From;
         pos->board[ To ] = Cap;
-        if( Cap ){ pos->pieceStock[From][0]--; }
         
         switch( pos->color )
         {
             case Black:
+            pos->boardCol_b[From] = 1;
+            pos->boardCol_b[ To ] = 0;
+            if( Cap )
+            { 
+                pos->boardCol_w[ To ] = 1;
+                if( ETO<=Cap ) { Cap-=23; }
+                else{ Cap-=15; }
+                pos->b_hand[Cap]--;
+                pos->boardNum[To] = pos->pieceStock[Cap][pos->pieceStock[Cap][0]];
+                pos->piecePos[ pos->boardNum[To] ] = To;
+                pos->pieceStock[Cap][pos->pieceStock[Cap][0]] = 0;
+                pos->pieceStock[Cap][0]--;
+            }
             break;
+            
             case White:
+            pos->boardCol_w[From] = 1;
+            pos->boardCol_w[ To ] = 0;
+            if( Cap )
+            { 
+                pos->boardCol_b[ To ] = 1;
+                if( STO<=Cap ) { Cap-=8; }
+                pos->w_hand[Cap]--;
+                pos->boardNum[To] = pos->pieceStock[Cap][pos->pieceStock[Cap][0]];
+                pos->piecePos[ pos->boardNum[To] ] = To;
+                pos->pieceStock[Cap][pos->pieceStock[Cap][0]] = 0;
+                pos->pieceStock[Cap][0]--;   
+            }
             break;
         }
     }
