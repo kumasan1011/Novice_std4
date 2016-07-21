@@ -9,8 +9,6 @@
 #include "tt.h"
 
 
-
-
 Score qsearch( struct Position *pos, struct SearchStack *ss, Score alpha, Score beta, const Depth depth )
 {
     /* とりあえずAperyに合わせる */
@@ -28,7 +26,7 @@ Score qsearch( struct Position *pos, struct SearchStack *ss, Score alpha, Score 
     bool INCHECK;
     /**************************/
 
-    INCHECK = inInCheck( pos );
+    INCHECK = isInCheck( pos );
 
     evaluate( pos, ss );
 
