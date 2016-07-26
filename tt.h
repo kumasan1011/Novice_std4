@@ -1,4 +1,5 @@
-enum Depth {
+typedef int Depth;
+enum {
     OnePly                 = 2,
     Depth0                 = 0,
     Depth1                 = 1,

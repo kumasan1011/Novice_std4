@@ -107,9 +107,10 @@ int main()
             pthread_create( &pthread, NULL, &ReceiveThread, NULL);
             iteration(turn);
             pthread_cancel(pthread);
-        }
+        }*/
         else if(strncmp(buf, "bench", strlen("bench")) == 0) 
         {
+			/*
             init_hash_key();
             if(strncmp(buf, "bench search", strlen("bench search")) == 0) 
             {
@@ -122,11 +123,11 @@ int main()
                 search_bench(turn);
 				pthread_cancel(pthread);
             }
-            else if(strncmp(buf, "bench genmove", strlen("bench genmove")) == 0) 
+            else*/ if(strncmp(buf, "bench genmove", strlen("bench genmove")) == 0) 
             {
-                bench(turn);
+                BenchGenMove(pos);
             }
-		}*/
+		}
         else if( strncmp(buf,"quit",strlen("quit"))==0 )
         {
 			break;

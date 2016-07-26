@@ -1,5 +1,4 @@
 #include <stdbool.h>
-#include "score.h"
 
 struct SearchStack {
     Move currentMove;

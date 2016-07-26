@@ -4,9 +4,10 @@
 #include <stdbool.h>
 #include <time.h>
 
-#include "search.h"
+#include "define.h"
 #include "score.h"
 #include "tt.h"
+#include "search.h"
 
 
 Score qsearch( struct Position *pos, struct SearchStack *ss, Score alpha, Score beta, const Depth depth )
@@ -26,6 +27,7 @@ Score qsearch( struct Position *pos, struct SearchStack *ss, Score alpha, Score 
     bool INCHECK;
     /**************************/
 
+    /*
     INCHECK = isInCheck( pos );
 
     evaluate( pos, ss );
@@ -38,29 +40,13 @@ Score qsearch( struct Position *pos, struct SearchStack *ss, Score alpha, Score 
     int i;
     for( i=0, i<num; i++ )
     {
-        //todo:取る手だけ残す
+        if( !GetCap(move[i]) ) continue; 
         givesCheck = moveGiveCheck( pos );
 
-        if (!ss->PVNode
-			&& !INCHECK // 駒打ちは王手回避のみなので、ここで弾かれる。
-			&& !givesCheck
-			/*&& move != ttMove*/)
-		{
-			futilityScore =
-				futilityBase + Position::capturePieceScore(pos.piece(move.to()));
-			if (move.isPromotion())
-				futilityScore += Position::promotePieceScore(move.pieceTypeFrom());
-
-			if (futilityScore < beta) {
-				bestScore = std::max(bestScore, futilityScore);
-				continue;
-			}
-        }
-
-    }
+    }*/
 }
 
 Score search(struct Position *pos, Score alpha, Score beta, const Depth depth )
 {
-
+    
 }
