@@ -80,25 +80,26 @@ int main()
 				if( load_fv()==-2 ){ printf("load_error\n"); }
 			}
 			printf("readyok\n");
-		}
+		}*/
         else if( strncmp(buf,"position",strlen("position"))==0 ) 
         {
 			if( strncmp(buf,"position startpos",strlen("position startpos"))==0 )
             {
-				init_board();
-				turn=make_usi_position(buf);
-				set_hash();
-				print_board(turn);
+				InitBoard(&pos);
+				make_usi_position( buf, &pos );
+				//set_hash();
+				PrintBoard(pos);
 			}
             else if( strncmp(buf,"position sfen",strlen("position sfen"))==0 )
             {
-				init_board();
-				turn=make_sfen_position(buf);
-				set_hash();
-				print_board(turn);
+				InitBoard(&pos);
+				make_sfen_position( buf, &pos );
+				//set_hash();
+				PrintBoard(pos);
 			}
 			continue;
 		}
+		/*
         else if(strncmp(buf, "go", strlen("go")) == 0) 
         {
             if(strncmp(buf, "go infinite", strlen("go infinite")) == 0) { IsGoInfinite=true; }

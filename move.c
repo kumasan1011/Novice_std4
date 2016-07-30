@@ -5,14 +5,14 @@
 
 #include "define.h"
 
-void doMove( struct Position* pos, Move* move )
+void doMove( struct Position* pos, Move move )
 {
-    Board From = GetFrom( move[0] );
-    Board To = GetTo( move[0] );
-    Board Pro = GetPro( move[0] );
-    Piece Cap = GetCap( move[0] );
+    Board From = GetFrom( move );
+    Board To = GetTo( move );
+    Board Pro = GetPro( move );
+    Piece Cap = GetCap( move );
     
-    if( GetDrop( move[0] ) )
+    if( GetDrop( move ) )
     {
         pos->board[To] = From;
         

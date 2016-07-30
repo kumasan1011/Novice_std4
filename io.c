@@ -76,7 +76,80 @@ void PrintBoard( const struct Position pos ){
     }*/
 }
 
-void make_sfen_position( const char *buf, struct Position* pos)
+void make_usi_position( const char *buf, struct Position* pos )
+{
+	int i,j,k;
+	int n = 0;
+	pos->color = Black;
+	Move move=0;
+	int len = strlen("position startpos moves ");
+	
+	if(strlen("position startpos")==strlen(buf)) return;
+	
+	for( i=len; i<strlen(buf); i++ )
+	{
+		
+		move=0;
+		
+		if( buf[i]==' ' )
+		{
+			continue;
+		}
+		if( buf[i+1]=='*' )//Drop
+		{ 
+			for( j=1; j<8; j++ )
+			{
+				if( buf[i] == UsiPieceName1[j] )
+				{
+					move|=AddDrop(1);
+					if( pos->color == Black )
+					{
+						move|=AddFrom(j);
+					}
+					else
+					{
+						move|=AddFrom(j+15);
+					}
+					break;
+				}
+			}
+		}
+		else //Move
+		{ 
+			int File,Rank,From;
+			File=10-((buf[i]-'1')+1);
+			Rank=((buf[i+1]-'a')+1);
+			From=SQ(File,Rank);
+			move|=AddFrom(From);
+		}
+		
+		int To_File,To_Rank,To;
+		To_File=10-((buf[i+2]-'1')+1);
+		To_Rank=((buf[i+3]-'a')+1);
+		To=SQ(To_File,To_Rank);
+		move|=AddTo(To);
+		
+		if( pos->board[To] )
+		{
+			move|=AddCap( pos->board[To] );
+		}
+		
+		if( buf[i+4]=='+' )
+		{
+			move|=AddPro(1);
+			i+=4;
+		}
+		else
+		{
+			i+=3;
+		}
+		
+		doMove( pos , move );
+		pos->color = 1 - pos->color;
+	}
+}
+
+void make_sfen_position( const char *buf, struct Position* pos )
 {
 	
 	int i,j,k;

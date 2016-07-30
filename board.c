@@ -21,6 +21,10 @@
 #include "define.h"
 #include "board.h"
 
+short pc_on_sq[nsquare][pos_n];
+short pc_on_sq2[nsquare][fe_end * (fe_end + 1)];
+short kkp[nsquare][nsquare][kkp_end];
+
 void InitBoard(struct Position* pos)
 {
     int x,y;
