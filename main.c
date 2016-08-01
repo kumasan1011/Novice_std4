@@ -40,6 +40,10 @@ int main()
 	int i;
 	int turn;
 	
+	struct Position *pos;
+	struct Position tree;
+	pos = &tree;
+
 	while(1)
     {
 		char buf[10000];
@@ -48,7 +52,6 @@ int main()
 		
 		int len=strlen(buf);
 		
-		struct Position pos;
 		
 		if( strncmp( buf,"usi",len )==0 ) 
         {
@@ -85,30 +88,30 @@ int main()
         {
 			if( strncmp(buf,"position startpos",strlen("position startpos"))==0 )
             {
-				InitBoard(&pos);
-				make_usi_position( buf, &pos );
+				InitBoard(pos);
+				make_usi_position( buf, pos );
 				//set_hash();
-				PrintBoard(pos);
 			}
             else if( strncmp(buf,"position sfen",strlen("position sfen"))==0 )
             {
-				InitBoard(&pos);
-				make_sfen_position( buf, &pos );
+				InitBoard(pos);
+				make_sfen_position( buf, pos );
 				//set_hash();
 				PrintBoard(pos);
 			}
 			continue;
 		}
-		/*
         else if(strncmp(buf, "go", strlen("go")) == 0) 
         {
-            if(strncmp(buf, "go infinite", strlen("go infinite")) == 0) { IsGoInfinite=true; }
+			PrintBoard(pos);
+			iterationOld( pos );
+            /*if(strncmp(buf, "go infinite", strlen("go infinite")) == 0) { IsGoInfinite=true; }
             IsStopReceived=false;
             pthread_t pthread;
             pthread_create( &pthread, NULL, &ReceiveThread, NULL);
             iteration(turn);
-            pthread_cancel(pthread);
-        }*/
+            pthread_cancel(pthread);*/
+        }
         else if(strncmp(buf, "bench", strlen("bench")) == 0) 
         {
 			/*
@@ -135,19 +138,20 @@ int main()
 		}
 		else if( strncmp(buf,"position",strlen("position"))==0 )
 		{
-			InitBoard(&pos);
-			make_sfen_position( &buf, &pos );
+			InitBoard(pos);
+			make_sfen_position( &buf, pos );
 			PrintBoard(pos);
 		}
 		else if( strncmp(buf,"debug",strlen("debug"))==0 )
 		{
 			// testcode
+			/*
 			struct Position pos0;
 			copyPosStruct( pos, &pos0 );
 			Move move = d_move(&pos);
 			//PrintBoard(pos);
 			undoMove( &pos, move );
-			confPosStruct( pos, pos0 );
+			confPosStruct( pos, pos0 );*/
 			//PrintBoard(pos);
 		}
 		/*

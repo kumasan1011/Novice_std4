@@ -166,7 +166,7 @@ int is_in_check( struct Position *pos )
 {	
 	int sq,i,j;
 	
-	sq=KingPos(pos->color);
+	sq=(pos->color? (pos->piecePos[2]):(pos->piecePos[1]));
 	
 	if(is_check_from_normal( pos, sq )) return 1;
 	

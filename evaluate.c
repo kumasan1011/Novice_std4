@@ -5,7 +5,7 @@
 #include "define.h"
 #include "evaluate.h"
 
-int evaluate( struct Position *tree ){
+int evaluate2( struct Position *tree ){
 	
 	int score=0;
 	int ret=0;
@@ -253,6 +253,59 @@ int evaluate( struct Position *tree ){
     score+=RankBonus[ 10-GetRank(KingPos[Black]) ];
     score-=RankBonus[ GetRank(KingPos[White]) ];
     */
+	if(tree->color==White)return -score;
+	else return score;
+}
+
+
+int evaluate( struct Position *tree ){
+	
+	int score=0;
+	int ret=0;
+	int s_king_s,e_king_s,s_king_d,e_king_d;
+	int sq_bk0,sq_wk0,sq_bk1,sq_wk1;
+	int list0[52],list1[52];
+	int nlist=0;
+	int material=0;
+	int i,j,k;
+	
+	sq_bk0 = ( tree->piecePos[1]/16-1 )*9+( tree->piecePos[1]%16-1 );
+	sq_wk0 = ( tree->piecePos[2]/16-1 )*9+( tree->piecePos[2]%16-1 );
+	sq_bk1 = 80 - sq_wk0;
+	sq_wk1 = 80 - sq_bk0;
+	
+	
+	//=== MATERIAL HAND=============================================
+	for(i=1;i<8;i++){
+		if( tree->b_hand[i] ){
+			material+=PieceHandVal[i]*tree->b_hand[i];
+		}
+		if( tree->w_hand[i] ){
+			material-=PieceHandVal[i]*tree->w_hand[i];
+		}
+	}
+	
+	int pos,sq;
+	
+	for( i=1; i<=9; i++ )
+    {
+		for( j=1; j<=9; j++ )
+        {
+			
+			sq=SQ(j,i);
+			
+			if( tree->board[sq]==EMP ) continue;
+			if( tree->boardCol_b[sq])
+            {
+				material+=PieceVal[ tree->board[sq] ];
+			}
+            else
+            {
+                material-=PieceVal[ tree->board[sq] ];
+			}
+		}
+	}
+		
 	if(tree->color==White)return -score;
 	else return score;
 }

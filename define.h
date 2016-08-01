@@ -8,7 +8,6 @@
 #define SQ(x,y) (((y)<<4)+(x))
 #define NSQ(x) (x/16+(10-x%16)*10)
 
-#define KingPos(color) ( color? (pos->piecePos[2]):(pos->piecePos[1]) )
 
 /*
   移動先
@@ -72,6 +71,7 @@ struct Position {
   Hash hashkey; 
 };
 
+//extern struct Position tree;
 
 //======= Param used in fv.bin ==================================
 enum {
@@ -142,3 +142,5 @@ extern short kkp[nsquare][nsquare][kkp_end];
 #define PcPcOnSq(k,i,j)     pc_on_sq[k][(i)*((i)+1)/2+(j)]
 #define Inv(i) (80-i)
 #define FV_SCALE 32
+
+#define INFINITE 99999999
