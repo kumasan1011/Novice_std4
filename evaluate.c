@@ -5,7 +5,7 @@
 #include "define.h"
 #include "evaluate.h"
 
-int evaluate2( struct Position *tree ){
+int evaluate2( struct Position *ptree ){
 	
 	int score=0;
 	int ret=0;
@@ -16,67 +16,67 @@ int evaluate2( struct Position *tree ){
 	int material=0;
 	int i,j,k;
 	
-	sq_bk0 = ( tree->piecePos[1]/16-1 )*9+( tree->piecePos[1]%16-1 );
-	sq_wk0 = ( tree->piecePos[2]/16-1 )*9+( tree->piecePos[2]%16-1 );
+	sq_bk0 = ( ptree->piecePos[1]/16-1 )*9+( ptree->piecePos[1]%16-1 );
+	sq_wk0 = ( ptree->piecePos[2]/16-1 )*9+( ptree->piecePos[2]%16-1 );
 	sq_bk1 = 80 - sq_wk0;
 	sq_wk1 = 80 - sq_bk0;
 	
 	
 	//=== MATERIAL HAND=============================================
 	for(i=1;i<8;i++){
-		if( tree->b_hand[i] ){
-			material+=PieceHandVal[i]*tree->b_hand[i];
+		if( ptree->b_hand[i] ){
+			material+=PieceHandVal[i]*ptree->b_hand[i];
 		}
-		if( tree->w_hand[i] ){
-			material-=PieceHandVal[i]*tree->w_hand[i];
+		if( ptree->w_hand[i] ){
+			material-=PieceHandVal[i]*ptree->w_hand[i];
 		}
 	}
 	//=== KKP HAND =================================================
-	ret += kkp[sq_bk0][sq_wk0][ kkp_hand_pawn   + tree->b_hand[FU] ];
-	ret += kkp[sq_bk0][sq_wk0][ kkp_hand_lance  + tree->b_hand[KY] ];
-	ret += kkp[sq_bk0][sq_wk0][ kkp_hand_knight + tree->b_hand[KE] ];
-	ret += kkp[sq_bk0][sq_wk0][ kkp_hand_silver + tree->b_hand[GI] ];
-	ret += kkp[sq_bk0][sq_wk0][ kkp_hand_gold   + tree->b_hand[KI] ];
-	ret += kkp[sq_bk0][sq_wk0][ kkp_hand_bishop + tree->b_hand[KA] ];
-	ret += kkp[sq_bk0][sq_wk0][ kkp_hand_rook   + tree->b_hand[HI] ];
+	ret += kkp[sq_bk0][sq_wk0][ kkp_hand_pawn   + ptree->b_hand[FU] ];
+	ret += kkp[sq_bk0][sq_wk0][ kkp_hand_lance  + ptree->b_hand[KY] ];
+	ret += kkp[sq_bk0][sq_wk0][ kkp_hand_knight + ptree->b_hand[KE] ];
+	ret += kkp[sq_bk0][sq_wk0][ kkp_hand_silver + ptree->b_hand[GI] ];
+	ret += kkp[sq_bk0][sq_wk0][ kkp_hand_gold   + ptree->b_hand[KI] ];
+	ret += kkp[sq_bk0][sq_wk0][ kkp_hand_bishop + ptree->b_hand[KA] ];
+	ret += kkp[sq_bk0][sq_wk0][ kkp_hand_rook   + ptree->b_hand[HI] ];
 
-	ret -= kkp[sq_bk1][sq_wk1][ kkp_hand_pawn   + tree->w_hand[FU] ];
-	ret -= kkp[sq_bk1][sq_wk1][ kkp_hand_lance  + tree->w_hand[KY] ];
-	ret -= kkp[sq_bk1][sq_wk1][ kkp_hand_knight + tree->w_hand[KE] ];
-	ret -= kkp[sq_bk1][sq_wk1][ kkp_hand_silver + tree->w_hand[GI] ];
-	ret -= kkp[sq_bk1][sq_wk1][ kkp_hand_gold   + tree->w_hand[KI] ];
-	ret -= kkp[sq_bk1][sq_wk1][ kkp_hand_bishop + tree->w_hand[KA] ];
-	ret -= kkp[sq_bk1][sq_wk1][ kkp_hand_rook   + tree->w_hand[HI] ];
+	ret -= kkp[sq_bk1][sq_wk1][ kkp_hand_pawn   + ptree->w_hand[FU] ];
+	ret -= kkp[sq_bk1][sq_wk1][ kkp_hand_lance  + ptree->w_hand[KY] ];
+	ret -= kkp[sq_bk1][sq_wk1][ kkp_hand_knight + ptree->w_hand[KE] ];
+	ret -= kkp[sq_bk1][sq_wk1][ kkp_hand_silver + ptree->w_hand[GI] ];
+	ret -= kkp[sq_bk1][sq_wk1][ kkp_hand_gold   + ptree->w_hand[KI] ];
+	ret -= kkp[sq_bk1][sq_wk1][ kkp_hand_bishop + ptree->w_hand[KA] ];
+	ret -= kkp[sq_bk1][sq_wk1][ kkp_hand_rook   + ptree->w_hand[HI] ];
 	//=====MAKE LIST HAND===========================================
-	list0[ 0]=f_hand_pawn  + tree->b_hand[1];
-	list0[ 1]=e_hand_pawn  + tree->w_hand[1];
-	list0[ 2]=f_hand_lance + tree->b_hand[2];
-	list0[ 3]=e_hand_lance + tree->w_hand[2];
-	list0[ 4]=f_hand_knight+ tree->b_hand[3];
-	list0[ 5]=e_hand_knight+ tree->w_hand[3];
-	list0[ 6]=f_hand_silver+ tree->b_hand[4];
-	list0[ 7]=e_hand_silver+ tree->w_hand[4];
-	list0[ 8]=f_hand_gold  + tree->b_hand[5];
-	list0[ 9]=e_hand_gold  + tree->w_hand[5];
-	list0[10]=f_hand_bishop+ tree->b_hand[6];
-	list0[11]=e_hand_bishop+ tree->w_hand[6];
-	list0[12]=f_hand_rook  + tree->b_hand[7];
-	list0[13]=e_hand_rook  + tree->w_hand[7];
+	list0[ 0]=f_hand_pawn  + ptree->b_hand[1];
+	list0[ 1]=e_hand_pawn  + ptree->w_hand[1];
+	list0[ 2]=f_hand_lance + ptree->b_hand[2];
+	list0[ 3]=e_hand_lance + ptree->w_hand[2];
+	list0[ 4]=f_hand_knight+ ptree->b_hand[3];
+	list0[ 5]=e_hand_knight+ ptree->w_hand[3];
+	list0[ 6]=f_hand_silver+ ptree->b_hand[4];
+	list0[ 7]=e_hand_silver+ ptree->w_hand[4];
+	list0[ 8]=f_hand_gold  + ptree->b_hand[5];
+	list0[ 9]=e_hand_gold  + ptree->w_hand[5];
+	list0[10]=f_hand_bishop+ ptree->b_hand[6];
+	list0[11]=e_hand_bishop+ ptree->w_hand[6];
+	list0[12]=f_hand_rook  + ptree->b_hand[7];
+	list0[13]=e_hand_rook  + ptree->w_hand[7];
 	
-	list1[ 0]=f_hand_pawn  + tree->w_hand[1];
-	list1[ 1]=e_hand_pawn  + tree->b_hand[1];
-	list1[ 2]=f_hand_lance + tree->w_hand[2];
-	list1[ 3]=e_hand_lance + tree->b_hand[2];
-	list1[ 4]=f_hand_knight+ tree->w_hand[3];
-	list1[ 5]=e_hand_knight+ tree->b_hand[3];
-	list1[ 6]=f_hand_silver+ tree->w_hand[4];
-	list1[ 7]=e_hand_silver+ tree->b_hand[4];
-	list1[ 8]=f_hand_gold  + tree->w_hand[5];
-	list1[ 9]=e_hand_gold  + tree->b_hand[5];
-	list1[10]=f_hand_bishop+ tree->w_hand[6];
-	list1[11]=e_hand_bishop+ tree->b_hand[6];
-	list1[12]=f_hand_rook  + tree->w_hand[7];
-	list1[13]=e_hand_rook  + tree->b_hand[7];
+	list1[ 0]=f_hand_pawn  + ptree->w_hand[1];
+	list1[ 1]=e_hand_pawn  + ptree->b_hand[1];
+	list1[ 2]=f_hand_lance + ptree->w_hand[2];
+	list1[ 3]=e_hand_lance + ptree->b_hand[2];
+	list1[ 4]=f_hand_knight+ ptree->w_hand[3];
+	list1[ 5]=e_hand_knight+ ptree->b_hand[3];
+	list1[ 6]=f_hand_silver+ ptree->w_hand[4];
+	list1[ 7]=e_hand_silver+ ptree->b_hand[4];
+	list1[ 8]=f_hand_gold  + ptree->w_hand[5];
+	list1[ 9]=e_hand_gold  + ptree->b_hand[5];
+	list1[10]=f_hand_bishop+ ptree->w_hand[6];
+	list1[11]=e_hand_bishop+ ptree->b_hand[6];
+	list1[12]=f_hand_rook  + ptree->w_hand[7];
+	list1[13]=e_hand_rook  + ptree->b_hand[7];
 	//==============================================================
 	nlist=14;
 	int pos,sq;
@@ -88,19 +88,19 @@ int evaluate2( struct Position *tree ){
 			
 			sq=SQ(j,i);
 			
-			if( tree->board[sq]==EMP ) continue;
-			if( tree->boardCol_b[sq])
+			if( ptree->board[sq]==EMP ) continue;
+			if( ptree->boardCol_b[sq])
             {
-				material+=PieceVal[ tree->board[sq] ];
+				material+=PieceVal[ ptree->board[sq] ];
 			}
             else
             {
-                material-=PieceVal[ tree->board[sq] ];
+                material-=PieceVal[ ptree->board[sq] ];
 			}
 		
 			pos=(i-1)*9+(j-1);
 		
-			switch( tree->board[sq] )
+			switch( ptree->board[sq] )
             {
 				case SFU:
 				ret += kkp[sq_bk0][sq_wk0][kkp_pawn + pos];
@@ -253,12 +253,12 @@ int evaluate2( struct Position *tree ){
     score+=RankBonus[ 10-GetRank(KingPos[Black]) ];
     score-=RankBonus[ GetRank(KingPos[White]) ];
     */
-	if(tree->color==White)return -score;
+	if(ptree->color==White)return -score;
 	else return score;
 }
 
 
-int evaluate( struct Position *tree ){
+int evaluate( struct Position *ptree ){
 	
 	int score=0;
 	int ret=0;
@@ -269,19 +269,19 @@ int evaluate( struct Position *tree ){
 	int material=0;
 	int i,j,k;
 	
-	sq_bk0 = ( tree->piecePos[1]/16-1 )*9+( tree->piecePos[1]%16-1 );
-	sq_wk0 = ( tree->piecePos[2]/16-1 )*9+( tree->piecePos[2]%16-1 );
+	sq_bk0 = ( ptree->piecePos[1]/16-1 )*9+( ptree->piecePos[1]%16-1 );
+	sq_wk0 = ( ptree->piecePos[2]/16-1 )*9+( ptree->piecePos[2]%16-1 );
 	sq_bk1 = 80 - sq_wk0;
 	sq_wk1 = 80 - sq_bk0;
 	
 	
 	//=== MATERIAL HAND=============================================
 	for(i=1;i<8;i++){
-		if( tree->b_hand[i] ){
-			material+=PieceHandVal[i]*tree->b_hand[i];
+		if( ptree->b_hand[i] ){
+			material+=PieceHandVal[i]*ptree->b_hand[i];
 		}
-		if( tree->w_hand[i] ){
-			material-=PieceHandVal[i]*tree->w_hand[i];
+		if( ptree->w_hand[i] ){
+			material-=PieceHandVal[i]*ptree->w_hand[i];
 		}
 	}
 	
@@ -294,18 +294,18 @@ int evaluate( struct Position *tree ){
 			
 			sq=SQ(j,i);
 			
-			if( tree->board[sq]==EMP ) continue;
-			if( tree->boardCol_b[sq])
+			if( ptree->board[sq]==EMP ) continue;
+			if( ptree->boardCol_b[sq])
             {
-				material+=PieceVal[ tree->board[sq] ];
+				material+=PieceVal[ ptree->board[sq] ];
 			}
             else
             {
-                material-=PieceVal[ tree->board[sq] ];
+                material-=PieceVal[ ptree->board[sq] ];
 			}
 		}
 	}
 		
-	if(tree->color==White)return -score;
+	if(ptree->color==White)return -score;
 	else return score;
 }

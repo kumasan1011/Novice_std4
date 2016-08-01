@@ -10,6 +10,6 @@ int PieceHandVal[]={ 0, 87,232,257,369,444,569,642 };
 
 int RankBonus[]={ 0, 0, 0, 0, 150, 450, 900,1300,1550,1600 };
 
-int evaluate( struct Position *tree );
+int evaluate( struct Position *ptree );
 
 #endif //_EVALUATE_H_

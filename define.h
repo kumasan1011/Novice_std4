@@ -71,7 +71,7 @@ struct Position {
   Hash hashkey; 
 };
 
-//extern struct Position tree;
+extern struct Position tree;
 
 //======= Param used in fv.bin ==================================
 enum {

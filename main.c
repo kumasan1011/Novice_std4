@@ -41,7 +41,6 @@ int main()
 	int turn;
 	
 	struct Position *pos;
-	struct Position tree;
 	pos = &tree;
 
 	while(1)
@@ -51,7 +50,6 @@ int main()
 		if( fgets(buf, 10000, stdin)!=NULL ){ buf[strlen(buf) - 1]=0; }
 		
 		int len=strlen(buf);
-		
 		
 		if( strncmp( buf,"usi",len )==0 ) 
         {
