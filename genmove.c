@@ -58,7 +58,7 @@ inline int GenLanceMove_b( struct Position* pos, Board sq , Move* move )
         if( !pos->board[To] )
         {
             move[num++] = AddTo(To) | AddFrom(sq);
-            //num++;
+            
             if( To<0x40 || sq<0x40 ) //成り
             {
                 if( To<0x30 )
@@ -108,6 +108,7 @@ inline int GenLanceMove_w( struct Position* pos, Board sq , Move* move )
         if( !pos->board[To] )
         {
             move[num++] = AddTo(To) | AddFrom(sq);
+
             if( To>0x70 || sq>0x70 ) //成り
             {
                 if( To>0x80 )
@@ -123,6 +124,7 @@ inline int GenLanceMove_w( struct Position* pos, Board sq , Move* move )
         else if( pos->boardCol_b[To] )
         {
             move[num++] = AddTo(To) | AddFrom(sq) | AddCap( pos->board[To] );
+
             if( To>0x70 || sq>0x70 ) //成り
             {
                 if( To>0x80 )
@@ -154,6 +156,7 @@ inline int GenKnightMove_b( struct Position* pos, Board sq , Move* move )
     if( !pos->board[To] )
     {
         move[num++] = AddTo(To) | AddFrom(sq);
+
         if( To<0x40 || sq<0x40 ) //成り
         {
             if( To<0x30 )
@@ -169,6 +172,7 @@ inline int GenKnightMove_b( struct Position* pos, Board sq , Move* move )
     else if( pos->boardCol_w[To] )
     {
         move[num++] = AddTo(To) | AddFrom(sq) | AddCap( pos->board[To] );
+
         if( To<0x40 || sq<0x40 ) //成り
         {
             if( To<0x30 )
@@ -187,6 +191,7 @@ inline int GenKnightMove_b( struct Position* pos, Board sq , Move* move )
     if( !pos->board[To] )
     {
         move[num++] = AddTo(To) | AddFrom(sq);
+
         if( To<0x40 || sq<0x40 ) //成り
         {
             if( To<0x30 )
@@ -202,6 +207,7 @@ inline int GenKnightMove_b( struct Position* pos, Board sq , Move* move )
     else if( pos->boardCol_w[To] )
     {
         move[num++] = AddTo(To) | AddFrom(sq) | AddCap( pos->board[To] );
+
         if( To<0x40 || sq<0x40 ) //成り
         {
             if( To<0x30 )
@@ -227,6 +233,7 @@ inline int GenKnightMove_w( struct Position* pos, Board sq , Move* move )
     if( !pos->board[To])
     {
         move[num++] = AddTo(To) | AddFrom(sq);
+
         if( To>0x70 || sq>0x70 ) //成り
         {
             if( To>0x80 )
@@ -242,6 +249,7 @@ inline int GenKnightMove_w( struct Position* pos, Board sq , Move* move )
     else if( pos->boardCol_b[To] )
     {
         move[num++] = AddTo(To) | AddFrom(sq) | AddCap( pos->board[To] );
+
         if( To>0x70 || sq>0x70 ) //成り
         {
             if( To>0x80 )
@@ -260,6 +268,7 @@ inline int GenKnightMove_w( struct Position* pos, Board sq , Move* move )
     if( !pos->board[To] )
     {
         move[num++] = AddTo(To) | AddFrom(sq);
+
         if( To>0x70 || sq>0x70 ) //成り
         {
             if( To>0x80 )
@@ -275,6 +284,7 @@ inline int GenKnightMove_w( struct Position* pos, Board sq , Move* move )
     else if( pos->boardCol_b[To] )
     {
         move[num++] = AddTo(To) | AddFrom(sq) | AddCap( pos->board[To] );
+
         if( To>0x70 || sq>0x70 ) //成り
         {
             if( To>0x80 )
@@ -300,6 +310,7 @@ inline int GenSilverMove_b( struct Position* pos, Board sq , Move* move )
     if( !pos->board[To] )
     {
         move[num++] = AddTo(To) | AddFrom(sq);
+
         if( To<0x40 || sq<0x40 ) //成り
         {
              move[num++] = AddTo(To) | AddFrom(sq) | AddPro(1);
@@ -308,6 +319,7 @@ inline int GenSilverMove_b( struct Position* pos, Board sq , Move* move )
     else if( pos->boardCol_w[To] )
     {
         move[num++] = AddTo(To) | AddFrom(sq) | AddCap( pos->board[To] );
+        
         if( To<0x40 || sq<0x40 ) //成り
         {
              move[num++] = AddTo(To) | AddFrom(sq) | AddPro(1) | AddCap( pos->board[To] );
@@ -402,7 +414,6 @@ inline int GenSilverMove_w( struct Position* pos, Board sq , Move* move )
     if( !pos->board[To] )
     {
         move[num++] = AddTo(To) | AddFrom(sq);
-        num++;
         if( To>0x70 || sq>0x70 ) //成り
         {
             move[num++] = AddTo(To) | AddFrom(sq) | AddPro(1);
@@ -411,7 +422,6 @@ inline int GenSilverMove_w( struct Position* pos, Board sq , Move* move )
     else if( pos->boardCol_b[To] )
     {
         move[num++] = AddTo(To) | AddFrom(sq) | AddCap( pos->board[To] );
-        num++;
         if( To>0x70 || sq>0x70 ) //成り
         {
             move[num++] = AddTo(To) | AddFrom(sq) | AddPro(1) | AddCap( pos->board[To] );
@@ -431,7 +441,6 @@ inline int GenSilverMove_w( struct Position* pos, Board sq , Move* move )
     else if( pos->boardCol_b[To] )
     {
         move[num++] = AddTo(To) | AddFrom(sq) | AddCap( pos->board[To] );
-        num++;
         if( To>0x70 || sq>0x70 ) //成り
         {
             move[num++] = AddTo(To) | AddFrom(sq) | AddPro(1) | AddCap( pos->board[To] );
@@ -451,7 +460,6 @@ inline int GenSilverMove_w( struct Position* pos, Board sq , Move* move )
     else if( pos->boardCol_b[To] )
     {
         move[num++] = AddTo(To) | AddFrom(sq) | AddCap( pos->board[To] );
-        num++;
         if( To>0x70 || sq>0x70 ) //成り
         {
             move[num++] = AddTo(To) | AddFrom(sq) | AddPro(1) | AddCap( pos->board[To] );
@@ -471,7 +479,6 @@ inline int GenSilverMove_w( struct Position* pos, Board sq , Move* move )
     else if( pos->boardCol_b[To] )
     {
         move[num++] = AddTo(To) | AddFrom(sq) | AddCap( pos->board[To] );
-        num++;
         if( To>0x70 || sq>0x70 ) //成り
         {
             move[num++] = AddTo(To) | AddFrom(sq) | AddPro(1) | AddCap( pos->board[To] );
@@ -491,7 +498,7 @@ inline int GenSilverMove_w( struct Position* pos, Board sq , Move* move )
     else if( pos->boardCol_b[To] )
     {
         move[num++] = AddTo(To) | AddFrom(sq) | AddCap( pos->board[To] );
-        num++;
+        
         if( To>0x70 || sq>0x70 ) //成り
         {
             move[num++] = AddTo(To) | AddFrom(sq) | AddPro(1) | AddCap( pos->board[To] );
@@ -655,7 +662,7 @@ inline int GenBishopMove_b( struct Position* pos, Board sq , Move* move )
     for( i=1; i<10; i++ )
     {
         To = sq - 17*i;
-        if( !pos->board[To] )
+        if( pos->board[To]==EMP )
         {
             move[num] = AddTo(To) | AddFrom(sq);
             num++;
@@ -666,7 +673,6 @@ inline int GenBishopMove_b( struct Position* pos, Board sq , Move* move )
         }
         else if( pos->boardCol_w[To] )
         {
-            
             move[num] = AddTo(To) | AddFrom(sq) | AddCap( pos->board[To] );
             num++;
             if( To<0x40 || sq<0x40 ) //成り

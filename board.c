@@ -27,8 +27,6 @@ short kkp[nsquare][nsquare][kkp_end];
 
 struct Position tree;
 
-
-
 void InitBoard(struct Position* pos)
 {
     int x,y;

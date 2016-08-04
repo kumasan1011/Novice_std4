@@ -31,7 +31,7 @@
 #define AddDrop(move)  ((move)<<0x11)
 #define AddCap(move)   ((move)<<0x12)
 
-#define Is2FU(color,File) (color? (((Is2FU_w)>>File) & 0x01):(((Is2FU_b)>>File) & 0x01))
+#define Is2FU(color,File) (color? (((pos->Is2FU_w)>>File) & 0x01):(((pos->Is2FU_b)>>File) & 0x01))
 #define Add2FU(File) (1<<(10-File))
 
 #define GetTo(move)  (((move)>>0x00)& 0xff)
@@ -72,6 +72,7 @@ struct Position {
 };
 
 extern struct Position tree;
+
 
 //======= Param used in fv.bin ==================================
 enum {
@@ -144,3 +145,9 @@ extern short kkp[nsquare][nsquare][kkp_end];
 #define FV_SCALE 32
 
 #define INFINITE 99999999
+
+extern int CanMoveNum[31];
+extern int CanMove[31][8];
+extern int CanPromote[31];
+extern int Direct[8];
+extern int CanGo[8][31];

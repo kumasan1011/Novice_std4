@@ -12,6 +12,17 @@ void doMove( struct Position* pos, Move move )
     Board Pro = GetPro( move );
     Piece Cap = GetCap( move );
     
+    if( Cap 
+        && ( pos->board[To] != Cap ))
+    {
+        printf("Error\n");
+        printf("board[To] : %d ", pos->board[To] );
+        printf("Piece : %d ", pos->board[From] );
+        printf("From : %d ", NSQ(From) );
+        printf("To : %d ", NSQ(To) );
+        printf("Cap : %d\n", Cap );
+    }
+
     if( GetDrop( move ) )
     {
         pos->board[To] = From;
@@ -25,6 +36,7 @@ void doMove( struct Position* pos, Move move )
             pos->pieceStock[From][ pos->pieceStock[From][0] ] = 0;
             pos->pieceStock[From][0] -= 1;
             pos->b_hand[From] -= 1;
+            pos->b_hand[0] -= 1;
             if( From == SFU ) pos->Is2FU_b^=Add2FU(To%16);
             break;
             
@@ -36,6 +48,7 @@ void doMove( struct Position* pos, Move move )
             pos->pieceStock[From][ pos->pieceStock[From][0] ] = 0;
             pos->pieceStock[From][0] -= 1;
             pos->w_hand[From] -= 1;
+            pos->w_hand[0] -= 1;
             if( From == EFU ) pos->Is2FU_w^=Add2FU(To%16);
             break;
         }
@@ -50,13 +63,16 @@ void doMove( struct Position* pos, Move move )
             if( Cap )
             {
                 pos->boardCol_w[ To ] = 0;
+                if( Cap == EFU ) pos->Is2FU_w^=Add2FU(To%16);
                 if( ETO<=Cap ) { Cap-=23; }
                 else{ Cap-=15; }
                 pos->pieceStock[Cap][0]++; 
                 pos->pieceStock[Cap][pos->pieceStock[Cap][0]] = pos->boardNum[To];
                 pos->piecePos[ pos->boardNum[To] ] = 0;
                 pos->b_hand[Cap]++;
+                pos->b_hand[0]++;
             }
+            if( pos->board[From] == SFU && Pro ) pos->Is2FU_b^=Add2FU(To%16);
             break;
             
             case White:
@@ -65,12 +81,15 @@ void doMove( struct Position* pos, Move move )
             if( Cap )
             {
                 pos->boardCol_b[ To ] = 0;
+                if( Cap == SFU ) pos->Is2FU_b^=Add2FU(To%16);
                 if( STO<=Cap ) { Cap-=8; }
                 pos->pieceStock[Cap][0]++; 
                 pos->pieceStock[Cap][pos->pieceStock[Cap][0]] = pos->boardNum[To];
                 pos->piecePos[ pos->boardNum[To] ] = 0;
                 pos->w_hand[Cap]++;
+                pos->w_hand[0]++;
             }
+            if( pos->board[From] == EFU && Pro ) pos->Is2FU_w^=Add2FU(To%16);
             break;
         }
         
@@ -101,6 +120,7 @@ void undoMove( struct Position* pos, Move move )
             pos->boardCol_b[To] = 0;
             pos->pieceStock[From][0] += 1;
             pos->b_hand[From] += 1;
+            pos->b_hand[0] += 1;
             pos->pieceStock[From][ pos->pieceStock[From][0] ] = pos->boardNum[To];
             pos->boardNum[To] = 0;
             pos->piecePos[ pos->pieceStock[ From ][ pos->pieceStock[From][0] ] ] = 0;
@@ -112,6 +132,7 @@ void undoMove( struct Position* pos, Move move )
             pos->boardCol_w[To] = 0;
             pos->pieceStock[From][0] += 1;
             pos->w_hand[From] += 1;
+            pos->w_hand[0] += 1;
             pos->pieceStock[From][ pos->pieceStock[From][0] ] = pos->boardNum[To];
             pos->boardNum[To] = 0;
             pos->piecePos[ pos->pieceStock[ From ][ pos->pieceStock[From][0] ] ] = 0;
@@ -143,14 +164,17 @@ void undoMove( struct Position* pos, Move move )
             if( Cap )
             { 
                 pos->boardCol_w[ To ] = 1;
+                if( Cap == EFU ) pos->Is2FU_w^=Add2FU(To%16);
                 if( ETO<=Cap ) { Cap-=23; }
                 else{ Cap-=15; }
                 pos->b_hand[Cap]--;
+                pos->b_hand[0] -= 1;
                 pos->boardNum[To] = pos->pieceStock[Cap][pos->pieceStock[Cap][0]];
                 pos->piecePos[ pos->boardNum[To] ] = To;
                 pos->pieceStock[Cap][pos->pieceStock[Cap][0]] = 0;
                 pos->pieceStock[Cap][0]--;
             }
+            if(pos->board[From] == SFU && Pro ) pos->Is2FU_b^=Add2FU(To%16);
             break;
             
             case White:
@@ -159,13 +183,16 @@ void undoMove( struct Position* pos, Move move )
             if( Cap )
             { 
                 pos->boardCol_b[ To ] = 1;
+                if( Cap == SFU ) pos->Is2FU_b^=Add2FU(To%16);
                 if( STO<=Cap ) { Cap-=8; }
                 pos->w_hand[Cap]--;
+                pos->w_hand[0] -= 1;
                 pos->boardNum[To] = pos->pieceStock[Cap][pos->pieceStock[Cap][0]];
                 pos->piecePos[ pos->boardNum[To] ] = To;
                 pos->pieceStock[Cap][pos->pieceStock[Cap][0]] = 0;
                 pos->pieceStock[Cap][0]--;   
             }
+            if( pos->board[From] == EFU && Pro ) pos->Is2FU_w^=Add2FU(To%16);
             break;
         }
     }

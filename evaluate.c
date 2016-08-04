@@ -301,11 +301,11 @@ int evaluate( struct Position *ptree ){
 			}
             else
             {
-                material-=PieceVal[ ptree->board[sq] ];
+                material-=PieceVal[ ptree->board[sq] - 15 ];
 			}
 		}
 	}
 		
-	if(ptree->color==White)return -score;
-	else return score;
+	if(ptree->color==White)return -material;
+	else return material;
 }

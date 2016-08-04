@@ -430,7 +430,7 @@ void send_best_to_usi( Move move )
 	int Drop = GetDrop(move);
 	int Pro = GetPro(move); 
 	
-	if(!Drop){
+	if(Drop){
 		if( From>=EFU ) From-=15;
 		printf("bestmove %s*%d%s",UsiPieceName[From],10-To%16,RankName[To/16]);
 	}else{
@@ -438,4 +438,20 @@ void send_best_to_usi( Move move )
 		if(Pro) printf("+");
 	}
 	printf("\n");
+}
+
+void printAllMoves( Move *move, int moveNum )
+{
+	int i;
+	for( i=0; i<moveNum; i++ )
+	{
+		Board From = GetFrom( move[i] );
+		Board To = GetTo( move[i] );
+		Board Pro = GetPro( move[i] );
+		Piece Cap = GetCap( move[i] );
+		
+        printf("From : %d ", NSQ(From) );
+        printf("To : %d ", NSQ(To) );
+        printf("Cap : %d\n", Cap );
+	}
 }

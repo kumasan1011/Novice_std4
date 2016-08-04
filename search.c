@@ -135,6 +135,7 @@ int qsearchOld( struct Position *pos, Score alpha, Score beta, const Depth depth
         {
             pos->color = 1 - pos->color;
             val=-qsearchOld( pos, -beta, -alpha, depth-1 ); 
+            pos->color = 1 - pos->color; 
         }
 		undoMove( pos, move[i] );
 		if(beta <= val){
@@ -173,6 +174,7 @@ Score searchOld( struct Position *pos, Score alpha, Score beta, const Depth dept
 		return qsearchOld( pos, alpha, beta, 11 );
 	}
 	
+    /*
 	int standpat = evaluate( pos );
 	int in_check=is_in_check( pos );
 
@@ -196,7 +198,7 @@ Score searchOld( struct Position *pos, Score alpha, Score beta, const Depth dept
 		}
 	    //=====================================================================
         
-    }
+    }*/
     
 	unsigned int move[768];
 	int move_num=0x00;
@@ -213,6 +215,7 @@ Score searchOld( struct Position *pos, Score alpha, Score beta, const Depth dept
     { 
         pos->color = 1 - pos->color;
         max=val=-searchOld( pos, -beta, -alpha, depth-1 ); 
+        pos->color = 1 - pos->color; 
     } 
 	undoMove( pos, move[0] );
 
@@ -223,6 +226,7 @@ Score searchOld( struct Position *pos, Score alpha, Score beta, const Depth dept
 	}
 	if( alpha < val )
     {
+        pv[depth][depth]=move[0];
 		alpha=val;
 	}
 	//=======================================
@@ -235,6 +239,7 @@ Score searchOld( struct Position *pos, Score alpha, Score beta, const Depth dept
         {
             pos->color = 1 - pos->color;
             val=-searchOld( pos, -alpha-1, -alpha, depth-1 ); 
+            pos->color = 1 - pos->color; 
         }//NullWindow
 		undoMove( pos, move[i] );
 		
@@ -252,7 +257,8 @@ Score searchOld( struct Position *pos, Score alpha, Score beta, const Depth dept
 			else
             { 
                 pos->color = 1 - pos->color;
-                val=-searchOld( pos, -beta, -alpha, depth-1 ); 
+                val=-searchOld( pos, -beta, -alpha, depth-1 );
+                pos->color = 1 - pos->color; 
             }
 			undoMove( pos, move[i] );
 			
@@ -264,7 +270,10 @@ Score searchOld( struct Position *pos, Score alpha, Score beta, const Depth dept
 			}
 			if(alpha < val)
             {
-				best=move[i];
+				pv[depth][depth]=move[i];
+				for(j=depth-1;j>0;j--) {
+					pv[depth][j]=pv[depth-1][j];
+				}
 				alpha=val;
 			}
 		}
@@ -280,13 +289,19 @@ ADD_HASH:
 
 void init_searchOld(){
 	
+    int i,j;
+
 	nodes=0;
 	stop_search=0;
 	start=timeGetTime();
-	
+	for( i=0; i<32; i++ ){
+		for( j=0; j<32; j++ ){
+			pv[i][j]=0;
+		}
+	}
 	//if(AllTime>550000) MaxTime=8000;
 	//else MaxTime=9800;
-	MaxTime=15000;
+	MaxTime=3000;
 }
 
 void iterationOld( struct Position *pos )
@@ -313,13 +328,16 @@ void iterationOld( struct Position *pos )
 		//is_RootNode=true;
 		
 		val=searchOld( pos, alpha, beta, depth );
+        printf("info string depth:%d val:%d\n",depth,val);
 		if(val==INFINITE)
         { 
             //send_pv_to_usi(pv,val,depth,nodes);
-            send_best_to_usi(best); 
+            send_best_to_usi(pv[depth][depth]); 
             return; 
         }
 		else if(val==-INFINITE){ printf("bestmove resign\n"); return; }
+        best=pv[depth][depth];
+		for( i=depth; i>0; i-- ){ pv[i+1][i+1]=pv[i][i]; }
 		depth++;
 	}
 }

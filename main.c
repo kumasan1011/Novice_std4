@@ -71,17 +71,18 @@ int main()
             {
 				eval_mode=mode_fv;
 			}
-		}
+		}*/
         else if( strncmp( buf,"isready",len )==0 ) 
         {
+			/*
 			AllTime=0;
 			init_hash_key();
 			if( eval_mode==mode_fv )
             {
 				if( load_fv()==-2 ){ printf("load_error\n"); }
-			}
+			}*/
 			printf("readyok\n");
-		}*/
+		}
         else if( strncmp(buf,"position",strlen("position"))==0 ) 
         {
 			if( strncmp(buf,"position startpos",strlen("position startpos"))==0 )
@@ -89,6 +90,7 @@ int main()
 				InitBoard(pos);
 				make_usi_position( buf, pos );
 				//set_hash();
+				PrintBoard(pos);
 			}
             else if( strncmp(buf,"position sfen",strlen("position sfen"))==0 )
             {
@@ -101,7 +103,6 @@ int main()
 		}
         else if(strncmp(buf, "go", strlen("go")) == 0) 
         {
-			PrintBoard(pos);
 			iterationOld( pos );
             /*if(strncmp(buf, "go infinite", strlen("go infinite")) == 0) { IsGoInfinite=true; }
             IsStopReceived=false;
@@ -143,14 +144,17 @@ int main()
 		else if( strncmp(buf,"debug",strlen("debug"))==0 )
 		{
 			// testcode
-			/*
-			struct Position pos0;
-			copyPosStruct( pos, &pos0 );
-			Move move = d_move(&pos);
+		
+			//struct Position pos0;
+			//copyPosStruct( pos, &pos0 );
+			//Move move = d_move(pos);
 			//PrintBoard(pos);
-			undoMove( &pos, move );
-			confPosStruct( pos, pos0 );*/
+			//undoMove( pos, move );
+			//confPosStruct( pos, pos0 );
 			//PrintBoard(pos);
+
+			debugSearch( pos, 5 );
+			
 		}
 		/*
 		Move move[600];
