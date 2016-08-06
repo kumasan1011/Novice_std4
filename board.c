@@ -160,6 +160,45 @@ void InitBoard(struct Position* pos)
     }
     
     pos->color = Black; 
+    if( load_fv() == -2 ) printf("Error_fv.bin");
     // for debug
     //pos->color = White; 
+}
+
+int load_fv(){
+	
+	FILE *fp;
+	size_t size;
+	
+	fp = fopen( "fv.bin" , "rb" );
+	if ( fp == NULL ) { return -2; }
+	
+	size = nsquare * pos_n;
+	if( fread( pc_on_sq, sizeof(short), size, fp ) != size ){
+		fclose( fp );
+		return -2;
+	}
+	
+	size = nsquare * nsquare * kkp_end;
+	if ( fread( kkp, sizeof(short), size, fp ) != size ){
+		fclose( fp );
+		return -2;
+    }
+	
+	fclose( fp );
+	
+	int i,j,k;
+	
+	for( k=0; k<nsquare; k++ ){
+		for( i=0; i<fe_end; i++ ){
+			for( j=0; j<fe_end; j++ ){
+				if( j<=i ){
+					PcPcOnSq2(k, i, j) = PcPcOnSq(k, i, j);
+				}else{
+					PcPcOnSq2(k, i, j) = PcPcOnSq(k, j, i);
+				}
+			}
+		}
+	}
+	return 0;
 }

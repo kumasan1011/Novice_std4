@@ -5,7 +5,7 @@
 #include "define.h"
 #include "evaluate.h"
 
-int evaluate2( struct Position *ptree ){
+int evaluate( struct Position *ptree ){
 	
 	int score=0;
 	int ret=0;
@@ -95,7 +95,7 @@ int evaluate2( struct Position *ptree ){
 			}
             else
             {
-                material-=PieceVal[ ptree->board[sq] ];
+                material-=PieceVal[ ptree->board[sq] - 15 ];
 			}
 		
 			pos=(i-1)*9+(j-1);
@@ -258,7 +258,7 @@ int evaluate2( struct Position *ptree ){
 }
 
 
-int evaluate( struct Position *ptree ){
+int evaluate2( struct Position *ptree ){
 	
 	int score=0;
 	int ret=0;
