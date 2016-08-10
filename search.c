@@ -11,6 +11,7 @@
 #include "tt.h"
 #include "search.h"
 
+jmp_buf env;
 
 Score qsearch( struct Position *pos, struct SearchStack *ss, Score alpha, Score beta, const Depth depth )
 {
@@ -54,9 +55,7 @@ Score search( struct Position *pos, Score alpha, Score beta, const Depth depth )
 }
 
 /* Novice_wcsc26_final の探索 */
-jmp_buf env;
 
-Move best;
 uint64 MaxTime;
 uint64 start;
 uint64 nodes;
@@ -82,8 +81,7 @@ int qsearchOld( struct Position *pos, Score alpha, Score beta, const Depth depth
 		}
 		//if( IsStopReceived ){ stop_search=1; longjmp(env, 0); }
 		if( usi_time>=MaxTime ){
-			stop_search=1;
-			longjmp(env, 0);
+			return -INFINITE+3;
 		}
 	}
 	
@@ -148,11 +146,20 @@ int qsearchOld( struct Position *pos, Score alpha, Score beta, const Depth depth
 	return alpha;
 }
 
-
 Score searchOld( struct Position *pos, Score alpha, Score beta, const Depth depth )
 {
     int i,j,k;
-	
+	Depth newDepth;
+	Depth extension;
+	Score bestScore;
+	Score score;
+	Move bestMove;
+	bool doFullDepthSearch;
+	bool isPVMove;
+	int  moveCount;
+
+	moveCount = 0;
+
 	if(nodes%16384==0)
     {
 		int current=timeGetTime();
@@ -163,128 +170,98 @@ Score searchOld( struct Position *pos, Score alpha, Score beta, const Depth dept
 		}
 		//if( IsStopReceived ){ stop_search=1; longjmp(env, 0); }
 		if( usi_time>=MaxTime ){
-			stop_search=1;
-			longjmp(env, 0);
+			return -INFINITE+3;
 		}
 	}
-	
-	nodes++;
 	
 	if( depth<=0 ){
 		return qsearchOld( pos, alpha, beta, 11 );
 	}
-	
-    /*
-	int standpat = evaluate( pos );
-	int in_check=is_in_check( pos );
 
-	if( !in_check ){	
-		
-	    if( depth < 2  ){
-			
-	    	if( beta + 200 <= standpat )
-			{
-				return beta;
-			}
-		} else if ( depth < 3 ) {
-			
-			int bound=beta + 416;
-			
-			int v = qsearchOld( pos, bound-1, bound, 7 );
-			if( bound <= v )
-			{
-				return beta;
-			}
-		}
-	    //=====================================================================
-        
-    }*/
+	nodes++;
+	
+	bestScore = -INFINITE;
     
-	unsigned int move[768];
+	Move move[768];
 	int move_num=0x00;
 	
 	move_num += GenMoves( pos, &move[move_num] );	
-	
-	//====== first search ===================
-	int val,max,max_i;
-	int moveCount;
-	
-	doMove( pos, move[0] );
-	if( is_in_check( pos ) ) { max=val=-INFINITE; }
-	else 
-    { 
-        pos->color = 1 - pos->color;
-        max=val=-searchOld( pos, -beta, -alpha, depth-1 ); 
-        pos->color = 1 - pos->color; 
-    } 
-	undoMove( pos, move[0] );
 
-	if( beta <= val )
-    {
-		max_i=0;
-		goto ADD_HASH;
-	}
-	if( alpha < val )
-    {
-        pv[depth][depth]=move[0];
-		alpha=val;
-	}
-	//=======================================
 	//===== All search ======================
-	for( i=1; i<move_num; i++ ){
-		
+	for( i=0; i<move_num; i++ )
+	{	
 		doMove( pos, move[i] );
-		if( is_in_check(pos) ) { val=-INFINITE; }
-		else 
-        {
-            pos->color = 1 - pos->color;
-            val=-searchOld( pos, -alpha-1, -alpha, depth-1 ); 
-            pos->color = 1 - pos->color; 
-        }//NullWindow
-		undoMove( pos, move[i] );
-		
-		if(beta <= val)
-        {
-			max_i=i;
-			max=val;
-			goto ADD_HASH;
-		}
-		if(alpha < val)
-        {
-			alpha=val;
-			doMove( pos, move[i] );
-			if( is_in_check(pos) ) { val=-INFINITE; }
-			else
-            { 
-                pos->color = 1 - pos->color;
-                val=-searchOld( pos, -beta, -alpha, depth-1 );
-                pos->color = 1 - pos->color; 
-            }
+		if( is_in_check(pos) ) 
+		{ 
 			undoMove( pos, move[i] );
-			
-			if(beta <= val)
-            {
-				max_i=i;
-				max=val;
-				goto ADD_HASH;
-			}
-			if(alpha < val)
-            {
-				pv[depth][depth]=move[i];
+			continue; 
+		}
+
+		moveCount++;
+
+		if( moveCount == 1 ) isPVMove = true;
+		else isPVMove = false;
+
+		doFullDepthSearch = !isPVMove;
+		
+		// step16
+		//full depth search (PVS)
+		if( doFullDepthSearch )
+		{
+			pos->color = 1 - pos->color;
+			score = -searchOld( pos, -(alpha+1), -alpha, depth-1 ); 
+			pos->color = 1 - pos->color;
+		}
+		
+		if( isPVMove || ( alpha<score && score<beta ) )
+		{
+			pos->color = 1 - pos->color;
+			score = -searchOld( pos, -beta, -alpha, depth-1 ); 
+			pos->color = 1 - pos->color;
+		}
+
+		// step17
+		undoMove( pos, move[i] );
+	
+		// step18
+		if( bestScore < score )
+		{
+			bestScore = score;
+
+			if( alpha < score )
+			{
+				bestMove = move[i];
+				pv[depth][depth] = bestMove;
 				for(j=depth-1;j>0;j--) {
 					pv[depth][j]=pv[depth-1][j];
 				}
-				alpha=val;
+
+				if( score < beta )
+				{
+					alpha = score;
+				}
+				else {
+					// fail high
+					break;
+				}
 			}
 		}
-		if(max < val) max=val; 
 	}
-	
-	max_i=i-1;
-	
-ADD_HASH:
-	
-	return max;
+
+	// step20
+	if( moveCount == 0 ) return -INFINITE;
+
+	if( bestScore == -INFINITE )
+	{
+		bestScore = alpha;
+	}
+
+	if( beta <= bestScore )
+	{
+		//todo add killer and hash
+	}
+
+	return bestScore;
 }
 
 void init_searchOld(){
@@ -310,34 +287,36 @@ void iterationOld( struct Position *pos )
 	int alpha,beta;
 	int i;
 	
+	Move best;
+
 	depth=1;
 	
 	init_searchOld();
-	
-	setjmp(env);
-	
-	if(stop_search){
-		send_best_to_usi(best);
-		return;
-	}
-	
-	while(1){
-		
+
+	while(1)
+	{	
 		alpha=-INFINITE;
 		beta=INFINITE;
 		//is_RootNode=true;
 		
 		val=searchOld( pos, alpha, beta, depth );
-        printf("info string depth:%d val:%d\n",depth,val);
-		if(val==INFINITE)
+		if( val == -INFINITE + 3 || val == INFINITE - 3 )
+		{
+			send_best_to_usi(best);
+			return;
+		}
+		else if(val==INFINITE)
         { 
             //send_pv_to_usi(pv,val,depth,nodes);
             send_best_to_usi(pv[depth][depth]); 
             return; 
         }
 		else if(val==-INFINITE){ printf("bestmove resign\n"); return; }
-        best=pv[depth][depth];
-		for( i=depth; i>0; i-- ){ pv[i+1][i+1]=pv[i][i]; }
+		
+		send_pv_to_usi( pos, pv, val, depth, nodes );
+		//printf("move:%d\n",pv[depth][depth]);
+        best = pv[depth][depth];
 		depth++;
 	}
 }
+

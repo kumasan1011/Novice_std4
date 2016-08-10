@@ -76,11 +76,8 @@ int main()
         {
 			/*
 			AllTime=0;
-			init_hash_key();
-			if( eval_mode==mode_fv )
-            {
-				if( load_fv()==-2 ){ printf("load_error\n"); }
-			}*/
+			init_hash_key();*/
+			if( load_fv() == -2 ) printf("Error_fv.bin\n");
 			printf("readyok\n");
 		}
         else if( strncmp(buf,"position",strlen("position"))==0 ) 

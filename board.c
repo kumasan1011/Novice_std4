@@ -160,7 +160,7 @@ void InitBoard(struct Position* pos)
     }
     
     pos->color = Black; 
-    if( load_fv() == -2 ) printf("Error_fv.bin");
+    
     // for debug
     //pos->color = White; 
 }

@@ -1,8 +1,4 @@
 
-
-typedef int Ply;
-typedef int Score;
-
 const Ply MaxPly = 128;
 const Ply MaxPlyPlus4 = 132; //MaxPly + 4
 

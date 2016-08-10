@@ -156,7 +156,7 @@ void debugSearch( struct Position *pos, int depth )
     if( depth <= 0 ) return;
 
     int n;
-    //PrintBoard( pos );
+    PrintBoard( pos );
     unsigned int move[768];
     int move_num=0x00;
 

@@ -455,3 +455,32 @@ void printAllMoves( Move *move, int moveNum )
         printf("Cap : %d\n", Cap );
 	}
 }
+
+void send_pv_to_usi( struct Position *pos, Move pv[][32],Score score,Depth depth,int nodes )
+{
+	Board To,From,Pro,Piece,Drop;
+	int i;
+	
+	printf("info nodes %d score cp %d depth %d pv ",nodes,score,depth);
+	
+	for(i=depth;i>0;i--){
+		
+		if(pv[i][i]==0) break;
+		
+		To    = GetTo(pv[i][i]);
+		From  = GetFrom(pv[i][i]);  
+		Pro   = GetPro(pv[i][i]); 
+		Drop  = GetDrop(pv[i][i]);
+		Piece = pos->board[From];
+		
+		if(Drop){
+			printf("%s*%d%s",UsiPieceName[From],10-To%16,RankName[To/16]);
+		}else{
+			printf("%d%s%d%s",10-From%16,RankName[From/16],10-To%16,RankName[To/16]);
+			if(Pro) printf("+");
+		}
+		printf(" ");
+	}
+	
+	printf("\n");
+}
