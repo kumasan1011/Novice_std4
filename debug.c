@@ -175,3 +175,60 @@ void debugSearch( struct Position *pos, int depth )
         undoMove( pos, move[i] );
     }
 }
+
+void debugRule( struct Position *pos, Move move ) 
+{
+    int x,y;
+    int n;
+    Board sq;
+
+    Board From = GetFrom( move );
+    Board To = GetTo( move );
+    Board Pro = GetPro( move );
+    Piece Cap = GetCap( move );
+
+    for( y=1; y<=9; y++ )
+    {
+        for( x=1; x<=9; x++ )
+        {
+            sq=SQ(x,y);
+            if( SFU <= pos->board[sq] && pos->board[sq] <= SRY )
+            {
+                if( !pos->boardCol_b[sq] ) printf("Error 1\n");
+                if(  pos->boardCol_w[sq] ) printf("Error 2\n");
+            }
+            else if( EFU <= pos->board[sq] && pos->board[sq] <= ERY )
+            {
+                if(  pos->boardCol_b[sq] ) 
+                {
+                    printf("Error 3 sq = %d\n",sq);
+                    printf("Error\n");
+                    printf("board[To] : %d ", pos->board[To] );
+                    printf("Piece : %d ", pos->board[From] );
+                    printf("From : %d ", NSQ(From) );
+                    printf("To : %d ", NSQ(To) );
+                    printf("Cap : %d\n", Cap );
+                    PrintBoard(pos);
+                    //scanf("%d",&n);
+                }
+                if( !pos->boardCol_w[sq] ) printf("Error 4\n");
+            }
+            else if( !pos->board[sq] )
+            {
+                if(  pos->boardCol_b[sq] )
+                {
+                    printf("Error 5 sq = %d\n",sq);
+                    printf("Error\n");
+                    printf("board[To] : %d ", pos->board[To] );
+                    printf("Piece : %d ", pos->board[From] );
+                    printf("From : %d ", NSQ(From) );
+                    printf("To : %d ", NSQ(To) );
+                    printf("Cap : %d\n", Cap );
+                    PrintBoard(pos);
+                    //scanf("%d",&n);
+                }
+                if(  pos->boardCol_w[sq] ) printf("Error 6\n");
+            }
+        } 
+    }
+}

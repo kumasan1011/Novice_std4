@@ -1585,7 +1585,7 @@ inline int GenDragonMove_w( struct Position* pos, Board sq , Move* move )
     
     To = sq - 15;
     
-    if( !pos->board[To] || pos->boardCol_b[To] )
+    if( !pos->board[To] )
     {
         move[num] = AddTo(To) | AddFrom(sq);
         num++;

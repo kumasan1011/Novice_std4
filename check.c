@@ -139,3 +139,26 @@ int is_in_check( struct Position *pos )
 	
 	return 0;
 }
+
+int giveCheck( struct Position *pos )
+{	
+	int sq,i,j;
+	
+	sq=(pos->color? (pos->piecePos[1]):(pos->piecePos[2]));
+	
+	if(is_check_from_normal( pos, sq )) return 1;
+	
+	if(is_check_from_bishop( pos, -15, sq )) return 1;
+	if(is_check_from_bishop( pos,  15, sq )) return 1;
+	if(is_check_from_bishop( pos, -17, sq )) return 1;
+	if(is_check_from_bishop( pos,  17, sq )) return 1;
+	if(is_check_from_rook(   pos,  16, sq )) return 1;
+	if(is_check_from_rook(   pos, -16, sq )) return 1;
+	if(is_check_from_rook(   pos,   1, sq )) return 1;
+	if(is_check_from_rook(   pos,  -1, sq )) return 1;
+	
+	if( pos->color==Black){ if(is_check_from_lance( pos, -16, sq )) return 1; }
+	else { if(is_check_from_lance( pos, 16, sq )) return 1; }
+	
+	return 0;
+}

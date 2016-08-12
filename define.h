@@ -148,6 +148,7 @@ extern short kkp[nsquare][nsquare][kkp_end];
 #define FV_SCALE 32
 
 #define INFINITE 99999999
+#define INT_MAX 32767
 
 extern int CanMoveNum[31];
 extern int CanMove[31][8];
