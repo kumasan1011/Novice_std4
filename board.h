@@ -2,5 +2,6 @@
 #define _BOARD_H_
 
 void InitBoard(struct Position* pos);
+Hash calHash( struct Position pos );
 
 #endif //_BOARD_H_

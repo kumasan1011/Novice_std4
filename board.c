@@ -25,6 +25,9 @@ short pc_on_sq[nsquare][pos_n];
 short pc_on_sq2[nsquare][fe_end * (fe_end + 1)];
 short kkp[nsquare][nsquare][kkp_end];
 
+Hash zobrist[Piece_NB][SQ_NB];
+Hash zobHand[Color_NB][Hand_NB];
+
 struct Position tree;
 
 void InitBoard(struct Position* pos)
@@ -161,6 +164,7 @@ void InitBoard(struct Position* pos)
     
     pos->color = Black; 
     
+    pos->hashkey = calHash( *pos );
     // for debug
     //pos->color = White; 
 }
@@ -201,4 +205,70 @@ int load_fv(){
 		}
 	}
 	return 0;
+}
+
+// XOR疑似乱数
+unsigned long xor128_() {
+    static unsigned long x=123456789,y=362436069,z=521288629,w=88675123;
+    unsigned long t;
+    t=(x^(x<<11));
+	x=y;y=z;z=w; 
+	return( w=(w^(w>>19))^(t^(t>>8)) );
+}
+
+// 64bit乱数の生成
+uint64 xor128(){
+	
+	return xor128_() + (xor128_() << 31);
+	
+}
+
+void initHash()
+{
+    int j,k;
+
+    for( j = 0; j < Piece_NB; j++ )
+    {
+        for( k = 0; k < SQ_NB; k++ )
+        {
+            zobrist[j][k] = xor128() << 1;
+            // 左に1bitずらして手番を入れる  先手：０　後手：１
+        }
+    }
+
+    for( j = 0; j < Color_NB; j++ )
+    {
+        for( k = 0; k < Hand_NB; k++ )
+        {
+            zobHand[j][k] = xor128() << 1;
+        }
+    }
+}
+
+Hash calHash( struct Position pos )
+{
+    Hash result = 0;
+    int x,y,z;
+
+    for( y=1; y<=9; y++ )
+    {
+        for( x=1; x<=9; x++ )
+        {
+            z = SQ(x,y);
+            if( pos.board[z] )
+            {
+                result ^= zobrist[ pos.board[z] ][z];
+            }
+        }
+    }
+
+    for( x = 0; x < Hand_NB; x++ )
+    {
+        result += zobHand[Black][x] * pos.b_hand[x];
+        result += zobHand[White][x] * pos.w_hand[x];
+    }
+
+    if( pos.color == White ) result ^= 1;
+
+    return result;
 }

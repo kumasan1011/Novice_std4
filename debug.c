@@ -156,7 +156,6 @@ void debugSearch( struct Position *pos, int depth )
     if( depth <= 0 ) return;
 
     int n;
-    PrintBoard( pos );
     unsigned int move[768];
     int move_num=0x00;
 
@@ -208,7 +207,7 @@ void debugRule( struct Position *pos, Move move )
                     printf("From : %d ", NSQ(From) );
                     printf("To : %d ", NSQ(To) );
                     printf("Cap : %d\n", Cap );
-                    PrintBoard(pos);
+                    PrintBoard(*pos);
                     //scanf("%d",&n);
                 }
                 if( !pos->boardCol_w[sq] ) printf("Error 4\n");
@@ -224,11 +223,32 @@ void debugRule( struct Position *pos, Move move )
                     printf("From : %d ", NSQ(From) );
                     printf("To : %d ", NSQ(To) );
                     printf("Cap : %d\n", Cap );
-                    PrintBoard(pos);
+                    PrintBoard(*pos);
                     //scanf("%d",&n);
                 }
                 if(  pos->boardCol_w[sq] ) printf("Error 6\n");
             }
         } 
+    }
+}
+
+void debugHashMoves( struct Position *pos )
+{
+    int n;
+    unsigned int move[768];
+    int move_num=0x00;
+
+    move_num += GenMoves( pos, &move[move_num] );
+    //printAllMoves( &move[0], move_num );
+    //scanf("%d",&n);
+    int i;
+    for( i=0; i<move_num; i++ )
+    {
+        PrintBoard( *pos );
+        doMove( pos, move[i] );
+        PrintBoard( *pos );
+        undoMove( pos, move[i] );
+        PrintBoard( *pos );
+        scanf("%d",&n);
     }
 }

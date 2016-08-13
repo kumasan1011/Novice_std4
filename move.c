@@ -26,7 +26,9 @@ void doMove( struct Position* pos, Move move )
     if( GetDrop( move ) )
     {
         pos->board[To] = From;
-        
+        //====
+        pos->hashkey ^= zobrist[From][To];
+
         switch( pos->color )
         {
             case Black:
@@ -38,6 +40,8 @@ void doMove( struct Position* pos, Move move )
             pos->pieceStock[From][0] -= 1;
             pos->b_hand[From] -= 1;
             pos->b_hand[0] -= 1;
+            //=====
+            pos->hashkey  -= zobHand[Black][From];
             break;
             
             case White:
@@ -50,6 +54,8 @@ void doMove( struct Position* pos, Move move )
             pos->pieceStock[From][0] -= 1;
             pos->w_hand[From] -= 1;
             pos->w_hand[0] -= 1;
+            //=====
+            pos->hashkey  -= zobHand[White][From];
             break;
         }
     }
@@ -62,6 +68,7 @@ void doMove( struct Position* pos, Move move )
             pos->boardCol_b[ To ] = 1;
             if( Cap )
             {
+                pos->hashkey  ^= zobrist[ pos->board[ To ] ][ To ];
                 pos->boardCol_w[ To ] = 0;
                 if( Cap == EFU ) pos->Is2FU_w^=Add2FU(To%16);
                 if( ETO<=Cap ) { Cap-=23; }
@@ -71,6 +78,7 @@ void doMove( struct Position* pos, Move move )
                 pos->piecePos[ pos->boardNum[To] ] = 0;
                 pos->b_hand[Cap]++;
                 pos->b_hand[0]++;
+                pos->hashkey  += zobHand[Black][Cap];
             }
             if( pos->board[From] == SFU && Pro ) pos->Is2FU_b^=Add2FU(To%16);
             break;
@@ -80,6 +88,7 @@ void doMove( struct Position* pos, Move move )
             pos->boardCol_w[ To ] = 1;
             if( Cap )
             {
+                pos->hashkey  ^= zobrist[ pos->board[ To ] ][ To ];
                 pos->boardCol_b[ To ] = 0;
                 if( Cap == SFU ) pos->Is2FU_b^=Add2FU(To%16);
                 if( STO<=Cap ) { Cap-=8; }
@@ -88,18 +97,23 @@ void doMove( struct Position* pos, Move move )
                 pos->piecePos[ pos->boardNum[To] ] = 0;
                 pos->w_hand[Cap]++;
                 pos->w_hand[0]++;
+                pos->hashkey  += zobHand[White][Cap];
             }
             if( pos->board[From] == EFU && Pro ) pos->Is2FU_w^=Add2FU(To%16);
             break;
         }
-        
+        //===
+        pos->hashkey ^= zobrist[ pos->board[From] ][From];
+
         pos->board[ To ] = pos->board[From];
         if( Pro ) { pos->board[To] += 8; }
+        //===
+        pos->hashkey  ^= zobrist[ pos->board[ To ] ][ To ];
+
         pos->piecePos[ pos->boardNum[From] ] = To;
         pos->boardNum[ To ] = pos->boardNum[From];
         pos->boardNum[From] = 0;
         pos->board[From] = EMP;
-        
     }
 }
 
@@ -110,8 +124,11 @@ void undoMove( struct Position* pos, Move move )
     Board Pro = GetPro( move );
     Piece Cap = GetCap( move );
     
+
     if( GetDrop( move ) )
     {
+        pos->hashkey ^= zobrist[From][To];
+
         pos->board[ To ] = EMP;
         
         switch( pos->color )
@@ -125,6 +142,8 @@ void undoMove( struct Position* pos, Move move )
             pos->pieceStock[From][ pos->pieceStock[From][0] ] = pos->boardNum[To];
             pos->boardNum[To] = 0;
             pos->piecePos[ pos->pieceStock[ From ][ pos->pieceStock[From][0] ] ] = 0;
+            //=====
+            pos->hashkey  += zobHand[Black][From];
             break;
             
             case White:
@@ -137,11 +156,15 @@ void undoMove( struct Position* pos, Move move )
             pos->pieceStock[From][ pos->pieceStock[From][0] ] = pos->boardNum[To];
             pos->boardNum[To] = 0;
             pos->piecePos[ pos->pieceStock[ From ][ pos->pieceStock[From][0] ] ] = 0;
+            //=====
+            pos->hashkey  += zobHand[White][From];
             break;
         }
     }
     else
     {
+        pos->hashkey ^= zobrist[pos->board[To]][To];
+
         if( Pro )
         {
             pos->board[From] = pos->board[ To ] - 8;
@@ -150,12 +173,14 @@ void undoMove( struct Position* pos, Move move )
         {
             pos->board[From] = pos->board[ To ];
         }
+        //===
+        pos->hashkey ^= zobrist[ pos->board[ From ] ][ From ];
         
         pos->boardNum[From] = pos->boardNum[ To ];
         pos->boardNum[ To ] = 0;
         pos->piecePos[ pos->boardNum[From] ] = From;
         pos->board[ To ] = Cap;
-        
+         
         switch( pos->color )
         {
             case Black:
@@ -163,6 +188,9 @@ void undoMove( struct Position* pos, Move move )
             pos->boardCol_b[ To ] = 0;
             if( Cap )
             { 
+                //===
+                pos->hashkey ^= zobrist[ Cap ][ To ];
+
                 pos->boardCol_w[ To ] = 1;
                 if( Cap == EFU ) pos->Is2FU_w^=Add2FU(To%16);
                 if( ETO<=Cap ) { Cap-=23; }
@@ -173,6 +201,7 @@ void undoMove( struct Position* pos, Move move )
                 pos->piecePos[ pos->boardNum[To] ] = To;
                 pos->pieceStock[Cap][pos->pieceStock[Cap][0]] = 0;
                 pos->pieceStock[Cap][0]--;
+                pos->hashkey  -= zobHand[Black][Cap];
             }
             if(pos->board[From] == SFU && Pro ) pos->Is2FU_b^=Add2FU(To%16);
             break;
@@ -182,6 +211,9 @@ void undoMove( struct Position* pos, Move move )
             pos->boardCol_w[ To ] = 0;
             if( Cap )
             { 
+                //===
+                pos->hashkey ^= zobrist[ Cap ][ To ];
+                
                 pos->boardCol_b[ To ] = 1;
                 if( Cap == SFU ) pos->Is2FU_b^=Add2FU(To%16);
                 if( STO<=Cap ) { Cap-=8; }
@@ -191,6 +223,7 @@ void undoMove( struct Position* pos, Move move )
                 pos->piecePos[ pos->boardNum[To] ] = To;
                 pos->pieceStock[Cap][pos->pieceStock[Cap][0]] = 0;
                 pos->pieceStock[Cap][0]--;   
+                pos->hashkey  -= zobHand[White][Cap];
             }
             if( pos->board[From] == EFU && Pro ) pos->Is2FU_w^=Add2FU(To%16);
             break;

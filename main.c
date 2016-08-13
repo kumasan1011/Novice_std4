@@ -78,6 +78,7 @@ int main()
 			AllTime=0;
 			init_hash_key();*/
 			if( load_fv() == -2 ) printf("Error_fv.bin\n");
+			initHash();
 			printf("readyok\n");
 		}
         else if( strncmp(buf,"position",strlen("position"))==0 ) 
@@ -87,14 +88,14 @@ int main()
 				InitBoard(pos);
 				make_usi_position( buf, pos );
 				//set_hash();
-				PrintBoard(pos);
+				PrintBoard(*pos);
 			}
             else if( strncmp(buf,"position sfen",strlen("position sfen"))==0 )
             {
 				InitBoard(pos);
 				make_sfen_position( buf, pos );
 				//set_hash();
-				PrintBoard(pos);
+				PrintBoard(*pos);
 			}
 			continue;
 		}
@@ -136,7 +137,7 @@ int main()
 		{
 			InitBoard(pos);
 			make_sfen_position( &buf, pos );
-			PrintBoard(pos);
+			PrintBoard(*pos);
 		}
 		else if( strncmp(buf,"debug",strlen("debug"))==0 )
 		{
@@ -148,10 +149,10 @@ int main()
 			//PrintBoard(pos);
 			//undoMove( pos, move );
 			//confPosStruct( pos, pos0 );
-			//PrintBoard(pos);
-
-			debugSearch( pos, 5 );
-			
+		    //PrintBoard( *pos );
+			//debugSearch( pos, 5 );
+			//PrintBoard( *pos );
+			debugHashMoves(pos);
 		}
 		/*
 		Move move[600];
