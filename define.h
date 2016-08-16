@@ -160,6 +160,20 @@ extern int CanGo[8][31];
 extern Hash zobrist[Piece_NB][SQ_NB];
 extern Hash zobHand[Color_NB][Hand_NB];
 
+// ハッシュのサイズ
+#define HASH_MASK	0x0ffffff
+#define HASH_SIZE	HASH_MASK + 1
+
 struct StateInfo {
 	Hash key;
 };
+
+struct HashEntry {
+	Hash hash_key;
+	Score score;				// その局面の評価値
+	char rdepth;   				// そのときの残り深さ
+	char flag;					// 評価値のタイプ：下限値、真値、上限値
+	Move best;					// その最善手
+};
+
+extern struct HashEntry hash[Color_NB][HASH_SIZE];

@@ -13,9 +13,13 @@
 
 Score FutilityMargins[16][64];
 Score FutilityMoveCounts[32];
+Depth Reductions[2][64][64];
+Score History[2][32][256]; //[Color][PieceType][To]
+
+#define reduct( PVNode, depth, moveCount ) Reductions[PVNode][depth][(moveCount<63) ? moveCount : 63 ]
 
 /* Novice_wcsc26_final の探索 */
-
+int hash_hit;
 uint64 MaxTime;
 uint64 start;
 uint64 nodes;
@@ -28,7 +32,7 @@ void swap(unsigned int *a,unsigned int *b){
     *b = temp;
 }
 
-void moveOrder( struct Position *pos, struct SearchStack *ss, Move *move, int end_num, Depth depth )
+void moveOrder( struct Position *pos, struct SearchStack *ss, Move *move, int end_num, Depth depth, Move hashMove )
 {	
 	int i,j;
 	unsigned int Val[768];
@@ -37,12 +41,13 @@ void moveOrder( struct Position *pos, struct SearchStack *ss, Move *move, int en
 	for( i=0; i<end_num; i++ )
 	{
 		if(move[i]==pv[depth][depth]){	Val[i]=5500; continue; }
+		if(move[i]==hashMove){	Val[i]=5000; continue; }
 		//TODO  here is good_cap (SEE>0) move 
 		if(move[i]==ss->Killers[0]){ Val[i]=100; continue; }
 		if(move[i]==ss->Killers[1]){ Val[i]=50; continue; }
 		
 		Val[i]=GetCap(move[i])*( 31 - pos->board[GetFrom(move[i])] )*3;
-		Val[i]+=rand()%20;
+		Val[i]+=History[pos->color][pos->board[GetFrom(move[i])]][GetTo(move[i])];
 	}
 	
 	for(i=0;i<end_num-1;i++){
@@ -111,8 +116,7 @@ Score qsearch( struct Position *pos, struct SearchStack *ss, Score alpha, Score 
 	if(inCheck)
 	{
 		ss->staticEval = 0;
-		bestScore = futilityBase = -INFINITE;
-		return evaluate(pos);
+		bestScore = futilityBase = evaluate(pos);
 	}
 	else {
 		ss->staticEval = bestScore = evaluate(pos);
@@ -149,8 +153,9 @@ Score qsearch( struct Position *pos, struct SearchStack *ss, Score alpha, Score 
 		swap(&Val[i],&Val[maxid]);
 		swap(&move[i],&move[maxid]);
 	}
-	
-	for(i=0;i<move_num;i++){
+
+	for(i=0;i<move_num;i++)
+	{
 		if(!GetCap(move[i])) continue;
 
 		if( !PVNode 
@@ -166,6 +171,7 @@ Score qsearch( struct Position *pos, struct SearchStack *ss, Score alpha, Score 
 		}
 
 		doMove( pos, move[i] );
+
 		if(is_in_check( pos )) 
 		{ 
 			undoMove( pos, move[i] );
@@ -199,6 +205,7 @@ Score qsearch( struct Position *pos, struct SearchStack *ss, Score alpha, Score 
 			}
 		}
 	}
+
 	return bestScore;
 }
 
@@ -213,13 +220,15 @@ Score search( struct Position *pos, struct SearchStack *ss, Score alpha, Score b
 	Score score;
 	Score eval;
 	Move bestMove;
+	Move movesSearched[64];
 	Move move[768];
 	bool doFullDepthSearch;
 	bool isPVMove;
 	bool captureOrPromotion;
 	int  moveCount;
+	int  playMoveCount;
 	int  inCheck;
-	int move_num=0x00;
+	int  move_num=0x00;
 
 	if(nodes%16384==0)
     {
@@ -244,7 +253,7 @@ Score search( struct Position *pos, struct SearchStack *ss, Score alpha, Score b
 	
 	// step1
 	// initialize node
-	moveCount = 0;
+	moveCount = playMoveCount = 0;
 	inCheck   = is_in_check(pos);
 	bestScore = -INFINITE;
 
@@ -253,6 +262,25 @@ Score search( struct Position *pos, struct SearchStack *ss, Score alpha, Score b
 	(ss+1)->skipNullMove = false;
 	(ss+1)->reduction = 0;
 	(ss+2)->Killers[0] = (ss+2)->Killers[1] = 0;
+
+	// step4
+	// transposition table look up
+
+	Move hash_move = 0;
+	struct HashEntry *phash = NULL;
+	
+	// 現在の局面のハッシュ値をキーに、ハッシュテーブルを引く
+	if( hash_probe( pos->hashkey, pos->color, alpha, beta, depth, &phash) == 1 )
+	{
+		// 利用可能なハッシュがあった。
+		pv[depth][depth] = phash->best;
+		hash_hit++;
+		return phash->score;
+	}
+	if(phash)
+	{
+		hash_move  = phash->best;
+	}
 
 	// step5
 	// evaluate the position statically
@@ -271,11 +299,12 @@ Score search( struct Position *pos, struct SearchStack *ss, Score alpha, Score b
 	// step6
 	// razoring
 	if( !PVNode
+		&& !hash_move
 		&& depth < 4 
-		&& eval + razorMargin(depth) < beta
+		&& eval + razorMargin(depth*2) < beta
 		&& abs(beta) < INFINITE - 300 )
 	{
-		const Score rbeta = beta - razorMargin(depth);
+		const Score rbeta = beta - razorMargin(depth*2);
 		const Score s = qsearch( pos, ss, rbeta-1, rbeta, 5, NonPV );
 		if (s < rbeta) 
 		{
@@ -336,6 +365,7 @@ Score search( struct Position *pos, struct SearchStack *ss, Score alpha, Score b
 	else {
 		// fail low
 		if( depth < 5 
+			&& !hash_move
 			&& (ss-1)->reduction != 0)
 		{
 			return beta - 1;
@@ -361,8 +391,9 @@ Score search( struct Position *pos, struct SearchStack *ss, Score alpha, Score b
 iid_start:
 	// step10
 	// internal iterative deepning
-	/*
+	
 	if((PVNode ? 5 : 8) <= depth 
+		&& !hash_move
 		&& (PVNode || (!inCheck && beta <= ss->staticEval + 256)))
 	{
 		const Depth d = (PVNode ? depth - 2 : depth / 2);
@@ -371,19 +402,24 @@ iid_start:
 		search( pos, ss, alpha, beta, d, (PVNode ? PV : NonPV) );
 		ss->skipNullMove = false;
 	}
-	*/
+	
 
 	// step11
 	// Loop through moves
 	
 	move_num += GenMoves( pos, &move[move_num] );	
 
-	moveOrder( pos, ss, &move[0], move_num, depth );
+	moveOrder( pos, ss, &move[0], move_num, depth, hash_move );
 	
 	//===== All search ======================
 	for( i=0; i<move_num; i++ )
 	{	
 		captureOrPromotion = ( GetCap(move[i]) && GetPro(move[i]) );
+		extension = 0;
+
+		newDepth = depth - 1 + extension;
+
+		++moveCount;
 
 		// step13
 		// futility pruning
@@ -415,11 +451,38 @@ iid_start:
 			undoMove( pos, move[i] );
 			continue; 
 		}
-		moveCount++;
+
+		playMoveCount++;
 
 		isPVMove = (PVNode && moveCount == 1);
+		ss->currentMove  = move[i];
+		if ( playMoveCount < 64)
+		{
+			movesSearched[playMoveCount++] = move[i];
+		}
+		//step15
+		// LMR
+		if( 3 <= depth
+			&& !isPVMove
+			&& !captureOrPromotion
+			&& move[i] != hash_move
+			&& ss->Killers[0] != move[i]
+			&& ss->Killers[1] != move[i] )
+		{
+			ss->reduction = reduct(PVNode,depth,moveCount);
+			const Depth d = (( newDepth - ss->reduction > 2 ) ? newDepth - ss->reduction : 2);
 
-		doFullDepthSearch = !isPVMove;
+			//PVS
+			pos->color = 1 - pos->color;
+			score = -search( pos, ss+1, -(alpha+1), -alpha, d, NonPV ); 
+			pos->color = 1 - pos->color;
+			
+			doFullDepthSearch = (alpha < score && ss->reduction != 0);
+			ss->reduction = 0;
+		}
+		else {
+			doFullDepthSearch = !isPVMove;
+		}
 		
 		// step16
 		// full depth search (PVS)
@@ -475,11 +538,18 @@ iid_start:
 
 	if( beta <= bestScore )
 	{
-		if (bestMove != ss->Killers[0]) {
-			ss->Killers[1] = ss->Killers[0];
-			ss->Killers[0] = bestMove;
-		}
-		//todo add killer and hash
+		hash_add( pos->hashkey, pos->color, bestScore, alpha, beta, depth, bestMove );
+
+		if( GetCap(bestMove) && GetPro(bestMove) )
+		{
+			if (!inCheck && bestMove != ss->Killers[0]) 
+			{
+				ss->Killers[1] = ss->Killers[0];
+				ss->Killers[0] = bestMove;
+			}
+
+			History[pos->color][pos->board[GetFrom(bestMove)]][GetTo(bestMove)] += depth*depth;
+		}	
 	}
 
 	return bestScore;
@@ -487,9 +557,20 @@ iid_start:
 
 void init_searchOld(){
 	
-    int i,j;
-	int d,mc;
+    int i,j,k;
+	int d,hd,mc;
 
+	for( hd = 1; hd < 64; hd++ )
+	{
+		for( mc = 1; mc < 64; mc++ )
+		{
+			double    pvRed = log((double)hd) * log((double)mc) / 3.0;
+			double nonPVRed = 0.33 + log((double)hd) * log((double)mc) / 2.25;
+			Reductions[1][hd][mc] = (int) (   pvRed >= 1.0 ? floor(   pvRed * (int)(2)) : 0);
+			Reductions[0][hd][mc] = (int) (nonPVRed >= 1.0 ? floor(nonPVRed * (int)(2)) : 0);
+		}
+	}
+	hash_hit = 0;
 	nodes=0;
 	start=timeGetTime();
 	for( i=0; i<32; i++ ){
@@ -505,6 +586,17 @@ void init_searchOld(){
 	}
 	for (d = 0; d < 32; ++d){
 		FutilityMoveCounts[d] = (int){ 3.001 + 0.3 * pow( (double)(d), 1.8) };
+	}
+
+	for( i=0; i<2; i++ )
+	{
+		for( j=0; j<32; j++ )
+		{
+			for( k=0; k<256; k++ )
+			{
+				History[i][j][k] = 0;
+			}
+		}
 	}
 	//if(AllTime>550000) MaxTime=8000;
 	//else MaxTime=9800;
@@ -550,6 +642,7 @@ void iterationOld( struct Position *pos )
 		else if(val==-INFINITE){ printf("bestmove resign\n"); return; }
 		
 		send_pv_to_usi( pos, pv, val, depth, nodes );
+		//printf("hash_hit:%d\n",hash_hit);
 		//printf("move:%d\n",pv[depth][depth]);
         best = pv[depth][depth];
 		for( i=depth; i>0; i-- ){ pv[i+1][i+1]=pv[depth][i]; }

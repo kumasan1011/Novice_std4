@@ -102,6 +102,7 @@ int main()
         else if(strncmp(buf, "go", strlen("go")) == 0) 
         {
 			iterationOld( pos );
+			//PrintBoard(*pos);
             /*if(strncmp(buf, "go infinite", strlen("go infinite")) == 0) { IsGoInfinite=true; }
             IsStopReceived=false;
             pthread_t pthread;
@@ -149,10 +150,10 @@ int main()
 			//PrintBoard(pos);
 			//undoMove( pos, move );
 			//confPosStruct( pos, pos0 );
-		    //PrintBoard( *pos );
-			//debugSearch( pos, 5 );
-			//PrintBoard( *pos );
-			debugHashMoves(pos);
+		    PrintBoard( *pos );
+			debugSearch( pos, 5 );
+			PrintBoard( *pos );
+			//debugHashMoves(pos);
 		}
 		/*
 		Move move[600];

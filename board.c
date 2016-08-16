@@ -257,12 +257,12 @@ Hash calHash( struct Position pos )
             z = SQ(x,y);
             if( pos.board[z] )
             {
-                result ^= zobrist[ pos.board[z] ][z];
+                result += zobrist[ pos.board[z] ][z];
             }
         }
     }
 
-    for( x = 0; x < Hand_NB; x++ )
+    for( x = 1; x < Hand_NB; x++ )
     {
         result += zobHand[Black][x] * pos.b_hand[x];
         result += zobHand[White][x] * pos.w_hand[x];
