@@ -46,7 +46,7 @@ void moveOrder( struct Position *pos, struct SearchStack *ss, Move *move, int en
 		if(move[i]==ss->Killers[0]){ Val[i]=100; continue; }
 		if(move[i]==ss->Killers[1]){ Val[i]=50; continue; }
 		
-		Val[i]=GetCap(move[i])*( 31 - pos->board[GetFrom(move[i])] )*3;
+		Val[i]=GetCap(move[i])*( 31 - pos->board[GetFrom(move[i])] )*10;
 		Val[i]+=History[pos->color][pos->board[GetFrom(move[i])]][GetTo(move[i])];
 	}
 	
