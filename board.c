@@ -165,6 +165,7 @@ void InitBoard(struct Position* pos)
     pos->color = Black; 
     
     pos->hashkey = calHash( *pos );
+
     // for debug
     //pos->color = White; 
 }
@@ -272,3 +273,4 @@ Hash calHash( struct Position pos )
 
     return result;
 }
+

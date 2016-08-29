@@ -5,7 +5,7 @@
 #include "define.h"
 #include "evaluate.h"
 
-int evaluate( struct Position *ptree ){
+Score evaluate( struct Position *ptree ){
 	
 	int score=0;
 	int ret=0;

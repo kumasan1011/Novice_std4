@@ -150,9 +150,9 @@ int main()
 			//PrintBoard(pos);
 			//undoMove( pos, move );
 			//confPosStruct( pos, pos0 );
-		    PrintBoard( *pos );
-			debugSearch( pos, 5 );
-			PrintBoard( *pos );
+		    //PrintBoard( *pos );
+			//debugSearch( pos, 5 );
+			//PrintBoard( *pos );
 			//debugHashMoves(pos);
 		}
 		/*

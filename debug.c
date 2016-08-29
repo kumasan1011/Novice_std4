@@ -249,6 +249,6 @@ void debugHashMoves( struct Position *pos )
         PrintBoard( *pos );
         undoMove( pos, move[i] );
         PrintBoard( *pos );
-        scanf("%d",&n);
+        //scanf("%d",&n);
     }
 }

@@ -456,7 +456,7 @@ void printAllMoves( Move *move, int moveNum )
 	}
 }
 
-void send_pv_to_usi( struct Position *pos, Move pv[][32],Score score,Depth depth,int nodes )
+void send_pv_to_usi( Move pv[][32],Score score,Depth depth,int nodes )
 {
 	Board To,From,Pro,Piece,Drop;
 	int i;

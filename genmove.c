@@ -2262,7 +2262,7 @@ int GenMoves( struct Position* pos, Move* move )
                             case EGI:
                             moveNum += GenSilverMove_w( pos, sq, &move[moveNum] );
                             break;
-                            case EKI: case STO: case SNY: case SNE: case SNG:
+                            case EKI: case ETO: case ENY: case ENE: case ENG:
                             moveNum += GenGoldMove_w( pos, sq, &move[moveNum] );
                             break;
                             case EOU:
@@ -2306,7 +2306,7 @@ int GenMoves( struct Position* pos, Move* move )
                         case EGI:
                         moveNum += GenSilverMove_w( pos, sq, &move[moveNum] );
                         break;
-                        case EKI: case STO: case SNY: case SNE: case SNG:
+                        case EKI: case ETO: case ENY: case ENE: case ENG:
                         moveNum += GenGoldMove_w( pos, sq, &move[moveNum] );
                         break;
                         case EOU:
@@ -2350,7 +2350,7 @@ int GenMoves( struct Position* pos, Move* move )
                         case EGI:
                         moveNum += GenSilverMove_w( pos, sq, &move[moveNum] );
                         break;
-                        case EKI: case STO: case SNY: case SNE: case SNG:
+                        case EKI: case ETO: case ENY: case ENE: case ENG:
                         moveNum += GenGoldMove_w( pos, sq, &move[moveNum] );
                         break;
                         case EOU:
@@ -2396,7 +2396,7 @@ int GenMoves( struct Position* pos, Move* move )
                             case EGI:
                             moveNum += GenSilverMove_w( pos, sq, &move[moveNum] );
                             break;
-                            case EKI: case STO: case SNY: case SNE: case SNG:
+                            case EKI: case ETO: case ENY: case ENE: case ENG:
                             moveNum += GenGoldMove_w( pos, sq, &move[moveNum] );
                             break;
                             case EOU:
@@ -2425,98 +2425,108 @@ int GenMoves( struct Position* pos, Move* move )
     return moveNum;
 }
 
-/*
 int GenOnlyMoves( struct Position* pos, Move* move )
 {
-    int i;
+    int i,x,y,sq;
     int moveNum = 0;
     
     switch( pos->color )
-    {    
+    {
         case Black:
-        for( i=1; i<=40; i++ )
+        for( y=0x10; y<=0x90; y+=0x10 )
         {
-            if( pos->pieceCol_b[i] )
+            for( x=0x01; x<=0x09; x++ )
             {
-                switch( pos->board[ pos->piecePos[i] ] )
+                sq = y + x;
+                switch( pos->board[ sq ] )
                 {
+                    case EMP:
+                    break;
                     case SFU:
-                    moveNum += GenPawnMove_b( pos, pos->piecePos[i], &move[moveNum] );
+                    moveNum += GenPawnMove_b( pos, sq, &move[moveNum] );
                     break;
                     case SKY:
-                    moveNum += GenLanceMove_b( pos, pos->piecePos[i], &move[moveNum] );
+                    moveNum += GenLanceMove_b( pos, sq, &move[moveNum] );
                     break;
                     case SKE:
-                    moveNum += GenKnightMove_b( pos, pos->piecePos[i], &move[moveNum] );
+                    moveNum += GenKnightMove_b( pos, sq, &move[moveNum] );
                     break;
                     case SGI:
-                    moveNum += GenSilverMove_b( pos, pos->piecePos[i], &move[moveNum] );
+                    moveNum += GenSilverMove_b( pos, sq, &move[moveNum] );
                     break;
                     case SKI: case STO: case SNY: case SNE: case SNG:
-                    moveNum += GenGoldMove_b( pos, pos->piecePos[i], &move[moveNum] );
+                    moveNum += GenGoldMove_b( pos, sq, &move[moveNum] );
                     break;
                     case SOU:
-                    moveNum += GenKingMove_b( pos, pos->piecePos[i], &move[moveNum] );
+                    moveNum += GenKingMove_b( pos, sq, &move[moveNum] );
                     break;
                     case SKA:
-                    moveNum += GenBishopMove_b( pos, pos->piecePos[i], &move[moveNum] );
+                    moveNum += GenBishopMove_b( pos, sq, &move[moveNum] );
                     break;
                     case SHI:
-                    moveNum += GenRookMove_b( pos, pos->piecePos[i], &move[moveNum] );
+                    moveNum += GenRookMove_b( pos, sq, &move[moveNum] );
                     break;
                     case SUM:
-                    moveNum += GenHorseMove_b( pos, pos->piecePos[i], &move[moveNum] );
+                    moveNum += GenHorseMove_b( pos, sq, &move[moveNum] );
                     break;
                     case SRY:
-                    moveNum += GenDragonMove_b( pos, pos->piecePos[i], &move[moveNum] );
+                    moveNum += GenDragonMove_b( pos, sq, &move[moveNum] );
                     break;
+                    default:
+                    continue;
                 }
             }
         }
         break;
         
+        //後手
         case White:
-        for( i=1; i<=40; i++ )
+        for( y=0x10; y<=0x90; y+=0x10 )
         {
-            if( pos->pieceCol_w[i] )
+            for( x=0x01; x<=0x09; x++ )
             {
-                switch( pos->board[ pos->piecePos[i] ] )
+                sq = y + x;
+
+                if( pos->boardCol_w[sq] )
                 {
-                    case EFU:
-                    moveNum += GenPawnMove_w( pos, pos->piecePos[i], &move[moveNum] );
-                    break;
-                    case EKY:
-                    moveNum += GenLanceMove_w( pos, pos->piecePos[i], &move[moveNum] );
-                    break;
-                    case EKE:
-                    moveNum += GenKnightMove_w( pos, pos->piecePos[i], &move[moveNum] );
-                    break;
-                    case EGI:
-                    moveNum += GenSilverMove_w( pos, pos->piecePos[i], &move[moveNum] );
-                    break;
-                    case EKI: case ETO: case ENY: case ENE: case ENG:
-                    moveNum += GenGoldMove_w( pos, pos->piecePos[i], &move[moveNum] );
-                    break;
-                    case EOU:
-                    moveNum += GenKingMove_w( pos, pos->piecePos[i], &move[moveNum] );
-                    break;
-                    case EKA:
-                    moveNum += GenBishopMove_w( pos, pos->piecePos[i], &move[moveNum] );
-                    break;
-                    case EHI:
-                    moveNum += GenRookMove_w( pos, pos->piecePos[i], &move[moveNum] );
-                    break;
-                    case EUM:
-                    moveNum += GenHorseMove_w( pos, pos->piecePos[i], &move[moveNum] );
-                    break;
-                    case ERY:
-                    moveNum += GenDragonMove_w( pos, pos->piecePos[i], &move[moveNum] );
-                    break;
+                    switch( pos->board[ sq ] )
+                    {
+                        case EFU:
+                        moveNum += GenPawnMove_w( pos, sq, &move[moveNum] );
+                        break;
+                        case EKY:
+                        moveNum += GenLanceMove_w( pos, sq, &move[moveNum] );
+                        break;
+                        case EKE:
+                        moveNum += GenKnightMove_w( pos, sq, &move[moveNum] );
+                        break;
+                        case EGI:
+                        moveNum += GenSilverMove_w( pos, sq, &move[moveNum] );
+                        break;
+                        case EKI: case ETO: case ENY: case ENE: case ENG:
+                        moveNum += GenGoldMove_w( pos, sq, &move[moveNum] );
+                        break;
+                        case EOU:
+                        moveNum += GenKingMove_w( pos, sq, &move[moveNum] );
+                        break;
+                        case EKA:
+                        moveNum += GenBishopMove_w( pos, sq, &move[moveNum] );
+                        break;
+                        case EHI:
+                        moveNum += GenRookMove_w( pos, sq, &move[moveNum] );
+                        break;
+                        case EUM:
+                        moveNum += GenHorseMove_w( pos, sq, &move[moveNum] );
+                        break;
+                        case ERY:
+                        moveNum += GenDragonMove_w( pos, sq, &move[moveNum] );
+                        break;
+                    }
                 }
             }
         }
         break;
     }
-    return moveNum; 
+    
+    return moveNum;
 }
-*/

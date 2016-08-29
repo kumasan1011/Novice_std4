@@ -11,17 +11,6 @@ void doMove( struct Position* pos, Move move )
     Board To = GetTo( move );
     Board Pro = GetPro( move );
     Piece Cap = GetCap( move );
-    
-    if( Cap 
-        && ( pos->board[To] != Cap ))
-    {
-        printf("Error\n");
-        printf("board[To] : %d ", pos->board[To] );
-        printf("Piece : %d ", pos->board[From] );
-        printf("From : %d ", NSQ(From) );
-        printf("To : %d ", NSQ(To) );
-        printf("Cap : %d\n", Cap );
-    }
 
     if( GetDrop( move ) )
     {
