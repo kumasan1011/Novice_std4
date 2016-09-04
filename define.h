@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdint.h>
 
 //macro
 
@@ -76,7 +77,7 @@ struct Position {
 
 extern struct Position tree;
 
-
+/*
 //======= Param used in fv.bin ==================================
 enum {
 	// pc_on_sqで使うためのテーブル
@@ -138,10 +139,69 @@ enum {
 };
 
 enum { pos_n=fe_end*(fe_end+1)/2 , nsquare=81 };
+*/
 
+enum { nsquare=81 };
+enum {
+    // f = friend(≒先手)の意味。e = enemy(≒後手)の意味 
+
+    f_hand_pawn = 1,//0//0+1
+    e_hand_pawn = 20,//f_hand_pawn + 19,//19+1
+    f_hand_lance = 39,//e_hand_pawn + 19,//38+1
+    e_hand_lance = 44,//f_hand_lance + 5,//43+1
+    f_hand_knight = 49,//e_hand_lance + 5,//48+1
+    e_hand_knight = 54,//f_hand_knight + 5,//53+1
+    f_hand_silver = 59,//e_hand_knight + 5,//58+1
+    e_hand_silver = 64,//f_hand_silver + 5,//63+1
+    f_hand_gold = 69,//e_hand_silver + 5,//68+1
+    e_hand_gold = 74,//f_hand_gold + 5,//73+1
+    f_hand_bishop = 79,//e_hand_gold + 5,//78+1
+    e_hand_bishop = 82,//f_hand_bishop + 3,//81+1
+    f_hand_rook = 85,//e_hand_bishop + 3,//84+1
+    e_hand_rook = 88,//f_hand_rook + 3,//87+1
+    fe_hand_end = 90,//e_hand_rook + 3,//90 
+
+    // --- 盤上の駒
+    f_pawn = fe_hand_end,
+    e_pawn = f_pawn + 81,
+    f_lance = e_pawn + 81,
+    e_lance = f_lance + 81,
+    f_knight = e_lance + 81,
+    e_knight = f_knight + 81,
+    f_silver = e_knight + 81,
+    e_silver = f_silver + 81,
+    f_gold = e_silver + 81,
+    e_gold = f_gold + 81,
+    f_bishop = e_gold + 81,
+    e_bishop = f_bishop + 81,
+    f_horse = e_bishop + 81,
+    e_horse = f_horse + 81,
+    f_rook = e_horse + 81,
+    e_rook = f_rook + 81,
+    f_dragon = e_rook + 81,
+    e_dragon = f_dragon + 81,
+    fe_end = e_dragon + 81,
+
+    // 王も一意な駒番号を付与。これは2駒関係をするときに王に一意な番号が必要なための拡張
+    f_king = fe_end,
+    e_king = f_king + nsquare,
+    fe_end2 = e_king + nsquare // 玉も含めた末尾の番号。  
+};
+
+typedef int32_t ValueKk;
+typedef int16_t ValueKpp;
+typedef int32_t ValueKkp;
+typedef int16_t BonaPiece;
+
+extern ValueKk kk[nsquare][nsquare][2];
+extern ValueKpp kpp[nsquare][fe_end][fe_end][2];
+extern ValueKkp kkp[nsquare][nsquare][fe_end][2];
+
+/*
 extern short pc_on_sq[nsquare][pos_n];
 extern short pc_on_sq2[nsquare][fe_end * (fe_end + 1)];
 extern short kkp[nsquare][nsquare][kkp_end];
+*/
 #define PcPcOnSq2(k,i,j)    pc_on_sq2[k][i * fe_end + j]
 #define PcPcOnSq(k,i,j)     pc_on_sq[k][(i)*((i)+1)/2+(j)]
 #define Inv(i) (80-i)

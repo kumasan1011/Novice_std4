@@ -1,0 +1,157 @@
+// material (hand)
+	if( ptree->b_hand[FU] )
+	{
+		material += PieceHandVal[FU]*ptree->b_hand[FU];
+		for( j=1; j<=ptree->b_hand[FU]; ++j )
+		{
+			pieceListFb[nlist] = (BonaPiece)( f_hand_pawn + j );
+			pieceListFw[nlist] = (BonaPiece)( e_hand_pawn + j );
+			nlist++;
+		}
+	}
+	if( ptree->b_hand[KY] )
+	{
+		material += PieceHandVal[KY]*ptree->b_hand[KY];
+		for( j=1; j<=ptree->b_hand[KY]; ++j )
+		{
+			pieceListFb[nlist] = (BonaPiece)( f_hand_lance + j );
+			pieceListFw[nlist] = (BonaPiece)( e_hand_lance + j );
+			nlist++;
+		}
+	}
+	if( ptree->b_hand[KE] )
+	{
+		material += PieceHandVal[KE]*ptree->b_hand[KE];
+		for( j=1; j<=ptree->b_hand[KE]; ++j )
+		{
+			pieceListFb[nlist] = (BonaPiece)( f_hand_knight + j );
+			pieceListFw[nlist] = (BonaPiece)( e_hand_knight + j );
+			nlist++;
+		}
+	}
+	if( ptree->b_hand[GI] )
+	{
+		material += PieceHandVal[GI]*ptree->b_hand[GI];
+		for( j=1; j<=ptree->b_hand[GI]; ++j )
+		{
+			pieceListFb[nlist] = (BonaPiece)( f_hand_silver + j );
+			pieceListFw[nlist] = (BonaPiece)( e_hand_silver + j );
+			nlist++;
+		}
+	}
+	if( ptree->b_hand[KI] )
+	{
+		material += PieceHandVal[KI]*ptree->b_hand[KI];
+		for( j=1; j<=ptree->b_hand[KI]; ++j )
+		{
+			pieceListFb[nlist] = (BonaPiece)( f_hand_gold + j );
+			pieceListFw[nlist] = (BonaPiece)( e_hand_gold + j );
+			nlist++;
+		}
+	}
+	if( ptree->b_hand[KA] )
+	{
+		material += PieceHandVal[KA]*ptree->b_hand[KA];
+		for( j=1; j<=ptree->b_hand[KA]; ++j )
+		{
+			pieceListFb[nlist] = (BonaPiece)( f_hand_bishop + j );
+			pieceListFw[nlist] = (BonaPiece)( e_hand_bishop + j );
+			nlist++;
+		}
+	}
+	if( ptree->b_hand[HI] )
+	{
+		material += PieceHandVal[HI]*ptree->b_hand[HI];
+		for( j=1; j<=ptree->b_hand[HI]; ++j )
+		{
+			pieceListFb[nlist] = (BonaPiece)( f_hand_rook + j );
+			pieceListFw[nlist] = (BonaPiece)( e_hand_rook + j );
+			nlist++;
+		}
+	}
+
+	if( ptree->w_hand[FU] )
+	{
+		material-=PieceHandVal[FU]*ptree->w_hand[FU];
+		
+		for( j=1; j<=ptree->w_hand[FU]; ++j )
+		{
+			pieceListFb[nlist] = (BonaPiece)( e_hand_pawn + j );
+			pieceListFw[nlist] = (BonaPiece)( f_hand_pawn + j );
+			nlist++;
+		}
+	}
+
+	if( ptree->w_hand[KY] )
+	{
+		material-=PieceHandVal[KY]*ptree->w_hand[KY];
+		
+		for( j=1; j<=ptree->w_hand[KY]; ++j )
+		{
+			pieceListFb[nlist] = (BonaPiece)( e_hand_lance + j );
+			pieceListFw[nlist] = (BonaPiece)( f_hand_lance + j );
+			nlist++;
+		}
+	}
+
+	if( ptree->w_hand[KE] )
+	{
+		material-=PieceHandVal[KE]*ptree->w_hand[KE];
+		
+		for( j=1; j<=ptree->w_hand[KE]; ++j )
+		{
+			pieceListFb[nlist] = (BonaPiece)( e_hand_knight + j );
+			pieceListFw[nlist] = (BonaPiece)( f_hand_knight + j );
+			nlist++;
+		}
+	}
+
+	if( ptree->w_hand[GI] )
+	{
+		material-=PieceHandVal[GI]*ptree->w_hand[GI];
+		
+		for( j=1; j<=ptree->w_hand[GI]; ++j )
+		{
+			pieceListFb[nlist] = (BonaPiece)( e_hand_silver + j );
+			pieceListFw[nlist] = (BonaPiece)( f_hand_silver + j );
+			nlist++;
+		}
+	}
+
+	if( ptree->w_hand[KI] )
+	{
+		material-=PieceHandVal[KI]*ptree->w_hand[KI];
+		
+		for( j=1; j<=ptree->w_hand[KI]; ++j )
+		{
+			pieceListFb[nlist] = (BonaPiece)( e_hand_gold + j );
+			pieceListFw[nlist] = (BonaPiece)( f_hand_gold + j );
+			nlist++;
+		}
+	}
+
+	if( ptree->w_hand[KA] )
+	{
+		material-=PieceHandVal[KA]*ptree->w_hand[KA];
+		
+		for( j=1; j<=ptree->w_hand[KA]; ++j )
+		{
+			pieceListFb[nlist] = (BonaPiece)( e_hand_bishop + j );
+			pieceListFw[nlist] = (BonaPiece)( f_hand_bishop + j );
+			nlist++;
+		}
+	}
+
+	if( ptree->w_hand[HI] )
+	{
+		material-=PieceHandVal[HI]*ptree->w_hand[HI];
+		
+		for( j=1; j<=ptree->w_hand[HI]; ++j )
+		{
+			pieceListFb[nlist] = (BonaPiece)( e_hand_rook + j );
+			pieceListFw[nlist] = (BonaPiece)( f_hand_rook + j );
+			nlist++;
+		}
+	}
+
+    

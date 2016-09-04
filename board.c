@@ -21,9 +21,15 @@
 #include "define.h"
 #include "board.h"
 
+/*
 short pc_on_sq[nsquare][pos_n];
 short pc_on_sq2[nsquare][fe_end * (fe_end + 1)];
 short kkp[nsquare][nsquare][kkp_end];
+*/
+
+ValueKk  kk[nsquare][nsquare][2];
+ValueKpp kpp[nsquare][fe_end][fe_end][2];
+ValueKkp kkp[nsquare][nsquare][fe_end][2];
 
 Hash zobrist[Piece_NB][SQ_NB];
 Hash zobHand[Color_NB][Hand_NB];
@@ -170,6 +176,7 @@ void InitBoard(struct Position* pos)
     //pos->color = White; 
 }
 
+/*
 int load_fv(){
 	
 	FILE *fp;
@@ -207,7 +214,59 @@ int load_fv(){
 	}
 	return 0;
 }
+*/
 
+int load_eval()
+{
+    FILE *fp;
+	size_t size;
+
+    //============================
+    //             KK
+    //============================
+	fp = fopen( "KK_synthesized.bin" , "rb" );
+	if ( fp == NULL ) { return -2; }
+	
+	size = nsquare * nsquare * 2 * sizeof(ValueKk) ;
+	if( fread( kk, sizeof(char), size, fp ) != size )
+    {
+		fclose( fp );
+		return -2;
+	}
+    
+    fclose( fp );
+
+    //============================
+    //             KPP
+    //============================
+    fp = fopen( "KPP_synthesized.bin" , "rb" );
+	if ( fp == NULL ) { return -2; }
+	
+	size = nsquare * fe_end * fe_end * 2 * sizeof(ValueKpp) ;
+	if ( fread( kpp, sizeof(char), size, fp ) != size )
+    {
+		fclose( fp );
+		return -2;
+    }
+    fclose( fp );
+    
+    //============================
+    //             KKP
+    //============================
+	fp = fopen( "KKP_synthesized.bin" , "rb" );
+	if ( fp == NULL ) { return -2; }
+	
+	size = nsquare *nsquare * fe_end * 2 * sizeof(ValueKkp) ;
+	if ( fread( kkp, sizeof(char), size, fp ) != size )
+    {
+		fclose( fp );
+		return -2;
+    }
+    
+	fclose( fp );
+
+    return 0;
+}
 // XOR疑似乱数
 unsigned long xor128_() {
     static unsigned long x=123456789,y=362436069,z=521288629,w=88675123;

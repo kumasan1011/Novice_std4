@@ -53,7 +53,7 @@ int main()
 		
 		if( strncmp( buf,"usi",len )==0 ) 
         {
-			printf("id name Novice_beta\n");
+			printf("id name Novice_4thDT\n");
 			printf("id author Kumagai Hirotaka\n");
 			printf("option name ValueType type combo default Komadoku var Komadoku var fv.bin\n");
 			printf("usiok\n");
@@ -77,7 +77,8 @@ int main()
 			/*
 			AllTime=0;
 			init_hash_key();*/
-			if( load_fv() == -2 ) printf("Error_fv.bin\n");
+			//if( load_fv() == -2 ) printf("Error_fv.bin\n");
+			if( load_eval() == -2 ) printf("Error_load_eval_file\n");
 			initHash();
 			printf("readyok\n");
 		}
@@ -101,6 +102,7 @@ int main()
 		}
         else if(strncmp(buf, "go", strlen("go")) == 0) 
         {
+			//printf("Score:%d\n" , evaluate( pos ) );
 			iterationOld( pos );
 			//PrintBoard(*pos);
             /*if(strncmp(buf, "go infinite", strlen("go infinite")) == 0) { IsGoInfinite=true; }
