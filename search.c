@@ -22,6 +22,7 @@ Score History[2][32][256]; //[Color][PieceType][To]
 /* Novice_wcsc26_final の探索 */
 int hash_hit;
 uint64 MaxTime;
+uint64 FullTime = 0;
 uint64 start;
 uint64 nodes;
 Move pv[32][32];
@@ -650,9 +651,10 @@ void init_searchOld(){
 			}
 		}
 	}
-	//if(AllTime>550000) MaxTime=8000;
-	//else MaxTime=9800;
-	MaxTime=14000;
+	if ( FullTime < 4000 ) MaxTime=1800;
+	else if ( FullTime > 880000 ) MaxTime = 8000; // 10 sec limits
+	else MaxTime = 15000;
+	//MaxTime=14000;
 	//MaxTime = 29800;
 	//MaxTime = 3000;
 }
@@ -683,6 +685,9 @@ void iterationOld( struct Position *pos )
 		val=search( pos, ss + 1, alpha, beta, depth, PV );
 		if( val == -INFINITE + 3 || val == INFINITE - 3 )
 		{
+			int current=timeGetTime();
+			int usi_time=current-start;
+			FullTime += usi_time;
 			send_best_to_usi(best);
 			return;
 		}
