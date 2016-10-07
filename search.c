@@ -285,18 +285,36 @@ Score search( struct Position *pos, struct SearchStack *ss, Score alpha, Score b
 	// step6
 	// razoring
 	if( !PVNode
-		&& !hash_move
+		&& !phash
 		&& depth < 4 
-		&& eval + razorMargin(depth) <= alpha )
+		&& eval + razorMargin(depth) <beta )
 	{
-		const Score ralpha = alpha - razorMargin(depth);
-		const Score s = qsearch( pos, ss, ralpha, ralpha + 1, 5, NonPV );
-		if (s <= ralpha) 
+		const Score rbeta = beta - razorMargin(depth);
+		const Score s = qsearch( pos, ss, rbeta-1, rbeta, 5, NonPV );
+		if (s <= rbeta) 
 		{
 			return s;
 		}
 	}
 	
+	// 6.5
+	if( depth < 2  )
+	{
+		if( beta + 200 <= eval )
+		{
+			return beta;
+		}
+	} else if ( depth < 3 && !PVNode ) {
+		
+		Score bound=beta + 416;
+		
+		Score v = qsearch( pos, ss, bound-1, bound, 7, NonPV );
+		if( bound <= v )
+		{
+			return beta;
+		}
+	}
+
 	// step7
 	// static null move pruning
 	if( !PVNode
@@ -363,7 +381,7 @@ Score search( struct Position *pos, struct SearchStack *ss, Score alpha, Score b
 		&& !ss->skipNullMove
 		&& abs(beta) < INFINITE - 200 )
 	{
-		Score mg = 150 + depth*15;    
+		Score mg = 150 + depth*25;    
         
 		Depth rdepth = depth - 4;
 
@@ -444,6 +462,22 @@ iid_start:
 
 		++moveCount;
 		
+		if( !PVNode
+			&&depth < 3 
+			&& !inCheck
+			&& !captureOrPromotion)
+		{
+			Score mg;
+			
+			if( (pos->board[GetFrom(move[i])] != SOU ) && (pos->board[GetFrom(move[i])] != EOU ) ) mg=1600;
+			else mg=416;
+			
+			if( eval + mg <= alpha )
+			{
+				continue;    
+			}
+		}
+		
 		/*
 		// step13
 		// futility pruning
@@ -468,8 +502,8 @@ iid_start:
 					continue;    
 				}
 			}
-		}*/
-		
+		}
+		*/
 		// step14
 		doMove( pos, move[i] );
 		if( is_in_check(pos) ) 
@@ -651,7 +685,7 @@ void init_searchOld(){
 			}
 		}
 	}
-	if ( FullTime < 4000 ) MaxTime=1800;
+	if ( FullTime < 2000 ) MaxTime=1800;
 	else if ( FullTime > 880000 ) MaxTime = 8000; // 10 sec limits
 	else MaxTime = 15000;
 	//MaxTime=14000;
